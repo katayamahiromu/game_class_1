@@ -75,7 +75,11 @@ void SceneGame::Finalize()
 		delete gauge;
 		gauge = nullptr;
 	}
-
+	if (back != nullptr)
+	{
+		delete back;
+		back = nullptr;
+	}
 	//ステージ終了化
 	StageManager::Instance().Clear();
 
