@@ -5,6 +5,8 @@
 #include"Scene.h"
 #include"Graphics/Sprite.h"
 
+#include "sky_map.h"
+
 // ÉQÅ[ÉÄÉVÅ[Éì
 class SceneGame:public Scene
 {
@@ -35,4 +37,5 @@ private:
 	CameraController* cameraController = nullptr;
 	Sprite* gauge = nullptr;
 	Sprite* back = nullptr;
+	std::shared_ptr<sky_map>skyMap;
 };

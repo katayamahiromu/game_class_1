@@ -61,7 +61,9 @@ void SceneGame::Initialize()
 #endif
 	//ゲージスプライト
 	gauge = new Sprite();
-	back = new Sprite("Data/Sprite/back.png");
+	//back = new Sprite("Data/Sprite/back.png");
+	skyMap = std::make_shared<sky_map>(Graphics::Instance().GetDevice(), L"Data/SkyMaps/skymap7.png");
+
 #endif
 }
 
@@ -75,11 +77,11 @@ void SceneGame::Finalize()
 		delete gauge;
 		gauge = nullptr;
 	}
-	if (back != nullptr)
+	/*if (back != nullptr)
 	{
 		delete back;
 		back = nullptr;
-	}
+	}*/
 	//ステージ終了化
 	StageManager::Instance().Clear();
 
@@ -143,11 +145,14 @@ void SceneGame::Render()
 	rc.view		   = camera.GetView();
 	rc.projection  = camera.GetProjection();
 
-	back->Render(dc,
+	/*back->Render(dc,
 		0, 0, 1280, 720,
 		0, 0, 900, 675, 0,
-		1, 1, 0.5, 1);
+		1, 1, 0.5, 1);*/
 
+		DirectX::XMFLOAT4X4 viewProjection;
+		DirectX::XMStoreFloat4x4(&viewProjection, DirectX::XMMatrixMultiply(DirectX::XMLoadFloat4x4(&camera.GetView()), DirectX::XMLoadFloat4x4(&camera.GetProjection())));
+		skyMap->blit(dc, viewProjection);
 	// 3Dモデル描画
 	{
 		Shader* shader = graphics.GetShader();

@@ -192,6 +192,9 @@
     <ClInclude Include="Source\Audio\SubMixSource.h">
       <Filter>Source\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="Source\sky_map.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -332,6 +335,9 @@
     <ClCompile Include="Source\Audio\SubMixSource.cpp">
       <Filter>Source\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="Source\sky_map.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="HLSL\Debug.hlsli">
@@ -350,6 +356,9 @@
       <Filter>HLSL</Filter>
     </None>
     <None Include="HLSL\test.hlsli">
+      <Filter>HLSL</Filter>
+    </None>
+    <None Include="HLSL\sky_map.hlsli">
       <Filter>HLSL</Filter>
     </None>
   </ItemGroup>
@@ -382,6 +391,15 @@
       <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="HLSL\SpritePS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="HLSL\sky_map_vs.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="HLSL\sky_map_ps.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="HLSL\sky_box_ps.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
   </ItemGroup>
