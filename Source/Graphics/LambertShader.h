@@ -52,4 +52,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilState>	depthStencilState;
 
 	Microsoft::WRL::ComPtr<ID3D11SamplerState>		samplerState;
+	
+	//テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> normal_map;
 };

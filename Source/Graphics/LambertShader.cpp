@@ -194,6 +194,7 @@ void LambertShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 	cbScene.lightDirection = rc.lightDirection;
 	cbScene.color = rc.lightColor;
 	cbScene.ambientLightColor = rc.ambientLightColor;
+
 	dc->UpdateSubresource(sceneConstantBuffer.Get(), 0, 0, &cbScene, 0, 0);
 }
 
@@ -235,12 +236,17 @@ void LambertShader::Draw(ID3D11DeviceContext* dc, const Model* model)
 			CbSubset cbSubset;
 			cbSubset.materialColor = subset.material->color;
 			dc->UpdateSubresource(subsetConstantBuffer.Get(), 0, 0, &cbSubset, 0, 0);
-			dc->PSSetShaderResources(0, 1, subset.material->shaderResourceView.GetAddressOf());
+			//dc->PSSetShaderResources(0, 1, subset.material->shaderResourceView.GetAddressOf());
+			ID3D11ShaderResourceView* srvs[] =
+			{
+				subset.material->shaderResourceView.Get(),
+				subset.material->normal_map.Get(),
+			};
+			dc->PSSetShaderResources(0, ARRAYSIZE(srvs), srvs);
 			dc->PSSetSamplers(0, 1, samplerState.GetAddressOf());
 			dc->DrawIndexed(subset.indexCount, subset.startIndex, 0);
 		}
 	}
-
 }
 
 // •`‰æI—¹

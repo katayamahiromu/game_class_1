@@ -35,6 +35,7 @@ public:
 		DirectX::XMFLOAT4	color = { 0.8f, 0.8f, 0.8f, 1.0f };
 
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> shaderResourceView;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> normal_map;
 
 		template<class Archive>
 		void serialize(Archive& archive, int version);
@@ -126,6 +127,9 @@ public:
 protected:
 	// モデルセットアップ
 	void BuildModel(ID3D11Device* device, const char* dirname);
+
+	//テクスチャの読み込み
+	HRESULT LoadTexture(ID3D11Device* device, const char* filename, const char* suffix, bool dummy, ID3D11ShaderResourceView** srv, UINT dummy_color = 0xFFFFFFFF);
 
 	// シリアライズ
 	void Serialize(const char* filename);

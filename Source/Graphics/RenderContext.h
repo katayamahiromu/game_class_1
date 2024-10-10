@@ -40,6 +40,9 @@ struct RenderContext
 	DirectX::XMFLOAT4		lightDirection;
 	DirectX::XMFLOAT4		lightColor;
 
+	//ノーマルマップ
+	ID3D11ShaderResourceView* normal_map;
+
 	//シェーダーゲープロベースから移植
 	ID3D11DeviceContext* deviceContext;
 	//高輝度抽出用情報

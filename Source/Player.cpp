@@ -19,9 +19,9 @@ Player::Player() {
 	//インスタンスポインタ取得
 	instace = this;
 
-	model = new Model("Data/Model/Jammo/jammo.mdl");
+	model = new Model("Data/Model/Jammo/Jammo.mdl");
 	//モデルが大きいのでスケーリング
-	scale.x = scale.y = scale.z = 0.01f;
+	scale.x = scale.y = scale.z = 0.05f;
 
 	//ヒットエフェクト読み込み
 	hitEffect = new Effect("Data/Effect/Hit.efk");
