@@ -100,7 +100,7 @@ private:
 	//復活ステート更新処理
 	void UpdateReviveState(float elapsedTime);
 private:
-	Model* model = nullptr;
+	std::unique_ptr<Model> model;
 	float moveSpeed = 5.0f;
 	float turnSpeed = DirectX::XMConvertToRadians(720);
 	float JumpSpeed = 20.0f;
@@ -113,12 +113,12 @@ private:
 	//アニメーション
 	enum Animation
 	{
+		Anime_Idle,
 		Anime_Attack,
 		Anime_Death,
 		Anime_Falling,
 		Anime_GetHit1,
 		Anime_GetHit2,
-		Anime_Idle,
 		Anime_Jump,
 		Anime_Jump_Flip,
 		Anime_Landing,

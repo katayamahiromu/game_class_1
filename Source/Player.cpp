@@ -19,9 +19,9 @@ Player::Player() {
 	//インスタンスポインタ取得
 	instace = this;
 
-	model = new Model("Data/Model/Jammo/Jammo.mdl");
+	model = std::make_unique<Model>("Data/Model/Player/player.mdl");
 	//モデルが大きいのでスケーリング
-	scale.x = scale.y = scale.z = 0.05f;
+	scale.x = scale.y = scale.z = 0.1f;
 
 	//ヒットエフェクト読み込み
 	hitEffect = new Effect("Data/Effect/Hit.efk");
@@ -32,7 +32,6 @@ Player::Player() {
 
 //デストラクタ
 Player::~Player() {
-	delete model;
 	delete hitEffect;
 }
 
@@ -99,7 +98,7 @@ bool Player::InputMove(float elapsedTime) {
 
 //描画処理
 void Player::Render(ID3D11DeviceContext* dc, Shader* shader) {
-	shader->Draw(dc, model);
+	shader->Draw(dc, model.get());
 	//弾丸描画処理
 	projectileManager.Render(dc, shader);
 }
@@ -185,7 +184,7 @@ void Player::DrawDebugPrimitive() {
 	////衝突判定用のデバッグ球を描画
 	//debugRenderer->DrawSphere(position, radius, DirectX::XMFLOAT4(0, 0, 0, 1));
 	//衝突用判定用のデバッグ円柱を描画
-	debugRenderer->DrawCylinder(position, radius, height, DirectX::XMFLOAT4(0, 0, 0, 1));
+	//debugRenderer->DrawCylinder(position, radius, height, DirectX::XMFLOAT4(0, 0, 0, 1));
 	//projectileManager.DrawDebugPrimitive();
 
 	//攻撃衝突用の左手ノードのデバッグ球を描画
