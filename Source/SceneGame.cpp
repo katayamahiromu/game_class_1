@@ -61,7 +61,8 @@ void SceneGame::Initialize()
 #endif
 	//ゲージスプライト
 	gauge = new Sprite();
-	back = new Sprite("Data/Sprite/back.png");
+	//back = new Sprite("Data/Sprite/back.png");
+	skyMap = std::make_shared<sky_map>(Graphics::Instance().GetDevice(), L"Data/SkyMaps/skymap7.png");
 #endif
 
 	//新しい描画ターゲットの生成
@@ -109,11 +110,11 @@ void SceneGame::Finalize()
 		cameraController = nullptr;
 	}
 
-	if (back != nullptr)
+	/*if (back != nullptr)
 	{
 		delete back;
 		back = nullptr;
-	}
+	}*/
 	EnemeyManager::Instance().Clear();
 #endif
 }
@@ -153,6 +154,7 @@ void SceneGame::Render()
 	
 	//オフスクリーンレンダリング
 	Offscreen_Rendering();
+
 	
 
 	// 2Dスプライト描画
@@ -307,11 +309,15 @@ void SceneGame::Render3DScene()
 	//光源の角度
 	rc.lightDirection = directional_light;
 	rc.lightColor = lightColor;
-	back->Render(dc,
+	/*back->Render(dc,
 		0, 0, 1280, 720,
 		0, 0, 900, 675, 0,
-		1, 1, 1, 1);
+		1, 1, 1, 1);*/
 
+
+	DirectX::XMFLOAT4X4 viewProjection;
+	DirectX::XMStoreFloat4x4(&viewProjection, DirectX::XMMatrixMultiply(DirectX::XMLoadFloat4x4(&camera.GetView()), DirectX::XMLoadFloat4x4(&camera.GetProjection())));
+	skyMap->blit(dc, viewProjection);
 	// 3Dモデル描画
 	{
 		Shader* shader = graphics.GetShader();
