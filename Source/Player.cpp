@@ -19,7 +19,7 @@ Player::Player() {
 	//インスタンスポインタ取得
 	instace = this;
 
-	model = new Model("Data/Model/Jammo/Jammo.mdl");
+	model = new Model("Data/Model/Jammo/jammo.mdl");
 	//モデルが大きいのでスケーリング
 	scale.x = scale.y = scale.z = 0.01f;
 
@@ -234,7 +234,7 @@ void Player::CollisionPlayerVsEnemies() {
 //ジャンプ入力処理
 bool Player::InputJump() {
 	GamePad& gamePad = Input::Instance().GetGamePad();
-	if (gamePad.GetButtonDown() & GamePad::BTN_A) {
+	if (gamePad.GetButtonDown() & GamePad::BTN_SPACE) {
 		jumpCount++;
 		if(jumpCount < jumpLimit) Junp(JumpSpeed);
 		if (isGround) {

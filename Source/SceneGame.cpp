@@ -110,7 +110,7 @@ void SceneGame::Update(float elapsedTime)
 	DirectX::XMFLOAT3 target = player->GetPosition();
 	target.y += 0.5f;
 	cameraController->SetTarget(target);
-	cameraController->TPS_Update(elapsedTime);
+	cameraController->Update(elapsedTime);
 	EnemeyManager::Instance().Update(elapsedTime);
 	//エフェクト更新処理
 	EffectManager::Instace().Update(elapsedTime);
