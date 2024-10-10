@@ -9,6 +9,15 @@
 #include "Graphics/ImGuiRenderer.h"
 #include<mutex>
 
+enum class SpriteShaderId
+{
+	Default,
+	LuminanceExtraction,
+	ColorGrading,
+	Finalpass,
+	Max
+};
+
 // グラフィックス
 class Graphics
 {
@@ -39,6 +48,9 @@ public:
 
 	// シェーダー取得
 	Shader* GetShader() const { return shader.get(); }
+
+	// スプライトシェーダー取得
+	SpriteShader* GetShader(SpriteShaderId id) const { return spriteShaders[static_cast<int>(id)].get(); }
 
 	// スクリーン幅取得
 	float GetScreenWidth() const { return screenWidth; }
@@ -72,6 +84,7 @@ private:
 	std::unique_ptr<DebugRenderer>					debugRenderer;
 	std::unique_ptr<LineRenderer>					lineRenderer;
 	std::unique_ptr<ImGuiRenderer>					imguiRenderer;
+	std::unique_ptr<SpriteShader>					spriteShaders[static_cast<int>(SpriteShaderId::Max)];
 
 	float	screenWidth;
 	float	screenHeight;

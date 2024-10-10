@@ -4,6 +4,7 @@
 #include <DirectXMath.h>
 #include "Graphics/RenderContext.h"
 #include "Graphics/Model.h"
+#include"Graphics/Sprite.h"
 
 class Shader
 {
@@ -19,4 +20,20 @@ public:
 
 	// •`‰æI—¹
 	virtual void End(ID3D11DeviceContext* context) = 0;
+};
+
+class SpriteShader
+{
+public:
+	SpriteShader() {}
+	virtual ~SpriteShader() {}
+
+	// •`‰æŠJn
+	virtual void Begin(const RenderContext& rc) = 0;
+
+	// •`‰æ
+	virtual void Draw(const RenderContext& rc, const Sprite* sprite) = 0;
+
+	// •`‰æI—¹
+	virtual void End(const RenderContext& rc) = 0;
 };

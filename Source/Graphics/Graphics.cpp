@@ -1,5 +1,8 @@
 #include "Misc.h"
 #include "Graphics/LambertShader.h"
+#include"Graphics/LuminanceExtractionShader.h"
+#include"Graphics/FinalpassShader.h"
+#include"Graphics/ColorGrandingShader.h"
 #include "Graphics/Graphics.h"
 
 Graphics* Graphics::instance = nullptr;
@@ -151,6 +154,12 @@ Graphics::Graphics(HWND hWnd)
 		shader = std::make_unique<LambertShader>(device.Get());
 	}
 
+	// スプライトシェーダー
+	{
+		spriteShaders[static_cast<int>(SpriteShaderId::LuminanceExtraction)] = std::make_unique<LuminanceExtractionShader>(device.Get());
+		spriteShaders[static_cast<int>(SpriteShaderId::ColorGrading)] = std::make_unique<ColorGradingShader>(device.Get());
+		spriteShaders[static_cast<int>(SpriteShaderId::Finalpass)] = std::make_unique<FinalpassShader>(device.Get());
+	}
 	// レンダラ
 	{
 		debugRenderer = std::make_unique<DebugRenderer>(device.Get());

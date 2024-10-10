@@ -110,7 +110,7 @@ void CameraController::TPS_Update(float elapsedTime)
 	//注視点から後ろベクトル方向に一定距離離れたカメラ視点を求める
 	DirectX::XMFLOAT3 eye;
 	eye.x = CalculateDamping * target.x - front.x * range;
-	eye.y = CalculateDamping * target.y - front.y * range;
+	eye.y = target.y - front.y * range;
 	eye.z = CalculateDamping * target.z - front.z * range;
 
 	//カメラの視点と注視点を設定

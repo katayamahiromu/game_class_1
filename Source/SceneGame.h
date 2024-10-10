@@ -5,7 +5,9 @@
 #include"Scene.h"
 #include"Graphics/Sprite.h"
 
-#include "sky_map.h"
+#include "Graphics/RenderTarget.h"
+#include"PostprocessingRenderer.h"
+
 
 // ゲームシーン
 class SceneGame:public Scene
@@ -24,6 +26,15 @@ public:
 
 	// 描画処理
 	void Render() override;
+
+	//3D用の描画
+	void Render3DScene();
+
+	//オフスクリーンレンダリング
+	void Offscreen_Rendering();
+
+	//デバック
+	void DebugGui();
 private:
 	//エネミーHPゲージ描画
 	void RenderEnemyGauge(
@@ -37,5 +48,14 @@ private:
 	CameraController* cameraController = nullptr;
 	Sprite* gauge = nullptr;
 	Sprite* back = nullptr;
-	std::shared_ptr<sky_map>skyMap;
+private:
+	//オフスクリーンレンダリング用描画ターゲット
+	std::unique_ptr<RenderTarget> renderTarget;
+	//ポストプロセス
+	std::unique_ptr<PostprocessingRenderer> postprocessingRneder;
+
+	//ライト関係
+	DirectX::XMFLOAT4 directional_light = { 0.0f, -1.0f, 0.0f, 0.0f };	// ライト方向（下方向）
+	DirectX::XMFLOAT4 ambientColor = { 0.2f,0.2f,0.2f,1.0f };
+	DirectX::XMFLOAT4 lightColor = { 1.0f,1.0f,1.0f,1.0f };
 };

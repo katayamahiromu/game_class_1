@@ -21,11 +21,13 @@ VS_OUT main(
 
 	VS_OUT vout;
 	vout.position = mul(float4(p, 1.0f), viewProjection);
+	vout.world_position = p;
 
 	float3 N = normalize(n);
 	float3 L = normalize(-lightDirection.xyz);
 	float d = dot(L, N);
 	float power = max(0, d) * 0.5f + 0.5f;
+	vout.normal = normalize(n);
 	vout.color.rgb = color.rgb * materialColor.rgb * power;
 	vout.color.a = color.a * materialColor.a;
 	vout.texcoord = texcoord;
