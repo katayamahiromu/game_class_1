@@ -38,7 +38,6 @@ float4 main(VS_OUT pin) : SV_TARGET
 	float4 color = float4(ambient, diffuseColor.a);
 	color.rgb += diffuseColor.rgb;
 	color.rgb += directionalSpecular;
-
 	return color;
 }
 

@@ -7,7 +7,6 @@
 #include"Collision.h"
 #include"ProjectileManager.h"
 #include"Effect.h"
-#include"Graphics/RenderContext.h"
 
 //ƒvƒŒƒCƒ„[
 class Player :public Character

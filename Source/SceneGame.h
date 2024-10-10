@@ -43,11 +43,11 @@ private:
 		const DirectX::XMFLOAT4X4& projection
 	);
 private:
-	Stage*  stage  = nullptr;
-	Player* player = nullptr;
-	CameraController* cameraController = nullptr;
-	Sprite* gauge = nullptr;
-	Sprite* back = nullptr;
+	std::unique_ptr<Stage> stage;
+	std::unique_ptr<Player> player;
+	std::unique_ptr<CameraController> cameraController;
+	std::unique_ptr<Sprite> gauge;
+	std::unique_ptr<Sprite> back;
 private:
 	//オフスクリーンレンダリング用描画ターゲット
 	std::unique_ptr<RenderTarget> renderTarget;

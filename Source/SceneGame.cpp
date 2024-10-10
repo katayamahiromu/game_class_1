@@ -25,9 +25,9 @@ void SceneGame::Initialize()
 	stageMoveFloor->SetTorque(DirectX::XMFLOAT3(0, 1.0f, 0));
 	stageManager.Register(stageMoveFloor);
 
-	player = new Player;
+	player = std::make_unique<Player>();
 	//カメラコントローラー初期化
-	cameraController = new CameraController;
+	cameraController = std::make_unique<CameraController>();
 
 	//カメラ初期設定
 	Graphics& graphics = Graphics::Instance();
@@ -60,7 +60,7 @@ void SceneGame::Initialize()
 	}
 #endif
 	//ゲージスプライト
-	gauge = new Sprite();
+	gauge = std::make_unique<Sprite>();
 	//back = new Sprite("Data/Sprite/back.png");
 	skyMap = std::make_shared<sky_map>(Graphics::Instance().GetDevice(), L"Data/SkyMaps/skymap7.png");
 #endif
@@ -88,33 +88,9 @@ void SceneGame::Initialize()
 void SceneGame::Finalize()
 {
 #if true
-	//ゲージスプライト終了化
-	if (gauge != nullptr)
-	{
-		delete gauge;
-		gauge = nullptr;
-	}
 
 	//ステージ終了化
 	StageManager::Instance().Clear();
-
-	if(player !=nullptr)
-	{
-		delete player;
-		player = nullptr;
-	}
-
-	if (cameraController != nullptr)
-	{
-		delete cameraController;
-		cameraController = nullptr;
-	}
-
-	/*if (back != nullptr)
-	{
-		delete back;
-		back = nullptr;
-	}*/
 	EnemeyManager::Instance().Clear();
 #endif
 }
