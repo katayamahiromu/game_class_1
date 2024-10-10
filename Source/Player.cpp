@@ -530,7 +530,7 @@ void Player::UpdateLandState(float elapsedTime)
 	{
 		TransitiomIdleState();
 	}
-	//testtt
+
 
 	if (InputJump())
 	{

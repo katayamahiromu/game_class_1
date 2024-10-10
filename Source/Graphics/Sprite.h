@@ -28,12 +28,29 @@ public:
 		float angle,
 		float r, float g, float b, float a) const;
 
+	// バッファ更新
+	void Update(
+		float dx, float dy,
+		float dw, float dh,
+		float sx, float sy,
+		float sw, float sh,
+		float angle,
+		float r, float g, float b, float a) const;
+
+	// シェーダーリソースビューの設定
+	void SetShaderResourceView(const Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& srv, int texWidth, int texHeight);
+
 	// テクスチャ幅取得
 	int GetTextureWidth() const { return textureWidth; }
 
 	// テクスチャ高さ取得
 	int GetTextureHeight() const { return textureHeight; }
 
+	// 頂点バッファの取得
+	const Microsoft::WRL::ComPtr<ID3D11Buffer>& GetVertexBuffer() const { return vertexBuffer; }
+
+	// シェーダーリソースビューの取得
+	const Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& GetShaderResourceView() const { return shaderResourceView; }
 private:
 	Microsoft::WRL::ComPtr<ID3D11VertexShader>			vertexShader;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader>			pixelShader;
