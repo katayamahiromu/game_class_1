@@ -19,9 +19,9 @@ Player::Player() {
 	//インスタンスポインタ取得
 	instace = this;
 
-	model = std::make_unique<Model>("Data/Model/Player/player.mdl");
+	model = std::make_unique<Model>("Data/Model/Jammo/jammo.mdl");
 	//モデルが大きいのでスケーリング
-	scale.x = scale.y = scale.z = 0.1f;
+	scale.x = scale.y = scale.z = 0.01f;
 
 	//ヒットエフェクト読み込み
 	hitEffect = new Effect("Data/Effect/Hit.efk");
@@ -70,6 +70,9 @@ void Player::Update(float elapsedTime) {
 	UpdateVelocity(elapsedTime);
 	//無敵時間更新
 	UpdateInvinciblTImer(elapsedTime);
+
+	InputVerticalMove(elapsedTime);
+
 	//プレイヤーと敵との衝突判定
 	CollisionPlayerVsEnemies();
 	//弾丸と敵の衝突判定
@@ -232,7 +235,7 @@ void Player::CollisionPlayerVsEnemies() {
 
 //ジャンプ入力処理
 bool Player::InputJump() {
-	GamePad& gamePad = Input::Instance().GetGamePad();
+	/*GamePad& gamePad = Input::Instance().GetGamePad();
 	if (gamePad.GetButtonDown() & GamePad::BTN_SPACE) {
 		jumpCount++;
 		if(jumpCount < jumpLimit) Junp(JumpSpeed);
@@ -240,7 +243,7 @@ bool Player::InputJump() {
 			jumpCount = 0;
 			return true;
 		}
-	}
+	}*/
 	return false;
 }
 
@@ -652,5 +655,34 @@ void Player::UpdateReviveState(float elapsedTime)
 	if (!model->IsPlayAnimation())
 	{
 		TransitiomIdleState();
+	}
+}
+
+//垂直方向入力
+void Player::InputVerticalMove(float elapsedTime)
+{
+	GamePad& gamePad = Input::Instance().GetGamePad();
+
+	if (gamePad.GetButton() & GamePad::BTN_SPACE)
+	{
+		if (GetAsyncKeyState('W') & 0x8000)
+		{
+			// 上昇（ジャンプや上昇処理）のために速度を変更
+			velocity.y = jumpUp;  // 直接positionを操作せず、上昇のための速度を設定
+			velocity.x = 0.0f;
+			velocity.z = 0.0f;
+		}
+		else if (GetAsyncKeyState('S') & 0x8000)
+		{
+			// 下降のために速度を変更
+			velocity.y = -jumpDown;  // 下降速度を設定
+			velocity.x = 0.0f;
+			velocity.z = 0.0f;
+		}
+	}
+	else
+	{
+
+			velocity.y = 0.0f;  // 地面にいる場合は垂直移動しない	
 	}
 }

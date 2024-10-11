@@ -89,7 +89,7 @@ void Character::UpdateVelocity(float elapsedTime) {
 	float elapsedFrame = 60.0f * elapsedTime;
 
 	//垂直速力更新処理
-	UpdateVerticalVelocity(elapsedFrame);
+	//UpdateVerticalVelocity(elapsedFrame);
 	//水平速力更新処理
 	UpdateHorizontalVelocity(elapsedFrame);
 	//垂直移動更新処理
@@ -132,7 +132,7 @@ void Character::UpdateInvinciblTImer(float elapsedTime)
 void Character::UpdateVerticalVelocity(float elapsedFrame)
 {
 	//重力処理
-	velocity.y += gravity *elapsedFrame;;
+	velocity.y = gravity *elapsedFrame;;
 }
 
 //垂直移動更新処理
@@ -220,17 +220,31 @@ void Character::UpdateHorizontalVelocity(float elapsedFrame)
 		//摩擦力
 		float friction = this->friction * elapsedFrame;
 		//空中にいるときは摩擦力を減らす
-		if (!IsGround()) friction -= this->airControl;
+		if (!IsGround()) friction -= this->airControl * elapsedFrame / 60.0f;
 
 		//摩擦による横方向の減速処理
 		if(length > friction)
 		{
-			//単位ベクトル化
-			float vx = velocity.x / length;
-			float vz = velocity.z / length;
-			//単位ベクトル化した速力を摩擦力分スケーリングした値を速力から引く
-			velocity.x -= vx * friction;
-			velocity.z -= vz * friction;
+			if (velocity.x > 0.0f)
+			{
+				velocity.x -= friction;
+				if (velocity.x < 0.0f)velocity.x = 0.0f;
+			}
+			else
+			{
+				velocity.x += friction;
+				if (velocity.x > 0.0f)velocity.x = 0.0f;
+			}
+			if (velocity.z > 0.0f)
+			{
+				velocity.z -= friction;
+				if (velocity.z < 0.0f)velocity.z = 0.0f;
+			}
+			else
+			{
+				velocity.z += friction;
+				if (velocity.z > 0.0f)velocity.z = 0.0f;
+			}
 		}
 		//横方向の速力が摩擦力以下になったので速力を無効化
 		else
@@ -250,7 +264,7 @@ void Character::UpdateHorizontalVelocity(float elapsedFrame)
 			//加速力
 			float acceleration = this->acceleration * elapsedFrame;
 			//空中にいるときは加速力を減らす
-			if (!IsGround()) acceleration -= this->airControl;
+			//if (!IsGround()) acceleration -= this->airControl * elapsedFrame / 60.0f;
 			//移動ベクトルによる加速処理
 			velocity.x += moveVecX * acceleration;
 			velocity.z += moveVecZ * acceleration;

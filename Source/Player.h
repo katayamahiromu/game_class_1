@@ -98,11 +98,16 @@ private:
 
 	//復活ステート更新処理
 	void UpdateReviveState(float elapsedTime);
+
+	void InputVerticalMove(float elapsedTime);
+
 private:
 	std::unique_ptr<Model> model;
 	float moveSpeed = 5.0f;
 	float turnSpeed = DirectX::XMConvertToRadians(720);
 	float JumpSpeed = 20.0f;
+	float jumpUp = 3.0f;
+	float jumpDown= 3.0f;
 	int jumpCount = 0;
 	int jumpLimit = 2;
 	ProjectileManager projectileManager;
