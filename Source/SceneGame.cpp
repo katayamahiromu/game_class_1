@@ -46,7 +46,7 @@ void SceneGame::Initialize()
 	);
 	camera.SetEye(DirectX::XMFLOAT3(0.0f, 10.0f, -10.0f));
 	//エネミー初期化
-#if 1
+#if 0
 	for (int i = 0;i < 2;++i) {
 		EnemySlime* slime = new EnemySlime;
 		slime->SetPositon(DirectX::XMFLOAT3(i * 2.0f, 0, 5));
@@ -54,12 +54,12 @@ void SceneGame::Initialize()
 		EnemeyManager::Instance().Register(slime);
 	}
 #else
-	for(int i= 0;i<50;++i)
+	/*for(int i= 0;i<50;++i)
 	{
 		EnemySlime* slime = new EnemySlime();
 		slime->SetPositon(DirectX::XMFLOAT3(i * 2.0f, 0, 5));
 		EnemeyManager::Instance().Register(slime);
-	}
+	}*/
 #endif
 	//ゲージスプライト
 	gauge = std::make_unique<Sprite>();
