@@ -30,7 +30,7 @@ void SceneTitle::Finalize()
 }
 
 //XVˆ—
-void SceneTitle::Update(float elapsedTime)
+void SceneTitle::Update(const float& elapsedTime)
 {
 	GamePad& gamePad = Input::Instance().GetGamePad();
 

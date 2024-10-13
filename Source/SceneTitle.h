@@ -19,7 +19,7 @@ public:
 	virtual void Finalize() override;
 
 	//XVˆ—
-	virtual void Update(float elapsedTime) override;
+	virtual void Update(const float& elapsedTime) override;
 
 	//•`‰æˆ—
 	virtual void Render() override;

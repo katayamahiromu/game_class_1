@@ -47,9 +47,12 @@ void CameraController::Update(float elapsedTime)
 
 	//注視点から後ろベクトル方向に一定距離離れたカメラ視点を求める
 	DirectX::XMFLOAT3 eye;
-	eye.x = target.x - front.x * range;
+	/*eye.x = target.x - front.x * range;
 	eye.y = target.y - front.y * range;
-	eye.z = target.z - front.z * range;
+	eye.z = target.z - front.z * range;*/
+
+	DirectX::XMStoreFloat3(&eye, 
+		DirectX::XMVectorScale(DirectX::XMVectorSubtract(DirectX::XMLoadFloat3(&target), DirectX::XMLoadFloat3(&front)), range));
 	
 
 	eye = Mathf::Leap(Camera::Instance().GetEye(), eye, elapsedTime*1.0f);

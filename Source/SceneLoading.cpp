@@ -32,7 +32,7 @@ void SceneLoading::Finalize()
 }
 
 //XVˆ—
-void SceneLoading::Update(float elapsedTime)
+void SceneLoading::Update(const float& elapsedTime)
 {
 	constexpr float speed = 180;
 	angle += speed * elapsedTime;

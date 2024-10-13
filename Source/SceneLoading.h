@@ -18,7 +18,7 @@ public:
 	void Finalize() override;
 
 	// XVˆ—
-	void Update(float elapsedTime) override;
+	void Update(const float& elapsedTime) override;
 
 	// •`‰æˆ—
 	void Render() override;

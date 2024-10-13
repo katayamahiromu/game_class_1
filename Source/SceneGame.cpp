@@ -54,12 +54,12 @@ void SceneGame::Initialize()
 		EnemeyManager::Instance().Register(slime);
 	}
 #else
-	/*for(int i= 0;i<50;++i)
+	for(int i= 0;i<50;++i)
 	{
 		EnemySlime* slime = new EnemySlime();
 		slime->SetPositon(DirectX::XMFLOAT3(i * 2.0f, 0, 5));
 		EnemeyManager::Instance().Register(slime);
-	}*/
+	}
 #endif
 	//ゲージスプライト
 	gauge = std::make_unique<Sprite>();
@@ -97,7 +97,7 @@ void SceneGame::Finalize()
 }
 
 // 更新処理
-void SceneGame::Update(float elapsedTime)
+void SceneGame::Update(const float& elapsedTime)
 {
 #if true
 	StageManager::Instance().Update(elapsedTime);
@@ -301,11 +301,6 @@ void SceneGame::Render3DScene()
 	//光源の角度
 	rc.lightDirection = directional_light;
 	rc.lightColor = lightColor;
-	/*back->Render(dc,
-		0, 0, 1280, 720,
-		0, 0, 900, 675, 0,
-		1, 1, 1, 1);*/
-
 
 	DirectX::XMFLOAT4X4 viewProjection;
 	DirectX::XMStoreFloat4x4(&viewProjection, DirectX::XMMatrixMultiply(DirectX::XMLoadFloat4x4(&camera.GetView()), DirectX::XMLoadFloat4x4(&camera.GetProjection())));

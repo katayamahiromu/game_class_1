@@ -21,9 +21,9 @@ Player::Player() {
 	//インスタンスポインタ取得
 	instace = this;
 
-	model = std::make_unique<Model>("Data/Model/Jammo/jammo.mdl");
+	model = std::make_unique<Model>("Data/Model/Player/player.mdl");
 	//モデルが大きいのでスケーリング
-	scale.x = scale.y = scale.z = 0.01f;
+	scale.x = scale.y = scale.z = 0.05f;
 
 	//ヒットエフェクト読み込み
 	hitEffect = new Effect("Data/Effect/Hit.efk");
@@ -706,7 +706,7 @@ void Player::Input_Target()
 	GamePad& gamePad = Input::Instance().GetGamePad();
 	if (gamePad.GetButtonDown() & GamePad::BTN_ENTER)target_enemy = Target();
 }
-}
+
 
 //垂直方向入力
 void Player::InputVerticalMove(float elapsedTime)

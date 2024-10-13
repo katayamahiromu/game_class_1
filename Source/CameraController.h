@@ -19,6 +19,7 @@ public:
 
 	void SetRange(float r) { range = r; }
 	float GetRange() { return range; }
+	
 private:
 	DirectX::XMFLOAT3 target = { 0,0,0 };
 	DirectX::XMFLOAT3 angle  = { 0,0,0 };
