@@ -8,6 +8,7 @@
 #include"StageManager.h"
 #include"StageMain.h"
 #include"StageMoveFloor.h"
+#include"Mathf.h"
 
 
 // 初期化
@@ -43,6 +44,7 @@ void SceneGame::Initialize()
 		0.1f,
 		1000.0f
 	);
+	camera.SetEye(DirectX::XMFLOAT3(0.0f, 10.0f, -10.0f));
 	//エネミー初期化
 #if 1
 	for (int i = 0;i < 2;++i) {
@@ -62,12 +64,12 @@ void SceneGame::Initialize()
 	//ゲージスプライト
 	gauge = std::make_unique<Sprite>();
 	//back = new Sprite("Data/Sprite/back.png");
-	skyMap = std::make_shared<sky_map>(Graphics::Instance().GetDevice(), L"Data/SkyMaps/skymap7.png");
+	skyMap = std::make_shared<sky_map>(graphics.GetDevice(), L"Data/SkyMaps/skymap7.png");
+	sprRock = std::make_unique<Sprite>("Data/Sprite/Target.png");
 #endif
 
 	//新しい描画ターゲットの生成
 	{
-		Graphics& graphics = Graphics::Instance();
 		renderTarget = std::make_unique<RenderTarget>(
 			static_cast<UINT>(graphics.GetScreenWidth()),
 			static_cast<UINT>(graphics.GetScreenHeight()),
@@ -88,7 +90,6 @@ void SceneGame::Initialize()
 void SceneGame::Finalize()
 {
 #if true
-
 	//ステージ終了化
 	StageManager::Instance().Clear();
 	EnemeyManager::Instance().Clear();
@@ -101,12 +102,28 @@ void SceneGame::Update(float elapsedTime)
 #if true
 	StageManager::Instance().Update(elapsedTime);
 	player->Update(elapsedTime);
-	//カメラコントローラー更新処理
-	DirectX::XMFLOAT3 target = player->GetPosition();
-	target.y += 0.5f;
-	cameraController->SetTarget(target);
-	cameraController->Update(elapsedTime);
+	//先にカメラより三エネミーの処理を優先
 	EnemeyManager::Instance().Update(elapsedTime);
+	//カメラコントローラー更新処理
+	{
+		DirectX::XMFLOAT3 target;
+		if (player->Get_Target_Enemy() != nullptr)
+		{
+			Rock_ON = true;
+			target = player->Get_Target_Enemy()->GetPosition();
+			target.y += 0.5f;
+			cameraController->SetRange(Mathf::Leap(cameraController->GetRange(), 20.0f, elapsedTime));
+		}
+		else
+		{
+			Rock_ON = false;
+			target = player->GetPosition();
+			target.y += 0.5f;
+			cameraController->SetRange(Mathf::Leap(cameraController->GetRange(), 10.0f, elapsedTime));
+		}
+		cameraController->SetTarget(target);
+		cameraController->Update(elapsedTime);
+	}
 	//エフェクト更新処理
 	EffectManager::Instace().Update(elapsedTime);
 #endif
@@ -131,11 +148,10 @@ void SceneGame::Render()
 	//オフスクリーンレンダリング
 	Offscreen_Rendering();
 
-	
-
 	// 2Dスプライト描画
 	{
 		//RenderEnemyGauge(dc, rc.view, rc.projection);
+		RenderEnemyRockOn(dc, Camera::Instance().GetView(), Camera::Instance().GetProjection());
 	}
 
 	// 2DデバッグGUI描画
@@ -360,4 +376,51 @@ void SceneGame::DebugGui()
 		ImGui::ColorEdit3("AmbientColor", &ambientColor.x);
 		ImGui::TreePop();
 	}
+}
+
+void SceneGame::RenderEnemyRockOn(
+	ID3D11DeviceContext* dc,
+	const DirectX::XMFLOAT4X4& view,
+	const DirectX::XMFLOAT4X4& projection
+)
+{
+	//ビューポート
+	D3D11_VIEWPORT viewport;
+	UINT numViewports = 1;
+	dc->RSGetViewports(&numViewports, &viewport);
+
+	//変換行列
+	DirectX::XMMATRIX View = DirectX::XMLoadFloat4x4(&view);
+	DirectX::XMMATRIX Projection = DirectX::XMLoadFloat4x4(&projection);
+	DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();
+
+	EnemeyManager& enemyManager = EnemeyManager::Instance();
+	int i = player->Get_Rock_num();
+	if (!Rock_ON)return;
+	Enemy* enemy = enemyManager.GetEnemy(i);
+	DirectX::XMVECTOR ScreenPosition;
+	DirectX::XMFLOAT3 Position;
+	Position = enemy->GetPosition();
+	Position.y += enemy->GetHeight();
+	ScreenPosition = DirectX::XMVector3Project(
+		DirectX::XMLoadFloat3(&Position),
+		viewport.TopLeftX,
+		viewport.TopLeftY,
+		viewport.Width,
+		viewport.Height,
+		0.0f,
+		1.0f,
+		Projection,
+		View,
+		World
+	);
+	DirectX::XMFLOAT3 pos;
+	DirectX::XMStoreFloat3(&pos, ScreenPosition);
+	sprRock->Render(dc,
+		pos.x-50.0f, pos.y - 20.0f,
+		100, 100,
+		0.0f, 0.0f,
+		256.0f, 256.0f,
+		0.0f,
+		1.0f, 1.0f, 1.0f, 1.0f);
 }

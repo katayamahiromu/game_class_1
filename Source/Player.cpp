@@ -5,6 +5,8 @@
 #include"Graphics/Graphics.h"
 #include"ProjectileStraight.h"
 #include"ProjectileHoming.h"
+#include"EnemyManeger.h"
+
 
 static Player* instace = nullptr;
 
@@ -74,6 +76,8 @@ void Player::Update(float elapsedTime) {
 	CollisionPlayerVsEnemies();
 	//弾丸と敵の衝突判定
 	CollisionProjectilesVsEnemies();
+	//ターゲット用入力受付
+	Input_Target();
 	//オブジェクト行列を更新
 	UpdateTranceform();
 	//弾丸発射処理
@@ -98,6 +102,7 @@ bool Player::InputMove(float elapsedTime) {
 
 //描画処理
 void Player::Render(ID3D11DeviceContext* dc, Shader* shader) {
+
 	shader->Draw(dc, model.get());
 	//弾丸描画処理
 	projectileManager.Render(dc, shader);
@@ -123,6 +128,8 @@ void Player::DrawDebugGui() {
 			angle.z = DirectX::XMConvertToRadians(a.z);
 			//スケール
 			ImGui::InputFloat3("Scale", &scale.x);
+
+			ImGui::InputFloat("Target Range", &target_range);
 		}
 	}
 	ImGui::End();
@@ -182,7 +189,9 @@ DirectX::XMFLOAT3 Player::GetMoveVec() const
 void Player::DrawDebugPrimitive() {
 	DebugRenderer* debugRenderer = Graphics::Instance().GetDebugRenderer();
 	////衝突判定用のデバッグ球を描画
-	//debugRenderer->DrawSphere(position, radius, DirectX::XMFLOAT4(0, 0, 0, 1));
+	debugRenderer->DrawSphere(position, radius, DirectX::XMFLOAT4(0, 0, 0, 1));
+	//ターゲット用
+	debugRenderer->DrawSphere(position, target_range, DirectX::XMFLOAT4(1, 0, 0, 1));
 	//衝突用判定用のデバッグ円柱を描画
 	//debugRenderer->DrawCylinder(position, radius, height, DirectX::XMFLOAT4(0, 0, 0, 1));
 	//projectileManager.DrawDebugPrimitive();
@@ -653,4 +662,44 @@ void Player::UpdateReviveState(float elapsedTime)
 	{
 		TransitiomIdleState();
 	}
+}
+
+Enemy* Player::Target()
+{
+	float dis = FLT_MAX;
+	Enemy* near_enemy = nullptr;
+	int Enemy_Count = EnemeyManager::Instance().GetEnemyCount();
+	Rock_num = NULL;
+	for (int i = 0;i < Enemy_Count;i++)
+	{
+		Enemy* e = EnemeyManager::Instance().GetEnemy(i);
+		DirectX::XMVECTOR Distance = DirectX::XMVectorSubtract(
+			DirectX::XMLoadFloat3(&position), 
+			DirectX::XMLoadFloat3(&e->GetPosition())
+		);
+		
+		float distance = DirectX::XMVectorGetX(DirectX::XMVector3Length(Distance));
+		if (Collision::IntersectSphereVsSphere(
+			position,
+			target_range,
+			e->GetPosition(),
+			e->GetRadius(),
+			DirectX::XMFLOAT3(0,0,0)
+		))
+		{
+			if (dis > distance)
+			{
+				dis = distance;
+				near_enemy = e;
+				Rock_num = i;
+			}
+		}
+	}
+	return near_enemy;
+}
+
+void Player::Input_Target()
+{
+	GamePad& gamePad = Input::Instance().GetGamePad();
+	if (gamePad.GetButtonDown() & GamePad::BTN_ENTER)target_enemy = Target();
 }

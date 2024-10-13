@@ -2,6 +2,7 @@
 
 #include"Graphics/Shader.h"
 #include"Graphics/Model.h"
+#include"Graphics/Sprite.h"
 #include"Character.h"
 #include"EnemyManeger.h"
 #include"Collision.h"
@@ -45,6 +46,12 @@ public:
 	void CollisionNodeVsEnemies(const char* nodeName, float nodeRadius);
 	//インスタンス取得
 	static Player& Instance();
+
+	//ターゲットを探してロックオンする処理
+	Enemy*Target();
+	void Input_Target();
+	Enemy* Get_Target_Enemy() { return target_enemy; }
+	int Get_Rock_num() { return Rock_num; }
 protected:
 	//ダメージを受けた時に呼ばれる
 	void OnDamaged() override;
@@ -140,4 +147,8 @@ private:
 	};
 private:
 	State state = State::Idle;
+private:
+	float target_range = 10.0f;
+	Enemy* target_enemy;
+	int Rock_num;//敵のインデックス番号
 };

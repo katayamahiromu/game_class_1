@@ -42,12 +42,19 @@ private:
 		const DirectX::XMFLOAT4X4& view,
 		const DirectX::XMFLOAT4X4& projection
 	);
+
+	void RenderEnemyRockOn(
+		ID3D11DeviceContext* dc,
+		const DirectX::XMFLOAT4X4& view,
+		const DirectX::XMFLOAT4X4& projection
+	);
 private:
 	std::unique_ptr<Stage> stage;
 	std::unique_ptr<Player> player;
 	std::unique_ptr<CameraController> cameraController;
 	std::unique_ptr<Sprite> gauge;
 	std::unique_ptr<Sprite> back;
+	std::unique_ptr<Sprite> sprRock;
 private:
 	//オフスクリーンレンダリング用描画ターゲット
 	std::unique_ptr<RenderTarget> renderTarget;
@@ -59,4 +66,5 @@ private:
 	DirectX::XMFLOAT4 directional_light = { 0.0f, -1.0f, 0.0f, 0.0f };	// ライト方向（下方向）
 	DirectX::XMFLOAT4 ambientColor = { 0.2f,0.2f,0.2f,1.0f };
 	DirectX::XMFLOAT4 lightColor = { 1.0f,1.0f,1.0f,1.0f };
+	bool Rock_ON = false;
 };

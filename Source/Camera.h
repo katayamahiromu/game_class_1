@@ -23,6 +23,8 @@ public:
 	//プロジェクション行列を取得
 	const DirectX::XMFLOAT4X4& GetProjection() const { return projection; }
 
+	void SetEye(DirectX::XMFLOAT3 Eye) { eye = Eye; }
+
 	//視点取得
 	const DirectX::XMFLOAT3& GetEye()const { return eye; }
 	//注視点取得

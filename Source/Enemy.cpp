@@ -1,6 +1,7 @@
 #include"Enemy.h"
 #include"Graphics/Graphics.h"
 #include"EnemyManeger.h"
+#include"Player.h"
 
 //デバッグプリミティブ描画
 void Enemy::DrawDebugPrimitive() {
