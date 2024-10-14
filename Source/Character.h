@@ -26,11 +26,11 @@ public:
 	//移動処理
 	void Move(float vx, float vz, float speed);
 	//旋回処理
-	void Turn(float elapsedTime, float vx, float vz, float speed);
+	void Turn(const float& elapsedTime, float vx, float vz, float speed);
 	//ジャンプ処理
 	void Junp(float speed);
 	//速力処理更新
-	void UpdateVelocity(float elapsedTime);
+	void UpdateVelocity(const float& elapsedTime);
 	//地面に接地しているか
 	bool IsGround() const { return isGround; }
 	//高さ取得
@@ -65,16 +65,16 @@ protected:
 	//死亡した時に呼ばれる
 	virtual void OnDead(){}
 	//無敵時間更新
-	void UpdateInvinciblTImer(float elapsedTime);
+	void UpdateInvinciblTImer(const float& elapsedTime);
 private:
 	//垂直速力更新処理
-	void UpdateVerticalVelocity(float elapsedFrame);
+	void UpdateVerticalVelocity(const float& elapsedFrame);
 	//垂直移動更新処理
-	void UpdateVerticalMove(float elapsedTime);
+	void UpdateVerticalMove(const float& elapsedTime);
 	//水平速力更新処理
-	void UpdateHorizontalVelocity(float elapsedFrame);
+	void UpdateHorizontalVelocity(const float& elapsedFrame);
 	//水平移動更新処理
-	void UpdateHorizontalMove(float elapsedTime);
+	void UpdateHorizontalMove(const float& elapsedTime);
 protected:
 	bool isGround = false;
 	int health = 5;

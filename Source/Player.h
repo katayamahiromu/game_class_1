@@ -32,6 +32,8 @@ public:
 	void DrawDebugPrimitive();
 	//プレイヤーとエネミーとの衝突判定
 	void CollisionPlayerVsEnemies();
+	//プレイヤーと精子の衝突判定
+	void CollisionPlayerVsSperm();
 	//ジャンプ入力処理
 	bool InputJump();
 	//着地した時に呼ばれる

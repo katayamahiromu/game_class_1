@@ -256,7 +256,7 @@ void EnemySlime::TransitionIdleState()
 	state = State::Idle;
 
 	//タイマーをランダム設定
-	stateTimer = Mathf::RandomRange(3.0f, 5.0f);
+	stateTimer = Mathf::RandomRange(1.0f, 3.0f);
 
 	//待機アニメーション再生
 	model->PlayAnimation(Anime_IdleNormal, true,0.2f);

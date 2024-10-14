@@ -6,6 +6,7 @@
 #include"ProjectileStraight.h"
 #include"ProjectileHoming.h"
 #include"EnemyManeger.h"
+#include"Sperm_Manager.h"
 
 
 static Player* instace = nullptr;
@@ -75,6 +76,7 @@ void Player::Update(float elapsedTime) {
 
 	InputVerticalMove(elapsedTime);
 
+	CollisionPlayerVsSperm();
 	//ƒvƒŒƒCƒ„[‚Æ“G‚Æ‚ÌÕ“Ë”»’è
 	CollisionPlayerVsEnemies();
 	//’eŠÛ‚Æ“G‚ÌÕ“Ë”»’è
@@ -415,6 +417,26 @@ void Player::CollisionProjectilesVsEnemies(){
 					projectile->Destroy();
 				}
 			}
+		}
+	}
+}
+
+void Player::CollisionPlayerVsSperm()
+{
+	Sperm_Manager& sperm_manager = Sperm_Manager::Instance();
+	int Sperm_count = sperm_manager.GetSpermCount();
+	for (int i = 0;i < Sperm_count;i++)
+	{
+		Sperm_child* sperm = sperm_manager.GetSperm(i);
+		if (Collision::IntersectSphereVsSphere(
+			position,
+			radius,
+			sperm->GetPosition(),
+			sperm->GetRadius(),
+			DirectX::XMFLOAT3(0,0,0)
+		))
+		{
+			sperm_manager.GetSperm(i)->Set_player_catch(true);
 		}
 	}
 }

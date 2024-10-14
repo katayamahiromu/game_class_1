@@ -31,7 +31,7 @@ void Character::Move(float vx, float vz, float speed) {
 }
 
 //旋回処理
-void Character::Turn(float elapsedTime, float vx, float vz, float speed) {
+void Character::Turn(const float& elapsedTime, float vx, float vz, float speed) {
 	speed *= elapsedTime;
 	//進行ベクトルがゼロベクトルの場合は処理する必要無し
 	if (vx == 0.0f && vz == 0.0f)return;
@@ -84,7 +84,7 @@ void Character::AddImpulse(const DirectX::XMFLOAT3& impulse)
 }
 
 //速力処理更新
-void Character::UpdateVelocity(float elapsedTime) {
+void Character::UpdateVelocity(const float& elapsedTime) {
 	//経過フレーム
 	float elapsedFrame = 60.0f * elapsedTime;
 
@@ -121,7 +121,7 @@ bool Character::ApplyDamage(int damage,float invincibleTime)
 	return true;
 }
 
-void Character::UpdateInvinciblTImer(float elapsedTime)
+void Character::UpdateInvinciblTImer(const float& elapsedTime)
 {
 	if (invicibleTime > 0.0f) {
 		invicibleTime -= elapsedTime;
@@ -129,14 +129,14 @@ void Character::UpdateInvinciblTImer(float elapsedTime)
 }
 
 //垂直速力更新処理
-void Character::UpdateVerticalVelocity(float elapsedFrame)
+void Character::UpdateVerticalVelocity(const float& elapsedFrame)
 {
 	//重力処理
 	velocity.y = gravity *elapsedFrame;;
 }
 
 //垂直移動更新処理
-void Character::UpdateVerticalMove(float elapsedTime)
+void Character::UpdateVerticalMove(const float& elapsedTime)
 {
 	//垂直方向の移動量
 	float my = velocity.y * elapsedTime;
@@ -210,7 +210,7 @@ void Character::UpdateVerticalMove(float elapsedTime)
 }
 
 //水平速力更新処理
-void Character::UpdateHorizontalVelocity(float elapsedFrame)
+void Character::UpdateHorizontalVelocity(const float& elapsedFrame)
 {
 	//XZ平面の速力を減速する
 	//三平方で長さを取ろう
@@ -291,7 +291,7 @@ void Character::UpdateHorizontalVelocity(float elapsedFrame)
 }
 
 //水平移動更新処理
-void Character::UpdateHorizontalMove(float elapsedTime)
+void Character::UpdateHorizontalMove(const float& elapsedTime)
 {
 	//水平速力計算
 	float velocityLengthXZ = sqrtf(velocity.x * velocity.x + velocity.z * velocity.z);

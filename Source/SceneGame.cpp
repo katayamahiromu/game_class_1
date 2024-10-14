@@ -9,6 +9,7 @@
 #include"StageMain.h"
 #include"StageMoveFloor.h"
 #include"Mathf.h"
+#include"Sperm_Manager.h"
 
 
 // 初期化
@@ -19,12 +20,6 @@ void SceneGame::Initialize()
 	StageManager& stageManager = StageManager::Instance();
 	StageMain* stageMain = new StageMain();
 	stageManager.Register(stageMain);
-
-	StageMoveFloor* stageMoveFloor = new StageMoveFloor();
-	stageMoveFloor->SetStartPoint(DirectX::XMFLOAT3(0, 1, 3));
-	stageMoveFloor->SetGoalPoint(DirectX::XMFLOAT3(10, 2, 3));
-	stageMoveFloor->SetTorque(DirectX::XMFLOAT3(0, 1.0f, 0));
-	stageManager.Register(stageMoveFloor);
 
 	player = std::make_unique<Player>();
 	//カメラコントローラー初期化
@@ -46,12 +41,20 @@ void SceneGame::Initialize()
 	);
 	camera.SetEye(DirectX::XMFLOAT3(0.0f, 10.0f, -10.0f));
 	//エネミー初期化
-#if 0
-	for (int i = 0;i < 2;++i) {
+#if 1
+	/*for (int i = 0;i < 2;++i) {
 		EnemySlime* slime = new EnemySlime;
 		slime->SetPositon(DirectX::XMFLOAT3(i * 2.0f, 0, 5));
 		slime->SetTerritory(slime->GetPosition(), 10.0f);
 		EnemeyManager::Instance().Register(slime);
+	}*/
+
+	for (int i = 0;i < 50;i++)
+	{
+		Sperm_child* sperm = new Sperm_child;
+		sperm->SetPositon(DirectX::XMFLOAT3(i * 2.0f, 0, 5));
+		sperm->SetTerritory(sperm->GetPosition(), 10.0f);
+		Sperm_Manager::Instance().Register(sperm);
 	}
 #else
 	for(int i= 0;i<50;++i)
@@ -83,7 +86,7 @@ void SceneGame::Initialize()
 	srvData.src = renderTarget->GetShaderResourceView();
 	srvData.width = renderTarget->Getwidth();
 	srvData.height = renderTarget->GetHeight();
-	postprocessingRneder->SetSceneData(srvData);	
+	postprocessingRneder->SetSceneData(srvData);
 }
 
 // 終了化
@@ -93,6 +96,7 @@ void SceneGame::Finalize()
 	//ステージ終了化
 	StageManager::Instance().Clear();
 	EnemeyManager::Instance().Clear();
+	Sperm_Manager::Instance().Clear();
 #endif
 }
 
@@ -126,6 +130,7 @@ void SceneGame::Update(const float& elapsedTime)
 	}
 	//エフェクト更新処理
 	EffectManager::Instace().Update(elapsedTime);
+	Sperm_Manager::Instance().Update(elapsedTime);
 #endif
 }
 
@@ -313,6 +318,7 @@ void SceneGame::Render3DScene()
 		StageManager::Instance().Render(dc, shader);
 		player->Render(dc, shader);
 		EnemeyManager::Instance().Render(dc, shader);
+		Sperm_Manager::Instance().Render(dc, shader);
 		shader->End(dc);
 	}
 

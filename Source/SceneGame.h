@@ -67,5 +67,5 @@ private:
 	DirectX::XMFLOAT4 directional_light = { 0.0f, -1.0f, 0.0f, 0.0f };	// ライト方向（下方向）
 	DirectX::XMFLOAT4 ambientColor = { 0.2f,0.2f,0.2f,1.0f };
 	DirectX::XMFLOAT4 lightColor = { 1.0f,1.0f,1.0f,1.0f };
-	bool Rock_ON = false; 
+	bool Rock_ON = false;
 };

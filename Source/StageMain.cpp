@@ -1,7 +1,7 @@
 #include"StageMain.h"
 
 StageMain::StageMain() {
-	model = new Model("Data/Model/ExampleStage/ExampleStage.mdl");
+	model = new Model("Data/Model/BaseStage/BaseStage.mdl");
 
 	//DirectX::XMVECTOR VolumeMin = DirectX::XMVectorReplicate(FLT_MAX);
 	//DirectX::XMVECTOR VolumeMax = DirectX::XMVectorReplicate(-FLT_MAX);
