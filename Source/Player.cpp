@@ -427,6 +427,7 @@ void Player::CollisionPlayerVsSperm()
 	int Sperm_count = sperm_manager.GetSpermCount();
 	for (int i = 0;i < Sperm_count;i++)
 	{
+		if (sperm_manager.GetSperm(i)->Get_player_catch())continue;
 		Sperm_child* sperm = sperm_manager.GetSperm(i);
 		if (Collision::IntersectSphereVsSphere(
 			position,
@@ -437,16 +438,21 @@ void Player::CollisionPlayerVsSperm()
 		))
 		{
 			sperm_manager.GetSperm(i)->Set_player_catch(true);
+			can_attack_sperm.push_back(i);
 		}
 	}
 }
 
 bool Player::InputAttack()
 {
+	if (can_attack_sperm.size() == 0)return false;
 	GamePad& gamePad = Input::Instance().GetGamePad();
 
 	if (gamePad.GetButtonDown() & GamePad::BTN_B)
 	{
+		Sperm_Manager& sperm_manager = Sperm_Manager::Instance();
+		sperm_manager.GetSperm(can_attack_sperm.front())->Change_Attack_Modo();
+		can_attack_sperm.pop_front();
 		return true;
 	}
 	return false;

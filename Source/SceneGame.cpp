@@ -22,6 +22,7 @@ void SceneGame::Initialize()
 	stageManager.Register(stageMain);
 
 	player = std::make_unique<Player>();
+	player->SetPositon(DirectX::XMFLOAT3(0, 100, 0));
 	//カメラコントローラー初期化
 	cameraController = std::make_unique<CameraController>();
 
@@ -39,7 +40,7 @@ void SceneGame::Initialize()
 		0.1f,
 		1000.0f
 	);
-	camera.SetEye(DirectX::XMFLOAT3(0.0f, 10.0f, -10.0f));
+	camera.SetEye(DirectX::XMFLOAT3(0.0f, 110.0f, -10.0f));
 	//エネミー初期化
 #if 1
 	/*for (int i = 0;i < 2;++i) {
@@ -49,10 +50,10 @@ void SceneGame::Initialize()
 		EnemeyManager::Instance().Register(slime);
 	}*/
 
-	for (int i = 0;i < 50;i++)
+	for (int i = 0;i < 2;i++)
 	{
 		Sperm_child* sperm = new Sperm_child;
-		sperm->SetPositon(DirectX::XMFLOAT3(i * 2.0f, 0, 5));
+		sperm->SetPositon(DirectX::XMFLOAT3(i * 2.0f, 100 ,5));
 		sperm->SetTerritory(sperm->GetPosition(), 10.0f);
 		Sperm_Manager::Instance().Register(sperm);
 	}
@@ -309,7 +310,7 @@ void SceneGame::Render3DScene()
 
 	DirectX::XMFLOAT4X4 viewProjection;
 	DirectX::XMStoreFloat4x4(&viewProjection, DirectX::XMMatrixMultiply(DirectX::XMLoadFloat4x4(&camera.GetView()), DirectX::XMLoadFloat4x4(&camera.GetProjection())));
-	skyMap->blit(dc, viewProjection);
+	//skyMap->blit(dc, viewProjection);
 	// 3Dモデル描画
 	{
 		Shader* shader = graphics.GetShader();

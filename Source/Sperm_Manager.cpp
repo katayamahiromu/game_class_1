@@ -7,6 +7,15 @@ void Sperm_Manager::Update(float elapsedTime)
 	{
 		sperm->Update(elapsedTime);
 	}
+    for (Sperm_child* sperm : remove) {
+        std::vector<Sperm_child*>::iterator it = std::find(spermArray.begin(), spermArray.end(), sperm);
+        if (it != spermArray.end()) {
+            spermArray.erase(it);
+        }
+        delete sperm;
+    }
+    //破棄リストをクリア
+    remove.clear();
     SpermVsSperm();
 }
 

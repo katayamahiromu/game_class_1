@@ -38,5 +38,6 @@ public:
 	void SpermVsSperm();
 private:
 	std::vector<Sperm_child*>spermArray;
+	std::vector<Sperm_child*>canAttackSperm;
 	std::set<Sperm_child*>remove;
 };

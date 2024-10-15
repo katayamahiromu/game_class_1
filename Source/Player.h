@@ -8,6 +8,7 @@
 #include"Collision.h"
 #include"ProjectileManager.h"
 #include"Effect.h"
+#include<list>
 
 //プレイヤー
 class Player :public Character
@@ -112,10 +113,10 @@ private:
 
 private:
 	std::unique_ptr<Model> model;
-	float moveSpeed = 5.0f;
+	float moveSpeed = 20.0f;
 	float turnSpeed = DirectX::XMConvertToRadians(720);
 	float JumpSpeed = 20.0f;
-	float jumpUp = 3.0f;
+	float jumpUp = 10.0f;
 	float jumpDown= 3.0f;
 	int jumpCount = 0;
 	int jumpLimit = 2;
@@ -158,4 +159,7 @@ private:
 	float target_range = 10.0f;
 	Enemy* target_enemy;
 	int Rock_num;//敵のインデックス番号
+	//攻撃可能な精子のインデックス番号を保存する
+	//FIFO形式でデータを取り出すならVectorよりListのほうが多分はやい？
+	std::list<int>can_attack_sperm;
 };

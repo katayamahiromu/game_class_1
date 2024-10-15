@@ -2,12 +2,13 @@
 #include"Mathf.h"
 #include"Collision.h"
 #include"Player.h"
+#include"Sperm_Manager.h"
 
 Sperm_child::Sperm_child()
 {
 	scale.x = scale.y = scale.z = 0.03f;
 	mdl = std::make_unique<Model>("Data/Model/Player/player.mdl");
-	radius = 1.0;
+	radius = 0.5;
 	height = 1.0;
 }
 
@@ -28,6 +29,9 @@ void Sperm_child::Update(float& elapsedTime)
 		break;
 	case State::Follow:
 		UpdateFollowState(elapsedTime);
+		break;
+	case State::Attack:
+		UpdateAttack(elapsedTime);
 		break;
 	}
 
@@ -147,4 +151,14 @@ void Sperm_child::UpdateFollowState(float elapsedTime)
 		//待機ステートへ遷移
 		TransitionIdleState();
 	}
+}
+
+void Sperm_child::TransitionAttackState()
+{
+	state = State::Attack;
+}
+
+void Sperm_child::UpdateAttack(float elapsedTime)
+{
+	Sperm_Manager::Instance().Remove(this);
 }

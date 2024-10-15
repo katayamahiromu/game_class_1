@@ -15,6 +15,9 @@ public:
 	void SetTerritory(const DirectX::XMFLOAT3& origin, float range);
 	void SetRandomTargetPosition();
 	void Set_player_catch(bool pcatch) { player_catch = pcatch; }
+	bool Get_player_catch() { return player_catch; }
+	//呼ばれることで
+	void Change_Attack_Modo() { TransitionAttackState(); }
 private:
 	void MoveToTarget(const float& elapsedTime, float speedRate);
 private:
@@ -31,6 +34,7 @@ private:
 		Wander,
 		Idle,
 		Follow,
+		Attack,
 	};
 
 	//徘徊ステートへ遷移
@@ -50,10 +54,16 @@ private:
 	//追従ステート更新
 	void UpdateFollowState(float elapedTime);
 
+	//攻撃ステートへ遷移
+	void TransitionAttackState();
+	//コスプレ緊縛更新
+	void UpdateAttack(float elapsedTime);
+
 	State state = State::Wander;
 	float stateTimer = 0.0f;
 private:
 	//プレイヤーに捕まったかどうか
 	bool player_catch = false;
+	bool attack = false;
 	float stopRange = 1.5f;
 };

@@ -23,7 +23,7 @@ float4 main(VS_OUT pin) : SV_TARGET
 	float3 ka = float3(1, 1, 1);
 	float3 kd = float3(1, 1, 1);
 	float3 ks = float3(1, 1, 1);
-	float shiness = 128;
+	float shiness = 512;
 
 	float3 N = normalize(mul(normal, CM));
 	float3 L = normalize(lightDirection.xyz);
