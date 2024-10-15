@@ -25,7 +25,7 @@ Player::Player() {
 
 	model = std::make_unique<Model>("Data/Model/Player/player.mdl");
 	//モデルが大きいのでスケーリング
-	scale.x = scale.y = scale.z = 0.05f;
+	scale.x = scale.y = scale.z = 0.1f;
 
 	//ヒットエフェクト読み込み
 	hitEffect = new Effect("Data/Effect/Hit.efk");
@@ -763,7 +763,7 @@ void Player::InputVerticalMove(float elapsedTime)
 			angle.x = Mathf::Leap(angle.x, DirectX::XMConvertToRadians(-90.0f), elapsedTime*10);
 			if (GetAsyncKeyState('A') & 0x8000)
 			{
-				velocity.x -= diagonalSpeed;
+				velocity.x -=diagonalSpeed;
 			}
 			if (GetAsyncKeyState('D') & 0x8000)
 			{
