@@ -445,13 +445,16 @@ void Player::CollisionPlayerVsSperm()
 
 bool Player::InputAttack()
 {
+	//攻撃出来る精子がいない場合クラッシュする
 	if (can_attack_sperm.size() == 0)return false;
 	GamePad& gamePad = Input::Instance().GetGamePad();
 
 	if (gamePad.GetButtonDown() & GamePad::BTN_B)
 	{
 		Sperm_Manager& sperm_manager = Sperm_Manager::Instance();
+		//listの先頭データを入手
 		sperm_manager.GetSperm(can_attack_sperm.front())->Change_Attack_Modo();
+		//攻撃命令を出した後は削除
 		can_attack_sperm.pop_front();
 		return true;
 	}
