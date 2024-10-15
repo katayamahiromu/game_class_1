@@ -124,7 +124,6 @@ private:
 	Effect* hitEffect = nullptr;
 	float leftHandRadius = 0.4f;
 	bool attackCollisionFlag = false;
-	float updownSpeed = 10.0f;
 	//アニメーション
 	enum Animation
 	{

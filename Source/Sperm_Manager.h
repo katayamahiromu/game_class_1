@@ -27,9 +27,9 @@ public:
 	//ステージ全削除
 	void Clear();
 
-	//エネミー数取得
+	//精子数取得
 	int GetSpermCount() const { return static_cast<int>(spermArray.size()); }
-	//エネミー取得
+	//精子取得
 	Sperm_child* GetSperm(int index) { return spermArray.at(index); }
 
 	void Remove(Sperm_child*sperm);

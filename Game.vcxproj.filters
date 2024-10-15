@@ -216,6 +216,12 @@
     <ClInclude Include="Source\Sperm_Manager.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\UI_Manager.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UI.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -378,6 +384,12 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\Sperm_Manager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UI_Manager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UI.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
