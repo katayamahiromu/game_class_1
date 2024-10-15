@@ -113,7 +113,7 @@ private:
 
 private:
 	std::unique_ptr<Model> model;
-	float moveSpeed = 20.0f;
+	float moveSpeed = 10.0f;
 	float turnSpeed = DirectX::XMConvertToRadians(720);
 	float JumpSpeed = 20.0f;
 	float updownSpeed = 3.0f;
@@ -124,6 +124,7 @@ private:
 	Effect* hitEffect = nullptr;
 	float leftHandRadius = 0.4f;
 	bool attackCollisionFlag = false;
+	float updownSpeed = 10.0f;
 	//アニメーション
 	enum Animation
 	{

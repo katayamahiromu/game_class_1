@@ -132,7 +132,7 @@ void Character::UpdateInvinciblTImer(const float& elapsedTime)
 void Character::UpdateVerticalVelocity(const float& elapsedFrame)
 {
 	//重力処理
-	velocity.y = gravity *elapsedFrame;;
+	velocity.y = gravity *elapsedFrame;
 }
 
 //垂直移動更新処理
@@ -140,57 +140,57 @@ void Character::UpdateVerticalMove(const float& elapsedTime)
 {
 	//垂直方向の移動量
 	float my = velocity.y * elapsedTime;
+	DirectX::XMFLOAT3 normal = { 0,1,0 };
 
 	slopeRate = 0.0f;
 	//キャラクターのY軸方向となる法線ベクトル
-	DirectX::XMFLOAT3 normal = { 0,1,0 };
 
 	//落下中
-	if (my < 0.0f)
-	{
-		//レイの開始位置は足元より少し上
-		DirectX::XMFLOAT3 start = { position.x,position.y + stepOffset,position.z };
-		//レイの終点位置は移動後の位置
-		DirectX::XMFLOAT3 end = { position.x,position.y + my,position.z };
+	//if (my < 0.0f)
+	//{
+	//	//レイの開始位置は足元より少し上
+	//	DirectX::XMFLOAT3 start = { position.x,position.y + stepOffset,position.z };
+	//	//レイの終点位置は移動後の位置
+	//	DirectX::XMFLOAT3 end = { position.x,position.y + my,position.z };
 
-		//レイキャストによる地面判定
-		HitResult hit;
-		if (StageManager::Instance().RayCast(start, end, hit))
-		{
-			//法線ベクトルを取得
-			normal = hit.normal;
+	//	//レイキャストによる地面判定
+	//	HitResult hit;
+	//	if (StageManager::Instance().RayCast(start, end, hit))
+	//	{
+	//		//法線ベクトルを取得
+	//		normal = hit.normal;
 
-			//地面に接地している
-			position = hit.position;
-			//回転
-			angle.y += hit.rotation.y;
-			//傾斜の計算
-			slopeRate = 1.0f - (hit.normal.y /
-				(hit.normal.y + sqrtf(hit.normal.x * hit.normal.x + hit.normal.z * hit.normal.z)));
+	//		//地面に接地している
+	//		position = hit.position;
+	//		//回転
+	//		angle.y += hit.rotation.y;
+	//		//傾斜の計算
+	//		slopeRate = 1.0f - (hit.normal.y /
+	//			(hit.normal.y + sqrtf(hit.normal.x * hit.normal.x + hit.normal.z * hit.normal.z)));
 
-			//着地した
-			if (!isGround)
-			{
-				OnLanding();
-			}
-			isGround = true;
-			velocity.y = 0.0f;
+	//		//着地した
+	//		if (!isGround)
+	//		{
+	//			OnLanding();
+	//		}
+	//		isGround = true;
+	//		velocity.y = 0.0f;
 
 
-		}
-		else
-		{
-			//空中に浮いている
-			position.y += my;
-			isGround = false;
-		}
-	}
-	//上昇中
-	else if (my > 0.0f)
-	{
-		position.y += my;
-		isGround = false;
-	}
+	//	}
+	//	else
+	//	{
+	//		//空中に浮いている
+	//		position.y += my;
+	//		isGround = false;
+	//	}
+	//}
+	////上昇中
+	//else if (my > 0.0f)
+	//{
+	//	isGround = false;
+	//}
+	position.y += my;
 
 	//地面の向きに沿うようにXZ軸回転
 	{

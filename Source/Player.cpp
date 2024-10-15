@@ -7,6 +7,7 @@
 #include"ProjectileHoming.h"
 #include"EnemyManeger.h"
 #include"Sperm_Manager.h"
+#include"Mathf.h"
 
 
 static Player* instace = nullptr;
@@ -746,10 +747,11 @@ void Player::Input_Target()
 void Player::InputVerticalMove(float elapsedTime)
 {
 	GamePad& gamePad = Input::Instance().GetGamePad();
-	//float ax = gamePad.GetAxisLX();
+	float ax = gamePad.GetAxisLX();
 	float ay = gamePad.GetAxisLY();
 	if (gamePad.GetButton() & GamePad::BTN_SPACE)
 	{
+		float diagonalSpeed = maxMoveSpeed;
 		
 		/*velocity.y =ay * updownSpeed+ax*0.0f;	
 		angle.x = DirectX::XMConvertToRadians(-90.0f);*/
@@ -758,8 +760,7 @@ void Player::InputVerticalMove(float elapsedTime)
 			velocity.y = updownSpeed;
 			velocity.x = 0.0f;
 			velocity.z = 0.0f;
-			angle.x = DirectX::XMConvertToRadians(-90.0f);
-
+			angle.x = Mathf::Leap(angle.x, DirectX::XMConvertToRadians(-90.0f), elapsedTime*10);
 			if (GetAsyncKeyState('A') & 0x8000)
 			{
 				velocity.x -=diagonalSpeed;
@@ -776,7 +777,7 @@ void Player::InputVerticalMove(float elapsedTime)
 			velocity.y = -updownSpeed;
 			velocity.x = 0.0f;
 			velocity.z = 0.0f;
-			angle.x = DirectX::XMConvertToRadians(-90.0f);
+			angle.x = Mathf::Leap(angle.x, DirectX::XMConvertToRadians(90.0f), elapsedTime*10);
 
 			if (GetAsyncKeyState('A') & 0x8000)
 			{
@@ -792,5 +793,6 @@ void Player::InputVerticalMove(float elapsedTime)
 	{
 		velocity.y = 0.0f;
 	}
+
 }
 
