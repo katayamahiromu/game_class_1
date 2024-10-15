@@ -56,7 +56,7 @@ void SceneGame::Initialize()
 		sperm->SetPositon(DirectX::XMFLOAT3(i * 2.0f, 100 ,5));
 		sperm->SetTerritory(sperm->GetPosition(), 10.0f);
 		Sperm_Manager::Instance().Register(sperm);
-	}
+	}*/
 #else
 	for(int i= 0;i<50;++i)
 	{
