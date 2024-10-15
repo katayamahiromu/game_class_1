@@ -10,6 +10,7 @@
 #include"StageMoveFloor.h"
 #include"Mathf.h"
 #include"Sperm_Manager.h"
+#include"UI_Manager.h"
 
 
 // 初期化
@@ -65,6 +66,9 @@ void SceneGame::Initialize()
 		EnemeyManager::Instance().Register(slime);
 	}
 #endif
+	//UI周り
+	Sperm_Count_UI* count_ui = new Sperm_Count_UI();
+	UI_Manager::Instance().Register(count_ui);
 	//ゲージスプライト
 	gauge = std::make_unique<Sprite>();
 	//back = new Sprite("Data/Sprite/back.png");
@@ -132,6 +136,7 @@ void SceneGame::Update(const float& elapsedTime)
 	//エフェクト更新処理
 	EffectManager::Instace().Update(elapsedTime);
 	Sperm_Manager::Instance().Update(elapsedTime);
+	UI_Manager::Instance().Update(elapsedTime);
 #endif
 }
 
@@ -158,6 +163,7 @@ void SceneGame::Render()
 	{
 		//RenderEnemyGauge(dc, rc.view, rc.projection);
 		RenderEnemyRockOn(dc, Camera::Instance().GetView(), Camera::Instance().GetProjection());
+		UI_Manager::Instance().Render();
 	}
 
 	// 2DデバッグGUI描画

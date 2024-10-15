@@ -10,6 +10,7 @@ Sperm_child::Sperm_child()
 	mdl = std::make_unique<Model>("Data/Model/Player/player.mdl");
 	radius = 0.5;
 	height = 1.0;
+	mdl->PlayAnimation(0, true, 0.2f);
 }
 
 Sperm_child::~Sperm_child()
