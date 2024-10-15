@@ -9,7 +9,8 @@
 void SceneTitle::Initialize()
 {
 	//スプライト初期化
-	sprite = new Sprite("Data/Sprite/Title.png");
+	//sprite = new Sprite("Data/Sprite/Title.png");
+	title = std::make_unique<Sprite>("Data/Sprite/umi.png");
 	test = Audio::Instance().MakeSubMix();
 	Cdur = Audio::Instance().LoadAudioSource("Data/Audio/SE.wav");
 	Cdur->Set_Submix_voice(test->Get_Submix_Voice());
@@ -65,11 +66,11 @@ void SceneTitle::Render()
 	{
 		float screenWidth = static_cast<float>(graphics.GetScreenWidth());
 		float screenHeight = static_cast<float>(graphics.GetScreenHeight());
-		float textureWidth = static_cast<float>(sprite->GetTextureWidth());
-		float textureHeight = static_cast<float>(sprite->GetTextureHeight());
+		float textureWidth = static_cast<float>(title->GetTextureWidth());
+		float textureHeight = static_cast<float>(title->GetTextureHeight());
 
 		//タイトルスプライト
-		sprite->Render(dc,
+		title->Render(dc,
 			0, 0, screenWidth, screenHeight,
 			0, 0, textureWidth, textureHeight,
 			0,
