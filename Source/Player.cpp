@@ -734,27 +734,51 @@ void Player::Input_Target()
 void Player::InputVerticalMove(float elapsedTime)
 {
 	GamePad& gamePad = Input::Instance().GetGamePad();
-
+	//float ax = gamePad.GetAxisLX();
+	float ay = gamePad.GetAxisLY();
 	if (gamePad.GetButton() & GamePad::BTN_SPACE)
 	{
+		
+		/*velocity.y =ay * updownSpeed+ax*0.0f;	
+		angle.x = DirectX::XMConvertToRadians(-90.0f);*/
 		if (GetAsyncKeyState('W') & 0x8000)
 		{
-			// 上昇（ジャンプや上昇処理）のために速度を変更
-			velocity.y = jumpUp;  // 直接positionを操作せず、上昇のための速度を設定
+			velocity.y = updownSpeed;
 			velocity.x = 0.0f;
 			velocity.z = 0.0f;
+			angle.x = DirectX::XMConvertToRadians(-90.0f);
+
+			if (GetAsyncKeyState('A') & 0x8000)
+			{
+				velocity.x -= diagonalSpeed;
+			}
+			if (GetAsyncKeyState('D') & 0x8000)
+			{
+				velocity.x += diagonalSpeed;
+			}
+
 		}
 		else if (GetAsyncKeyState('S') & 0x8000)
 		{
-			// 下降のために速度を変更
-			velocity.y = -jumpDown;  // 下降速度を設定
+
+			velocity.y = -updownSpeed;
 			velocity.x = 0.0f;
 			velocity.z = 0.0f;
+			angle.x = DirectX::XMConvertToRadians(-90.0f);
+
+			if (GetAsyncKeyState('A') & 0x8000)
+			{
+				velocity.x -= diagonalSpeed;
+			}
+			if (GetAsyncKeyState('D') & 0x8000)
+			{
+				velocity.x += diagonalSpeed;
+			}
 		}
 	}
 	else
 	{
-
-			velocity.y = 0.0f;  // 地面にいる場合は垂直移動しない	
+		velocity.y = 0.0f;
 	}
 }
+

@@ -115,8 +115,10 @@ private:
 	float moveSpeed = 5.0f;
 	float turnSpeed = DirectX::XMConvertToRadians(720);
 	float JumpSpeed = 20.0f;
-	float jumpUp = 3.0f;
-	float jumpDown= 3.0f;
+	//ã‰ºˆÚ“®‘¬“x
+	float updownSpeed = 3.0f;
+	//Î‚ßˆÚ“®‘¬“x
+	float diagonalSpeed = 2.0f;
 	int jumpCount = 0;
 	int jumpLimit = 2;
 	ProjectileManager projectileManager;

@@ -49,13 +49,13 @@ void SceneGame::Initialize()
 		EnemeyManager::Instance().Register(slime);
 	}*/
 
-	for (int i = 0;i < 50;i++)
+	/*for (int i = 0;i < 50;i++)
 	{
 		Sperm_child* sperm = new Sperm_child;
 		sperm->SetPositon(DirectX::XMFLOAT3(i * 2.0f, 0, 5));
 		sperm->SetTerritory(sperm->GetPosition(), 10.0f);
 		Sperm_Manager::Instance().Register(sperm);
-	}
+	}*/
 #else
 	for(int i= 0;i<50;++i)
 	{
