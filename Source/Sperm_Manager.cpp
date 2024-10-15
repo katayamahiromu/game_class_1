@@ -14,7 +14,6 @@ void Sperm_Manager::Update(float elapsedTime)
         }
         delete sperm;
     }
-    //破棄リストをクリア
     remove.clear();
     SpermVsSperm();
 }

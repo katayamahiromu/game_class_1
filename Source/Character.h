@@ -43,6 +43,9 @@ public:
 	int GetHealth() const { return health; }
 	//最大健康状態を取得
 	int GetMaxhealth() const { return maxHealth; }
+
+	//オブジェクト行列を取得
+	DirectX::XMFLOAT4X4 Get_Transform() { return transform; }
 protected:
 	DirectX::XMFLOAT3   position = { 0,0,0 };
 	DirectX::XMFLOAT3   angle = { 0,0,0 };

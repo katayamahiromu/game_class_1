@@ -156,9 +156,34 @@ void Sperm_child::UpdateFollowState(float elapsedTime)
 void Sperm_child::TransitionAttackState()
 {
 	state = State::Attack;
+	if (Player::Instance().Get_Target_Enemy())
+	{
+		targetPosition = Player::Instance().Get_Target_Enemy()->GetPosition();
+	}
+	else
+	{
+		DirectX::XMFLOAT4X4 player_transform = Player::Instance().Get_Transform();
+		targetPosition.x = player_transform._31;
+		targetPosition.y = player_transform._32;
+		targetPosition.z = player_transform._33;
+
+		DirectX::XMStoreFloat3(&targetPosition, DirectX::XMVector3Normalize(DirectX::XMLoadFloat3(&targetPosition)));
+		DirectX::XMStoreFloat3(&targetPosition, DirectX::XMVectorScale(DirectX::XMLoadFloat3(&targetPosition), 30.0f));
+	}
 }
 
 void Sperm_child::UpdateAttack(float elapsedTime)
 {
+#if  1
+	MoveToTarget(elapsedTime, 5.0f);
+	DirectX::XMVECTOR vPos = DirectX::XMVectorSubtract(DirectX::XMLoadFloat3(&targetPosition), DirectX::XMLoadFloat3(&position));
+	float dist = DirectX::XMVectorGetX(DirectX::XMVector3LengthSq(vPos));
+
+	if (dist < stopRange)
+	{
+		Sperm_Manager::Instance().Remove(this);
+	}
+#else
 	Sperm_Manager::Instance().Remove(this);
+#endif 
 }

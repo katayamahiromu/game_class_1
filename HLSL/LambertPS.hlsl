@@ -20,9 +20,9 @@ float4 main(VS_OUT pin) : SV_TARGET
 	};
 
 	//マテリアル定数
-	float3 ka = float3(1, 1, 1);
-	float3 kd = float3(1, 1, 1);
-	float3 ks = float3(1, 1, 1);
+	//float3 ka = float3(1, 1, 1);
+	//float3 kd = float3(1, 1, 1);
+	//float3 ks = float3(1, 1, 1);
 	float shiness = 512;
 
 	float3 N = normalize(mul(normal, CM));
@@ -30,10 +30,11 @@ float4 main(VS_OUT pin) : SV_TARGET
 	float3 E = normalize(viewPosition.xyz - pin.world_position.xyz);
 
 	//環境光の計算
-	float3 ambient = ka * ambientLightColor;
+	//float3 ambient = ka * ambientLightColor;
+	float3 ambient = ambientLightColor;
 
 	//平行光源のライティング計算
-	float3 directionalSpecular = CalcPhongSpecular(N, L, lightColor.rgb, E, shiness, ks);
+	float3 directionalSpecular = CalcPhongSpecular(N, L, lightColor.rgb, E, shiness, diffuseColor.rgb);
 
 	float4 color = float4(ambient, diffuseColor.a);
 	color.rgb += diffuseColor.rgb;

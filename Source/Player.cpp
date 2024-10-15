@@ -135,6 +135,9 @@ void Player::DrawDebugGui() {
 			ImGui::InputFloat3("Scale", &scale.x);
 
 			ImGui::InputFloat("Target Range", &target_range);
+
+			int i = can_attack_sperm.size();
+			ImGui::InputInt("Can Attack list Count", &i);
 		}
 	}
 	ImGui::End();
