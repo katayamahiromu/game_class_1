@@ -18,6 +18,13 @@ enum class SpriteShaderId
 	Max
 };
 
+enum class mdlShaderID
+{
+	STAGE,
+	MODEL,
+	Max
+};
+
 // グラフィックス
 class Graphics
 {
@@ -50,7 +57,7 @@ public:
 	ID3D11BlendState* GetBlendState()const { return blend_state.Get(); }
 
 	// シェーダー取得
-	Shader* GetShader() const { return shader.get(); }
+	Shader* GetShader(mdlShaderID id) const { return shader[static_cast<int>(id)].get(); }
 
 	// スプライトシェーダー取得
 	SpriteShader* GetShader(SpriteShaderId id) const { return spriteShaders[static_cast<int>(id)].get(); }
@@ -84,7 +91,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState>	rasterizerstate;
 	Microsoft::WRL::ComPtr<ID3D11BlendState> blend_state;
 
-	std::unique_ptr<Shader>							shader;
+	std::unique_ptr<Shader>							shader[static_cast<int>(mdlShaderID::Max)];
 	std::unique_ptr<DebugRenderer>					debugRenderer;
 	std::unique_ptr<LineRenderer>					lineRenderer;
 	std::unique_ptr<ImGuiRenderer>					imguiRenderer;

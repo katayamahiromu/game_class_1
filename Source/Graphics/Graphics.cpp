@@ -167,7 +167,8 @@ Graphics::Graphics(HWND hWnd)
 
 	// シェーダー
 	{
-		shader = std::make_unique<LambertShader>(device.Get());
+		shader[static_cast<int>(mdlShaderID::STAGE)] = std::make_unique<LambertShader>(device.Get());
+		shader[static_cast<int>(mdlShaderID::MODEL)] = std::make_unique<LambertShader>(device.Get(),true);
 	}
 
 	// スプライトシェーダー

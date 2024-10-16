@@ -486,5 +486,8 @@
     <FxCompile Include="HLSL\Sprite_ps_blackout.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
+    <FxCompile Include="HLSL\LambertPS_mdl.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

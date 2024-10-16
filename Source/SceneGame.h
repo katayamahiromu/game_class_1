@@ -65,7 +65,10 @@ private:
 	std::shared_ptr<sky_map>skyMap;
 	//ライト関係
 	DirectX::XMFLOAT4 directional_light = { 0.0f, -1.0f, 0.0f, 0.0f };	// ライト方向（下方向）
-	DirectX::XMFLOAT4 ambientColor = { 0.2f,0.2f,0.2f,1.0f };
+	DirectX::XMFLOAT4 ambientStageColor = { 0.2f,0.2f,0.2f,1.0f };
+	DirectX::XMFLOAT4 ambientModelColor = { 0.2f,0.2f,0.2f,1.0f };
 	DirectX::XMFLOAT4 lightColor = { 1.0f,1.0f,1.0f,1.0f };
+	DirectX::XMFLOAT3 rimColor = { 0.2f,0.2f,0.2f };
+	float rimPower = 3.0f;
 	bool Rock_ON = false;
 };

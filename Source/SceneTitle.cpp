@@ -17,7 +17,6 @@ void SceneTitle::Initialize()
 	test->SetVolum(1.0f);
 	test->equalizer();
 	Cdur->Play(false);
-	Push_Enter = std::make_unique<Sprite>("Data/Font/font0.png");
 }
 
 //I—¹‰»
@@ -80,9 +79,5 @@ void SceneTitle::Render()
 			0,
 			1, 1, 1, 1
 		);
-
-		Push_Enter->textout(dc, 
-			"P", 200, 500, 100, 100,
-			1.0f, 1.0f, 0.0f, 1.0f);
 	}
 }

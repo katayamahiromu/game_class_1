@@ -7,7 +7,7 @@
 class LambertShader : public Shader
 {
 public:
-	LambertShader(ID3D11Device* device);
+	LambertShader(ID3D11Device* device,bool mdl = false);
 	~LambertShader() override {}
 
 	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc) override;
@@ -21,7 +21,10 @@ private:
 	{
 		DirectX::XMFLOAT4	viewPosition;
 		DirectX::XMFLOAT4X4	viewProjection;
-		DirectX::XMFLOAT4	ambientLightColor;
+		DirectX::XMFLOAT4	ambientStageLightColor;
+		DirectX::XMFLOAT4	ambientModelLightColor;
+		DirectX::XMFLOAT3	rimColor;
+		float				rimPower;
 
 		//平行光源データ
 		DirectX::XMFLOAT4	lightDirection;

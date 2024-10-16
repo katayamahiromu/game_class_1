@@ -1,7 +1,7 @@
 #include "Misc.h"
 #include "Graphics/LambertShader.h"
 
-LambertShader::LambertShader(ID3D11Device* device)
+LambertShader::LambertShader(ID3D11Device* device, bool mdl)
 {
 	// 頂点シェーダー
 	{
@@ -43,7 +43,14 @@ LambertShader::LambertShader(ID3D11Device* device)
 	{
 		// ファイルを開く
 		FILE* fp = nullptr;
-		fopen_s(&fp, "Shader\\LambertPS.cso", "rb");
+		if (mdl)
+		{
+			fopen_s(&fp, "Shader\\LambertPS_mdl.cso", "rb");
+		}
+		else
+		{
+			fopen_s(&fp, "Shader\\LambertPS.cso", "rb");
+		}
 		_ASSERT_EXPR_A(fp, "CSO File not found");
 
 		// ファイルのサイズを求める
@@ -193,7 +200,10 @@ void LambertShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 
 	cbScene.lightDirection = rc.lightDirection;
 	cbScene.color = rc.lightColor;
-	cbScene.ambientLightColor = rc.ambientLightColor;
+	cbScene.ambientStageLightColor = rc.ambientStageLightColor;
+	cbScene.ambientModelLightColor = rc.ambientModelLightColor;
+	cbScene.rimColor = rc.rimColor;
+	cbScene.rimPower = rc.rimPower;
 
 	dc->UpdateSubresource(sceneConstantBuffer.Get(), 0, 0, &cbScene, 0, 0);
 }
