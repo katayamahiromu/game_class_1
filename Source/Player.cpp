@@ -765,15 +765,12 @@ void Player::InputVerticalMove(float elapsedTime)
 		if (GetAsyncKeyState('W') & 0x8000)
 		{
 			velocity.y = updownSpeed;
-<<<<<<< HEAD
 			velocity.x = 0.0f;
 			velocity.z = 0.0f;
 			//angle.x = Mathf::Leap(angle.x, DirectX::XMConvertToRadians(-90.0f), elapsedTime*10);
-=======
 			/*velocity.x = 0.0f;
 			velocity.z = 0.0f;*/
 			angle.x = Mathf::Leap(angle.x, DirectX::XMConvertToRadians(-90.0f), elapsedTime*10);
->>>>>>> f9d544c873eb3f01c5b91254a1d18a2bc92ed89b
 			if (GetAsyncKeyState('A') & 0x8000)
 			{
 				velocity.x -=diagonalSpeed;
@@ -791,17 +788,14 @@ void Player::InputVerticalMove(float elapsedTime)
 		{
 
 			velocity.y = -updownSpeed;
-<<<<<<< HEAD
 			velocity.x = 0.0f;
 			velocity.z = 0.0f;
 			//angle.x = Mathf::Leap(angle.x, DirectX::XMConvertToRadians(90.0f), elapsedTime*10);
 		
-=======
 			/*velocity.x = 0.0f;
 			velocity.z = 0.0f;*/
 			angle.x = Mathf::Leap(angle.x, DirectX::XMConvertToRadians(90.0f), elapsedTime*10);
 
->>>>>>> f9d544c873eb3f01c5b91254a1d18a2bc92ed89b
 			if (GetAsyncKeyState('A') & 0x8000)
 			{
 				velocity.x -= diagonalSpeed;

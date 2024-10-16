@@ -23,11 +23,7 @@ void SceneTitle::Initialize()
 	test->SetVolum(1.0f);
 	test->equalizer();
 	Cdur->Play(false);
-<<<<<<< HEAD
-
-=======
 	Push_Enter = std::make_unique<Sprite>("Data/Font/font0.png");
->>>>>>> f9d544c873eb3f01c5b91254a1d18a2bc92ed89b
 }
 
 //終了化
@@ -78,13 +74,10 @@ void SceneTitle::Render()
 	dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	dc->OMSetRenderTargets(1, &rtv, dsv);
 
-<<<<<<< HEAD
 
 	
-=======
 	dc->OMSetBlendState(bs, nullptr, 0xFFFFFFFF);
 
->>>>>>> f9d544c873eb3f01c5b91254a1d18a2bc92ed89b
 	//2Dスプライト描画
 	{
 		float screenWidth = static_cast<float>(graphics.GetScreenWidth());
@@ -99,7 +92,6 @@ void SceneTitle::Render()
 			0,
 			1, 1, 1, 1
 		);
-<<<<<<< HEAD
 		UpdateBlink();
 		if (isVisible)
 		{
@@ -131,12 +123,10 @@ void SceneTitle::Render()
 	//		100, 100,
 	//		100, 100,
 	//		0.5f, 0.5f, 0.5f, 1.0f);
-=======
 
 		Push_Enter->textout(dc, 
 			"P", 200, 500, 100, 100,
 			1.0f, 1.0f, 0.0f, 1.0f);
->>>>>>> f9d544c873eb3f01c5b91254a1d18a2bc92ed89b
 	}
 
 }

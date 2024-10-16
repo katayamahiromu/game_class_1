@@ -3,11 +3,11 @@
 #include <wrl.h>
 #include <d3d11.h>
 #include <DirectXMath.h>
-<<<<<<< HEAD
+
 #include <string>
-=======
+
 #include<string>
->>>>>>> f9d544c873eb3f01c5b91254a1d18a2bc92ed89b
+
 
 // スプライト
 class Sprite
@@ -63,8 +63,7 @@ public:
 	// シェーダーリソースビューの取得
 	const Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& GetShaderResourceView() const { return shaderResourceView; }
 
-	void textout(ID3D11DeviceContext* immediate_context, std::string s, float x, float y, float w, float h, 
-			 float r, float g, float b, float a);
+	
 	
 private:
 	Microsoft::WRL::ComPtr<ID3D11VertexShader>			vertexShader;

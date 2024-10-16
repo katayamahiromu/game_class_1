@@ -248,20 +248,7 @@ Sprite::Sprite(const char* filename,bool blackout)
 		textureHeight = desc.Height;
 	}
 }
-void Sprite::textout(ID3D11DeviceContext* immediate_context, std::string s, float x, float y, float w, float h, float r, float g, float b, float a)
-{
-	float sw = static_cast<float>(texture2d_desc.Width / 16);
-	float sh = static_cast<float>(texture2d_desc.Height / 16);
-	float carriage = 0;
-	for (const char c : s)
-	{
 
-		Render(immediate_context, x + carriage, y,
-			w, h, r, g, b, a, 0,
-			sw * (c & 0x0F), sh * (c >> 4), sw, sh);
-		carriage += w;
-	}
-}
 // •`‰æŽÀs
 void Sprite::Render(ID3D11DeviceContext *immediate_context,
 	float dx, float dy,
@@ -372,13 +359,11 @@ void Sprite::Render(ID3D11DeviceContext *immediate_context,
 
 		immediate_context->PSSetShaderResources(0, 1, shaderResourceView.GetAddressOf());
 		immediate_context->PSSetSamplers(0, 1, samplerState.GetAddressOf());
-<<<<<<< HEAD
 		const float blendFactor[4] = { 1.0f,1.0f,1.0f,1.0f };
 		immediate_context->OMSetBlendState(blendState.Get(), blendFactor, 0xFFFFFFFF);
-=======
 		immediate_context->OMSetDepthStencilState(depthStencilState.Get(), 1);
 		immediate_context->OMSetBlendState(blendState.Get(), nullptr, 0xFFFFFFFF);
->>>>>>> f9d544c873eb3f01c5b91254a1d18a2bc92ed89b
+
 		// •`‰æ
 		immediate_context->Draw(4, 0);
 	}
@@ -491,9 +476,7 @@ void Sprite::Update(
 	}
 }
 
-<<<<<<< HEAD
 
-=======
 void Sprite::textout(ID3D11DeviceContext* immediate_context,
 	std::string s,
 	float x, float y, float w, float h,
@@ -515,4 +498,4 @@ void Sprite::textout(ID3D11DeviceContext* immediate_context,
 		carriage += w;
 	}
 }
->>>>>>> f9d544c873eb3f01c5b91254a1d18a2bc92ed89b
+
