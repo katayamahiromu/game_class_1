@@ -207,6 +207,8 @@ void ModelResource::BuildModel(ID3D11Device* device, const char* dirname)
 
 		// ノーマルマップテクスチャ読み込み
 		hr = LoadTexture(device, filename, "_N", true, material.normal_map.GetAddressOf(), 0xFFFF7F7F);
+		// ハイトマップテクスチャ読み込み
+		hr = LoadTexture(device, filename, "_H", true, material.height_map.GetAddressOf(), 0x00FF7F7F);
 	}
 
 	for (Mesh& mesh : meshes)

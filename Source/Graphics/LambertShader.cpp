@@ -241,6 +241,7 @@ void LambertShader::Draw(ID3D11DeviceContext* dc, const Model* model)
 			{
 				subset.material->shaderResourceView.Get(),
 				subset.material->normal_map.Get(),
+				subset.material->height_map.Get(),
 			};
 			dc->PSSetShaderResources(0, ARRAYSIZE(srvs), srvs);
 			dc->PSSetSamplers(0, 1, samplerState.GetAddressOf());

@@ -22,6 +22,7 @@ VS_OUT main(
 	}
 
 	VS_OUT vout;
+
 	vout.position = mul(float4(p, 1.0f), viewProjection);
 	vout.world_position = p;
 

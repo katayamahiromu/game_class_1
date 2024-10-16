@@ -11,7 +11,7 @@
 
 
 // ƒQ[ƒ€ƒV[ƒ“
-class SceneGame:public Scene
+class SceneGame :public Scene
 {
 public:
 	~SceneGame() override {}
