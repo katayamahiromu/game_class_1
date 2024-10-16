@@ -23,8 +23,8 @@ Player::Player() {
 	//インスタンスポインタ取得
 	instace = this;
 
-	//model = std::make_unique<Model>("Data/Model/Player/player.mdl");
-	model = new Model("Data/Model/Player/player.mdl");
+	model = std::make_unique<Model>("Data/Model/Player/player.mdl");
+	
 	//モデルが大きいのでスケーリング
 	scale.x = scale.y = scale.z = 0.1f;
 
@@ -40,7 +40,7 @@ Player::Player() {
 
 //デストラクタ
 Player::~Player() {
-	delete model;
+	
 	delete hitEffect;
 }
 
@@ -114,8 +114,8 @@ bool Player::InputMove(float elapsedTime) {
 //描画処理
 void Player::Render(ID3D11DeviceContext* dc, Shader* shader) {
 
-	//shader->Draw(dc, model.get());
-	shader->Draw(dc, model);
+	shader->Draw(dc, model.get());
+	//shader->Draw(dc, model);
 	//弾丸描画処理
 	projectileManager.Render(dc, shader);
 }
