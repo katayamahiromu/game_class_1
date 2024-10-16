@@ -25,6 +25,7 @@ public:
 	virtual void Render() override;
 private:
 	Sprite* sprite = nullptr;
+	std::unique_ptr<Sprite>title;
 	std::unique_ptr<AudioSource> Cdur;
 	std::unique_ptr<SubMixVoice> test;
 };
