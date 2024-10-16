@@ -22,10 +22,11 @@ void Character::UpdateTranceform() {
 }
 
 //移動処理
-void Character::Move(float vx, float vz, float speed) {
+void Character::Move(float vx, float vz, float speed, float vy) {
 	//横方向ベクトルを設定
 	moveVecX = vx;
 	moveVecZ = vz;
+	moveVecY = vy;
 	//最大速度設定
 	maxMoveSpeed = speed;
 }
@@ -89,7 +90,7 @@ void Character::UpdateVelocity(const float& elapsedTime) {
 	float elapsedFrame = 60.0f * elapsedTime;
 
 	//垂直速力更新処理
-	//UpdateVerticalVelocity(elapsedFrame);
+	UpdateVerticalVelocity(elapsedFrame);
 	//水平速力更新処理
 	UpdateHorizontalVelocity(elapsedFrame);
 	//垂直移動更新処理
@@ -132,14 +133,16 @@ void Character::UpdateInvinciblTImer(const float& elapsedTime)
 void Character::UpdateVerticalVelocity(const float& elapsedFrame)
 {
 	//重力処理
-	velocity.y = gravity *elapsedFrame;
+	//velocity.y = gravity *elapsedFrame;
+	velocity.y = moveVecY * elapsedFrame;
+	moveVecY = 0;
 }
 
 //垂直移動更新処理
 void Character::UpdateVerticalMove(const float& elapsedTime)
 {
 	//垂直方向の移動量
-	float my = velocity.y * elapsedTime;
+	float my = velocity.y * speedY * elapsedTime;
 	DirectX::XMFLOAT3 normal = { 0,1,0 };
 
 	slopeRate = 0.0f;
@@ -192,21 +195,22 @@ void Character::UpdateVerticalMove(const float& elapsedTime)
 	//}
 	position.y += my;
 
-	//地面の向きに沿うようにXZ軸回転
-	{
-		//Y軸が法線ベクトル方向に向くオイラー角回転を算出する
+	////地面の向きに沿うようにXZ軸回転
+	//{
+	//	//Y軸が法線ベクトル方向に向くオイラー角回転を算出する
 
-		float angleX = atan2f(normal.z, normal.y);
-		float angleZ = -atan2f(normal.x, normal.y);
+	//	float angleX = atan2f(normal.z, normal.y);
+	//	float angleZ = -atan2f(normal.x, normal.y);
 
-		//線形補完で滑らかに回転する
-		if (angleX <= 1.0f && angleX >= -1.0f) {
-			angle.x = Mathf::Leap(angle.x, angleX, elapsedTime * 10.0f);
-		}
-		if (angleZ <= 1.0f && angleZ >= -1.0f) {
-			angle.z = Mathf::Leap(angle.z, angleZ, elapsedTime * 10.0f);
-		}
-	}
+	//	//線形補完で滑らかに回転する
+	//	if (angleX <= 1.0f && angleX >= -1.0f) {
+	//		angle.x = Mathf::Leap(angle.x, angleX, elapsedTime * 10.0f);
+	//	}
+	//	if (angleZ <= 1.0f && angleZ >= -1.0f) {
+	//		angle.z = Mathf::Leap(angle.z, angleZ, elapsedTime * 10.0f);
+	//	}
+	//}
+	velocity.y = 0;
 }
 
 //水平速力更新処理

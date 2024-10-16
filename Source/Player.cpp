@@ -75,7 +75,7 @@ void Player::Update(float elapsedTime) {
 	//無敵時間更新
 	UpdateInvinciblTImer(elapsedTime);
 
-	InputVerticalMove(elapsedTime);
+	//InputVerticalMove(elapsedTime);
 
 	CollisionPlayerVsSperm();
 	//プレイヤーと敵との衝突判定
@@ -99,7 +99,7 @@ bool Player::InputMove(float elapsedTime) {
 	//進行ベクトル取得
 	DirectX::XMFLOAT3 moveVec = GetMoveVec();
 	//移動処理
-	Move(moveVec.x, moveVec.z, moveSpeed);
+	Move(moveVec.x, moveVec.z, moveSpeed,moveVec.y);
 	//旋回処理
 	Turn(elapsedTime, moveVec.x, moveVec.z, turnSpeed);
 
@@ -156,6 +156,7 @@ DirectX::XMFLOAT3 Player::GetMoveVec() const
 	Camera& camera = Camera::Instance();
 	const DirectX::XMFLOAT3& cameraRight = camera.GetRight();
 	const DirectX::XMFLOAT3& cameraFront = camera.GetFront();
+	const DirectX::XMFLOAT3& cameraUP = camera.GetUP();
 
 	//移動ベクトルはXZ平面に水平なベクトルになるようにする
 
@@ -189,8 +190,9 @@ DirectX::XMFLOAT3 Player::GetMoveVec() const
 	DirectX::XMFLOAT3 vec;
 	vec.x = cameraFrontX * ay + cameraRightX * ax;
 	vec.z = cameraFrontZ * ay + cameraRightZ * ax;
-	//Y方向は移動しない
+
 	vec.y = 0.0f;
+	if (gamePad.GetButton() & GamePad::BTN_SPACE) vec.y = 1.0f * ay;
 
 	return vec;
 }
@@ -758,8 +760,8 @@ void Player::InputVerticalMove(float elapsedTime)
 		if (GetAsyncKeyState('W') & 0x8000)
 		{
 			velocity.y = updownSpeed;
-			velocity.x = 0.0f;
-			velocity.z = 0.0f;
+			/*velocity.x = 0.0f;
+			velocity.z = 0.0f;*/
 			angle.x = Mathf::Leap(angle.x, DirectX::XMConvertToRadians(-90.0f), elapsedTime*10);
 			if (GetAsyncKeyState('A') & 0x8000)
 			{
@@ -775,8 +777,8 @@ void Player::InputVerticalMove(float elapsedTime)
 		{
 
 			velocity.y = -updownSpeed;
-			velocity.x = 0.0f;
-			velocity.z = 0.0f;
+			/*velocity.x = 0.0f;
+			velocity.z = 0.0f;*/
 			angle.x = Mathf::Leap(angle.x, DirectX::XMConvertToRadians(90.0f), elapsedTime*10);
 
 			if (GetAsyncKeyState('A') & 0x8000)
@@ -789,10 +791,10 @@ void Player::InputVerticalMove(float elapsedTime)
 			}
 		}
 	}
-	else
-	{
-		velocity.y = 0.0f;
-	}
+	//else
+	//{
+	//	velocity.y = 0.0f;
+	//}
 
 }
 

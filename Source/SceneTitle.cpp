@@ -17,6 +17,7 @@ void SceneTitle::Initialize()
 	test->SetVolum(1.0f);
 	test->equalizer();
 	Cdur->Play(false);
+	Push_Enter = std::make_unique<Sprite>("Data/Font/font0.png");
 }
 
 //終了化
@@ -55,12 +56,15 @@ void SceneTitle::Render()
 	ID3D11DeviceContext* dc = graphics.GetDeviceContext();
 	ID3D11RenderTargetView* rtv = graphics.GetRenderTargetView();
 	ID3D11DepthStencilView* dsv = graphics.GetDepthStencilView();
+	ID3D11BlendState* bs = graphics.GetBlendState();
 
 	//画面クリア＆レンダーターゲット
 	FLOAT color[] = { 0.0f,0.0f,0.5f,1.0f };
 	dc->ClearRenderTargetView(rtv, color);
 	dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	dc->OMSetRenderTargets(1, &rtv, dsv);
+
+	dc->OMSetBlendState(bs, nullptr, 0xFFFFFFFF);
 
 	//2Dスプライト描画
 	{
@@ -76,5 +80,9 @@ void SceneTitle::Render()
 			0,
 			1, 1, 1, 1
 		);
+
+		Push_Enter->textout(dc, 
+			"P", 200, 500, 100, 100,
+			1.0f, 1.0f, 0.0f, 1.0f);
 	}
 }

@@ -44,14 +44,14 @@ void SceneGame::Initialize()
 	camera.SetEye(DirectX::XMFLOAT3(0.0f, 110.0f, -10.0f));
 	//エネミー初期化
 #if 1
-	for (int i = 0;i < 2;++i) {
+	/*for (int i = 0;i < 2;++i) {
 		EnemySlime* slime = new EnemySlime;
 		slime->SetPositon(DirectX::XMFLOAT3(i * 2.0f, 100, 5));
 		slime->SetTerritory(slime->GetPosition(), 10.0f);
 		EnemeyManager::Instance().Register(slime);
-	}
+	}*/
 
-	for (int i = 0;i < 2;i++)
+	for (int i = 0;i < 10;i++)
 	{
 		Sperm_child* sperm = new Sperm_child;
 		sperm->SetPositon(DirectX::XMFLOAT3(i * 2.0f, 100 ,5));
@@ -337,7 +337,7 @@ void SceneGame::Render3DScene()
 	// 3Dデバッグ描画
 	{
 		//プレイヤーデバッグプリミティブ描画
-		player->DrawDebugPrimitive();
+		//player->DrawDebugPrimitive();
 		//エネミーデバッグプリミティブ
 		EnemeyManager::Instance().DrawDebugPrimitive();
 		// ラインレンダラ描画実行

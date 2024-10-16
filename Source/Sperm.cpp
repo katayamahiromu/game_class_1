@@ -70,12 +70,14 @@ void Sperm_child::MoveToTarget(const float& elapsedTime, float speedRate)
 {
 	//ターゲット方向への進行ベクトルを算出
 	float vx = targetPosition.x - position.x;
+	float vy = targetPosition.y - position.y;
 	float vz = targetPosition.z - position.z;
-	float dist = sqrtf(vx * vx + vz * vz);
+	float dist = sqrtf(vx * vx + vy * vy + vz * vz);
 	vx /= dist;
+	vy / dist;
 	vz /= dist;
 	//移動処理
-	Move(vx, vz, moveSpeed * speedRate);
+	Move(vx, vz, moveSpeed * speedRate,vy);
 	Turn(elapsedTime, vx, vz, turnSpeed * speedRate);
 }
 
@@ -142,7 +144,7 @@ void Sperm_child::UpdateFollowState(float elapsedTime)
 {
 	targetPosition = Player::Instance().GetPosition();
 	//目標地点へ移動
-	MoveToTarget(elapsedTime, 1.0f);
+	MoveToTarget(elapsedTime, 5.0f);
 
 	DirectX::XMVECTOR vPos =  DirectX::XMVectorSubtract(DirectX::XMLoadFloat3(&targetPosition), DirectX::XMLoadFloat3(&position));
 	float dist = DirectX::XMVectorGetX(DirectX::XMVector3LengthSq(vPos));

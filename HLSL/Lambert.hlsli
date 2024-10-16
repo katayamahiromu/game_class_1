@@ -30,9 +30,6 @@ cbuffer CbSubset : register(b2)
 	float4				materialColor;
 };
 
-Texture2D Height_map : register(t2);
-SamplerState diffuseMapSamplerState : register(s0);
-
 
 float3 CalcPhongSpecular(float3 normal, float3 lightVector, float3 lightColor,
 	float3 eveVector, float shininess, float3 ks)
@@ -42,6 +39,9 @@ float3 CalcPhongSpecular(float3 normal, float3 lightVector, float3 lightColor,
 	d = pow(d, shininess);
 	return lightColor * d * ks;
 }
+
+Texture2D Height_map : register(t2);
+SamplerState diffuseMapSamplerState : register(s0);
 
 float2 ParallaxMapping(float2 uv, float3 viewDir, float scale, float bias) {
 	// ビューベクトルに沿った視差補正
