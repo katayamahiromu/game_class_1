@@ -131,6 +131,7 @@
     <ClInclude Include="Source\Graphics\ColorGrandingShader.h" />
     <ClInclude Include="Source\Graphics\DebugRenderer.h" />
     <ClInclude Include="Source\Graphics\FinalpassShader.h" />
+    <ClInclude Include="Source\Graphics\Font.h" />
     <ClInclude Include="Source\Graphics\Graphics.h" />
     <ClInclude Include="Source\Graphics\ImGuiRenderer.h" />
     <ClInclude Include="Source\Graphics\LambertShader.h" />
@@ -194,6 +195,7 @@
     <ClCompile Include="Source\Graphics\ColorGrandingShader.cpp" />
     <ClCompile Include="Source\Graphics\DebugRenderer.cpp" />
     <ClCompile Include="Source\Graphics\FinalpassShader.cpp" />
+    <ClCompile Include="Source\Graphics\Font.cpp" />
     <ClCompile Include="Source\Graphics\Graphics.cpp" />
     <ClCompile Include="Source\Graphics\ImGuiRenderer.cpp" />
     <ClCompile Include="Source\Graphics\LambertShader.cpp" />
@@ -233,6 +235,7 @@
     <None Include="HLSL\ColorGranding.hlsli" />
     <None Include="HLSL\Debug.hlsli" />
     <None Include="HLSL\Finalpass.hlsli" />
+    <None Include="HLSL\Font.hlsli" />
     <None Include="HLSL\ImGui.hlsli" />
     <None Include="HLSL\Lambert.hlsli" />
     <None Include="HLSL\Line.hlsli" />
@@ -279,6 +282,14 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="HLSL\FinalpassVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="HLSL\Font_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="HLSL\Font_VS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>

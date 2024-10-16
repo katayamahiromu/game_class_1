@@ -3,7 +3,11 @@
 #include <wrl.h>
 #include <d3d11.h>
 #include <DirectXMath.h>
+
+#include <string>
+
 #include<string>
+
 
 // スプライト
 class Sprite
@@ -58,6 +62,9 @@ public:
 
 	// シェーダーリソースビューの取得
 	const Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& GetShaderResourceView() const { return shaderResourceView; }
+
+	
+	
 private:
 	Microsoft::WRL::ComPtr<ID3D11VertexShader>			vertexShader;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader>			pixelShader;
@@ -71,6 +78,8 @@ private:
 
 	Microsoft::WRL::ComPtr<ID3D11SamplerState>			samplerState;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	shaderResourceView;
+
+	D3D11_TEXTURE2D_DESC texture2d_desc;
 
 	int textureWidth = 0;
 	int textureHeight = 0;

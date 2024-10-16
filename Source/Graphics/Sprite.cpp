@@ -121,6 +121,7 @@ Sprite::Sprite(const char* filename,bool blackout)
 		::memset(&desc, 0, sizeof(desc));
 		desc.AlphaToCoverageEnable = false;
 		desc.IndependentBlendEnable = false;
+
 		desc.RenderTarget[0].BlendEnable = true;
 		desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
 		desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
@@ -207,10 +208,10 @@ Sprite::Sprite(const char* filename,bool blackout)
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> texture2d;
 		hr = resource->QueryInterface<ID3D11Texture2D>(texture2d.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-		texture2d->GetDesc(&desc);
+		texture2d->GetDesc(&texture2d_desc);
 
-		textureWidth = desc.Width;
-		textureHeight = desc.Height;
+		textureWidth = texture2d_desc.Width;
+		textureHeight = texture2d_desc.Height;
 	}
 	else
 	{
@@ -358,8 +359,11 @@ void Sprite::Render(ID3D11DeviceContext *immediate_context,
 
 		immediate_context->PSSetShaderResources(0, 1, shaderResourceView.GetAddressOf());
 		immediate_context->PSSetSamplers(0, 1, samplerState.GetAddressOf());
+		const float blendFactor[4] = { 1.0f,1.0f,1.0f,1.0f };
+		immediate_context->OMSetBlendState(blendState.Get(), blendFactor, 0xFFFFFFFF);
 		immediate_context->OMSetDepthStencilState(depthStencilState.Get(), 1);
 		immediate_context->OMSetBlendState(blendState.Get(), nullptr, 0xFFFFFFFF);
+
 		// •`‰æ
 		immediate_context->Draw(4, 0);
 	}
@@ -472,6 +476,7 @@ void Sprite::Update(
 	}
 }
 
+
 void Sprite::textout(ID3D11DeviceContext* immediate_context,
 	std::string s,
 	float x, float y, float w, float h,
@@ -493,3 +498,4 @@ void Sprite::textout(ID3D11DeviceContext* immediate_context,
 		carriage += w;
 	}
 }
+

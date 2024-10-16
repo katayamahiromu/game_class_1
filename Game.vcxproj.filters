@@ -222,6 +222,9 @@
     <ClInclude Include="Source\UI.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Graphics\Font.h">
+      <Filter>Source\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -392,6 +395,9 @@
     <ClCompile Include="Source\UI.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Graphics\Font.cpp">
+      <Filter>Source\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="HLSL\Debug.hlsli">
@@ -422,6 +428,9 @@
       <Filter>HLSL</Filter>
     </None>
     <None Include="HLSL\LuminanceExtraction.hlsli">
+      <Filter>HLSL</Filter>
+    </None>
+    <None Include="HLSL\Font.hlsli">
       <Filter>HLSL</Filter>
     </None>
   </ItemGroup>
@@ -483,7 +492,14 @@
     <FxCompile Include="HLSL\LuminanceExtractoinVS.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
+<<<<<<< HEAD
+    <FxCompile Include="HLSL\Font_PS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="HLSL\Font_VS.hlsl">
+=======
     <FxCompile Include="HLSL\Sprite_ps_blackout.hlsl">
+>>>>>>> f9d544c873eb3f01c5b91254a1d18a2bc92ed89b
       <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="HLSL\LambertPS_mdl.hlsl">

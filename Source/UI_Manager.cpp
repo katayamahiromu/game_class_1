@@ -7,7 +7,7 @@ UI_Manager::UI_Manager()
 
 UI_Manager::~UI_Manager()
 {
-	Clear();
+	Clear();	
 }
 
 void UI_Manager::Update(float elapsedTime)
@@ -16,6 +16,7 @@ void UI_Manager::Update(float elapsedTime)
 	{
 		ui->Update(elapsedTime);
 	}
+	
 }
 
 void UI_Manager::Render()
@@ -35,9 +36,14 @@ void UI_Manager::Clear()
 {
 	for (auto& uis : UiArray)
 	{
-		delete uis;
+		if (uis != nullptr)
+		{
+			delete uis;
+			uis = nullptr;
+		}
 	}
 	remove.clear();
+	UiArray.clear();
 }
 
 void UI_Manager::Remove(UI* ui)
