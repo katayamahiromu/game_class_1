@@ -24,7 +24,7 @@ public:
 	//”¼Œaæ“¾
 	float GetRadius() const { return radius; }
 	//ˆÚ“®ˆ—
-	void Move(float vx, float vz, float speed);
+	void Move(float vx, float vz, float speed, float vy = 0);
 	//ù‰ñˆ—
 	void Turn(const float& elapsedTime, float vx, float vz, float speed);
 	//ƒWƒƒƒ“ƒvˆ—
@@ -87,10 +87,13 @@ protected:
 	float acceleration = 1.0f;
 	float maxMoveSpeed = 5.0f;
 	float moveVecX = 0.0f;
+	float moveVecY = 0.0;
 	float moveVecZ = 0.0f;
 	float airControl = 0.3f;
 	float stepOffset = 1.0f;
 	float slopeRate = 1.0f;
+
+	float speedY = 100.0f;
 
 	struct AABB
 	{

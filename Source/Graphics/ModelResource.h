@@ -36,6 +36,7 @@ public:
 
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> shaderResourceView;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> normal_map;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> height_map;
 
 		template<class Archive>
 		void serialize(Archive& archive, int version);

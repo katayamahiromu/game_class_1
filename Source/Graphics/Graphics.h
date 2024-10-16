@@ -46,6 +46,9 @@ public:
 	//ラスタライザー取得
 	ID3D11RasterizerState* GetRasterizerState() const { return rasterizerstate.Get(); }
 
+	//ブレンドステートの取得
+	ID3D11BlendState* GetBlendState()const { return blend_state.Get(); }
+
 	// シェーダー取得
 	Shader* GetShader() const { return shader.get(); }
 
@@ -79,6 +82,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Texture2D>			depthStencilBuffer;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView>	depthStencilView;
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState>	rasterizerstate;
+	Microsoft::WRL::ComPtr<ID3D11BlendState> blend_state;
 
 	std::unique_ptr<Shader>							shader;
 	std::unique_ptr<DebugRenderer>					debugRenderer;

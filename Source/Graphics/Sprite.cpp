@@ -11,7 +11,7 @@ Sprite::Sprite()
 }
 
 // コンストラクタ
-Sprite::Sprite(const char* filename)
+Sprite::Sprite(const char* filename,bool blackout)
 {
 	ID3D11Device* device = Graphics::Instance().GetDevice();
 
@@ -90,7 +90,14 @@ Sprite::Sprite(const char* filename)
 	{
 		// ファイルを開く
 		FILE* fp = nullptr;
-		fopen_s(&fp, "Shader\\SpritePS.cso", "rb");
+		if (blackout)
+		{
+			fopen_s(&fp, "Shader\\Sprite_ps_blackout.cso", "rb");
+		}
+		else
+		{
+			fopen_s(&fp, "Shader\\SpritePS.cso", "rb");
+		}
 		_ASSERT_EXPR_A(fp, "CSO File not found");
 
 		// ファイルのサイズを求める
@@ -132,10 +139,12 @@ Sprite::Sprite(const char* filename)
 	{
 		D3D11_DEPTH_STENCIL_DESC desc;
 		::memset(&desc, 0, sizeof(desc));
-		desc.DepthEnable = true;
+		/*desc.DepthEnable = true;
 		desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-		desc.DepthFunc = D3D11_COMPARISON_ALWAYS;
-
+		desc.DepthFunc = D3D11_COMPARISON_ALWAYS;*/
+		desc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+		desc.DepthEnable = FALSE;
+		desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 		HRESULT hr = device->CreateDepthStencilState(&desc, depthStencilState.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
@@ -363,8 +372,13 @@ void Sprite::Render(ID3D11DeviceContext *immediate_context,
 
 		immediate_context->PSSetShaderResources(0, 1, shaderResourceView.GetAddressOf());
 		immediate_context->PSSetSamplers(0, 1, samplerState.GetAddressOf());
+<<<<<<< HEAD
 		const float blendFactor[4] = { 1.0f,1.0f,1.0f,1.0f };
 		immediate_context->OMSetBlendState(blendState.Get(), blendFactor, 0xFFFFFFFF);
+=======
+		immediate_context->OMSetDepthStencilState(depthStencilState.Get(), 1);
+		immediate_context->OMSetBlendState(blendState.Get(), nullptr, 0xFFFFFFFF);
+>>>>>>> f9d544c873eb3f01c5b91254a1d18a2bc92ed89b
 		// 描画
 		immediate_context->Draw(4, 0);
 	}
@@ -477,4 +491,28 @@ void Sprite::Update(
 	}
 }
 
+<<<<<<< HEAD
 
+=======
+void Sprite::textout(ID3D11DeviceContext* immediate_context,
+	std::string s,
+	float x, float y, float w, float h,
+	float r, float g, float b, float a)
+{
+	float sw = static_cast<float>(textureWidth / 16);
+	float sh = static_cast<float>(textureHeight / 16);
+	float carriage = 0;
+
+	// 文字数分だけ render() を呼び出す。
+	for (const char c : s)
+	{
+		LONG sx = c % 0x0F;
+		// 文字を表示。アスキーコードの位置にある文字位置を切り抜いて表示
+		Render(immediate_context, x + carriage,
+			y, w, h, r, g, b, a,
+			0, sw * (c & 0x0F), sh * (c >> 4), sw, sh);
+		// 文字位置を幅分ずらす
+		carriage += w;
+	}
+}
+>>>>>>> f9d544c873eb3f01c5b91254a1d18a2bc92ed89b

@@ -3,14 +3,18 @@
 #include <wrl.h>
 #include <d3d11.h>
 #include <DirectXMath.h>
+<<<<<<< HEAD
 #include <string>
+=======
+#include<string>
+>>>>>>> f9d544c873eb3f01c5b91254a1d18a2bc92ed89b
 
 // スプライト
 class Sprite
 {
 public:
 	Sprite();
-	Sprite(const char* filename);
+	Sprite(const char* filename,bool Blackout = false);
 	~Sprite() {}
 
 	struct Vertex
@@ -46,6 +50,12 @@ public:
 
 	// テクスチャ高さ取得
 	int GetTextureHeight() const { return textureHeight; }
+
+	//文字起こし
+	void textout(ID3D11DeviceContext* immediate_context,
+		std::string s,
+		float x, float y, float w, float h,
+		float r, float g, float b, float a);
 
 	// 頂点バッファの取得
 	const Microsoft::WRL::ComPtr<ID3D11Buffer>& GetVertexBuffer() const { return vertexBuffer; }
