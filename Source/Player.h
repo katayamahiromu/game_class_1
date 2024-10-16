@@ -112,7 +112,7 @@ private:
 	void InputVerticalMove(float elapsedTime);
 
 private:
-	std::unique_ptr<Model> model;
+	Model* model;
 	float moveSpeed = 10.0f;
 	float turnSpeed = DirectX::XMConvertToRadians(720);
 	float JumpSpeed = 20.0f;

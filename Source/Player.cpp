@@ -23,9 +23,13 @@ Player::Player() {
 	//インスタンスポインタ取得
 	instace = this;
 
-	model = std::make_unique<Model>("Data/Model/Player/player.mdl");
+	//model = std::make_unique<Model>("Data/Model/Player/player.mdl");
+	model = new Model("Data/Model/Player/player.mdl");
 	//モデルが大きいのでスケーリング
 	scale.x = scale.y = scale.z = 0.1f;
+
+	scale.x *= -1.0f;
+	scale.z *= -1.0f;
 
 	//ヒットエフェクト読み込み
 	hitEffect = new Effect("Data/Effect/Hit.efk");
@@ -36,6 +40,7 @@ Player::Player() {
 
 //デストラクタ
 Player::~Player() {
+	delete model;
 	delete hitEffect;
 }
 
@@ -109,7 +114,8 @@ bool Player::InputMove(float elapsedTime) {
 //描画処理
 void Player::Render(ID3D11DeviceContext* dc, Shader* shader) {
 
-	shader->Draw(dc, model.get());
+	//shader->Draw(dc, model.get());
+	shader->Draw(dc, model);
 	//弾丸描画処理
 	projectileManager.Render(dc, shader);
 }
@@ -752,7 +758,6 @@ void Player::InputVerticalMove(float elapsedTime)
 	if (gamePad.GetButton() & GamePad::BTN_SPACE)
 	{
 		float diagonalSpeed = maxMoveSpeed;
-		
 		/*velocity.y =ay * updownSpeed+ax*0.0f;	
 		angle.x = DirectX::XMConvertToRadians(-90.0f);*/
 		if (GetAsyncKeyState('W') & 0x8000)
@@ -760,15 +765,18 @@ void Player::InputVerticalMove(float elapsedTime)
 			velocity.y = updownSpeed;
 			velocity.x = 0.0f;
 			velocity.z = 0.0f;
-			angle.x = Mathf::Leap(angle.x, DirectX::XMConvertToRadians(-90.0f), elapsedTime*10);
+			//angle.x = Mathf::Leap(angle.x, DirectX::XMConvertToRadians(-90.0f), elapsedTime*10);
 			if (GetAsyncKeyState('A') & 0x8000)
 			{
 				velocity.x -=diagonalSpeed;
+
 			}
 			if (GetAsyncKeyState('D') & 0x8000)
 			{
 				velocity.x += diagonalSpeed;
 			}
+			angle.x = DirectX::XMConvertToRadians(-90.0f);
+
 
 		}
 		else if (GetAsyncKeyState('S') & 0x8000)
@@ -777,8 +785,8 @@ void Player::InputVerticalMove(float elapsedTime)
 			velocity.y = -updownSpeed;
 			velocity.x = 0.0f;
 			velocity.z = 0.0f;
-			angle.x = Mathf::Leap(angle.x, DirectX::XMConvertToRadians(90.0f), elapsedTime*10);
-
+			//angle.x = Mathf::Leap(angle.x, DirectX::XMConvertToRadians(90.0f), elapsedTime*10);
+		
 			if (GetAsyncKeyState('A') & 0x8000)
 			{
 				velocity.x -= diagonalSpeed;
@@ -787,6 +795,7 @@ void Player::InputVerticalMove(float elapsedTime)
 			{
 				velocity.x += diagonalSpeed;
 			}
+			
 		}
 	}
 	else

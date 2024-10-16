@@ -102,6 +102,7 @@ void SceneGame::Finalize()
 	StageManager::Instance().Clear();
 	EnemeyManager::Instance().Clear();
 	Sperm_Manager::Instance().Clear();
+	UI_Manager::Instance().Clear();
 #endif
 }
 

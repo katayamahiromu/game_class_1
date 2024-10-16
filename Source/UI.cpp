@@ -5,11 +5,12 @@
 Sperm_Count_UI::Sperm_Count_UI()
 {
 	sSperm = std::make_unique<Sprite>("Data/Sprite/otama.png");
+
 }
 
 Sperm_Count_UI::~Sperm_Count_UI()
 {
-
+	
 }
 
 void Sperm_Count_UI::Update(float elapsedTime)
