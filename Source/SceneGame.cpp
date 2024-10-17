@@ -134,6 +134,8 @@ void SceneGame::Update(const float& elapsedTime)
 		cameraController->SetTarget(target);
 		cameraController->Update(elapsedTime);
 	}
+
+	
 	//エフェクト更新処理
 	EffectManager::Instace().Update(elapsedTime);
 	Sperm_Manager::Instance().Update(elapsedTime);

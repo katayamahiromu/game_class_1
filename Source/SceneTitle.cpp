@@ -17,6 +17,8 @@ void SceneTitle::Initialize()
 	title = std::make_unique<Sprite>("Data/Sprite/umi.png");
 	playSpr = std::make_unique<Sprite>("Data/Sprite/PlayGame.png");
 	controlSpr = std::make_unique<Sprite>("Data/Sprite/Control.png");
+	renderControl = std::make_unique<Sprite>("Data/Sprite/back.png");
+	selectMark = std::make_unique<Sprite>("Data/Sprite/selectMark.png");
 
 	test = Audio::Instance().MakeSubMix();
 	Cdur = Audio::Instance().LoadAudioSource("Data/Audio/SE.wav");
@@ -45,11 +47,45 @@ void SceneTitle::Update(const float& elapsedTime)
 
 	//なにかボタンを押したらゲームシーンへの切り替え
 
-	if (gamePad.GetButtonDown() & GamePad::BTN_SPACE) {
-		SceneManager::instance().ChengeScene(new SceneLoading(new SceneGame));
-		//SceneManager::instance().ChengeScene(new SceneGame);
+	
+	// 上下キー選択
+	if (gamePad.GetButtonDown() & GamePad::BTN_UP)
+	{
+		selectIndex--;
 	}
-
+	if (gamePad.GetButtonDown() & GamePad::BTN_DOWN)
+	{
+		selectIndex++;
+	}
+	// 制限
+	if (selectIndex < 0)
+	{
+		selectIndex = 0;
+	}
+	if (selectIndex > 1)
+	{
+		selectIndex = 1;
+	}
+	switch (selectIndex)
+	{
+	case 0:
+		selectPos = 470;
+		if (gamePad.GetButtonDown() & GamePad::BTN_SPACE) {
+			SceneManager::instance().ChengeScene(new SceneLoading(new SceneGame));
+		}
+		break;
+	case 1:
+		selectPos = 630;
+		if (gamePad.GetButtonDown() & GamePad::BTN_SPACE)
+		{
+			renderSpr = true;
+		}
+		else if (gamePad.GetButtonDown() & GamePad::BTN_ENTER)
+		{
+			renderSpr = false;
+		}
+		break;
+	}
 	auto currentTime = std::chrono::steady_clock::now();
 	if (currentTime - lastToggleTime >= blinkInterval)
 	{
@@ -113,6 +149,21 @@ void SceneTitle::Render()
 			0, 0, controltexWidth, controltexHeight,
 			0,
 			1, 1, 1, 1);
+
+		selectMark->Render(dc,
+			425,selectPos, 50,30,
+			0, 0, 400, 400,
+			0,
+			1, 1, 1, 1);
+		if (renderSpr)
+		{
+			renderControl->Render(dc,
+				145,70, 1000, 600,
+				0, 0, 900, 450,
+				0,
+				1, 1, 1, 1);
+		}
+		
 		/*font->Begin(dc);
 		font->Draw(600, 500, L"Play Game",1.0f);
 		font->End(dc);
