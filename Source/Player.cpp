@@ -32,7 +32,7 @@ Player::Player() {
 	scale.z *= -1.0f;
 
 	//ヒットエフェクト読み込み
-	hitEffect = new Effect("Data/Effect/Hit.efk");
+	hitEffect = new Effect("Data/Effect/HIT/Hit.efk");
 
 	//待機ステートへの遷移
 	TransitiomIdleState();
