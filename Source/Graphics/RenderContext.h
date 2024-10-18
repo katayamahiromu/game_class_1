@@ -36,10 +36,13 @@ struct RenderContext
 	DirectX::XMFLOAT4X4		projection;
 
 	//ライト情報
-	DirectX::XMFLOAT4		ambientLightColor;
+	DirectX::XMFLOAT4		stageColor;
+	DirectX::XMFLOAT4		modelColor;
 	DirectX::XMFLOAT4		lightDirection;
 	DirectX::XMFLOAT4		lightColor;
 
+	//マスク用もテクスチャ
+	ID3D11ShaderResourceView* maskTexture;
 	//ノーマルマップ
 	ID3D11ShaderResourceView* normal_map;
 

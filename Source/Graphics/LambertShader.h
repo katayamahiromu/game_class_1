@@ -7,7 +7,7 @@
 class LambertShader : public Shader
 {
 public:
-	LambertShader(ID3D11Device* device);
+	LambertShader(ID3D11Device* device, bool model = false);
 	~LambertShader() override {}
 
 	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc) override;
@@ -21,7 +21,8 @@ private:
 	{
 		DirectX::XMFLOAT4	viewPosition;
 		DirectX::XMFLOAT4X4	viewProjection;
-		DirectX::XMFLOAT4	ambientLightColor;
+		DirectX::XMFLOAT4	stageColor;
+		DirectX::XMFLOAT4	modelColor;
 
 		//平行光源データ
 		DirectX::XMFLOAT4	lightDirection;
@@ -38,10 +39,19 @@ private:
 		DirectX::XMFLOAT4	materialColor;
 	};
 
+	struct  CbMask
+	{
+		float dissolveThreshold;//ディゾルブ量
+		float edgThreshold;
+		DirectX::XMFLOAT2 dummy;
+		DirectX::XMFLOAT4 edgColor;
+	};
+
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			sceneConstantBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			meshConstantBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			subsetConstantBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer>			maskConstantBuffer;
 
 	Microsoft::WRL::ComPtr<ID3D11VertexShader>		vertexShader;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader>		pixelShader;
@@ -55,4 +65,7 @@ private:
 	
 	//テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> normal_map;
+
+	//マスク用のテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>mask;
 };

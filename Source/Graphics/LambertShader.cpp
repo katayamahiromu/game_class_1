@@ -1,7 +1,7 @@
 #include "Misc.h"
 #include "Graphics/LambertShader.h"
 
-LambertShader::LambertShader(ID3D11Device* device)
+LambertShader::LambertShader(ID3D11Device* device, bool model)
 {
 	// 頂点シェーダー
 	{
@@ -43,7 +43,14 @@ LambertShader::LambertShader(ID3D11Device* device)
 	{
 		// ファイルを開く
 		FILE* fp = nullptr;
-		fopen_s(&fp, "Shader\\LambertPS.cso", "rb");
+		if (model)
+		{
+			fopen_s(&fp, "Shader\\LambertPS_mdl.cso", "rb");
+		}
+		else
+		{
+			fopen_s(&fp, "Shader\\LambertPS.cso", "rb");
+		}
 		_ASSERT_EXPR_A(fp, "CSO File not found");
 
 		// ファイルのサイズを求める
@@ -87,13 +94,20 @@ LambertShader::LambertShader(ID3D11Device* device)
 
 		hr = device->CreateBuffer(&desc, 0, subsetConstantBuffer.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+
+		// マスク用バッファ
+		desc.ByteWidth = sizeof(CbMask);
+
+		hr = device->CreateBuffer(&desc, 0, maskConstantBuffer.GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
 	// ブレンドステート
 	{
+		//今回は透明にする設定
 		D3D11_BLEND_DESC desc;
 		::memset(&desc, 0, sizeof(desc));
-		desc.AlphaToCoverageEnable = false;
+		desc.AlphaToCoverageEnable = true;
 		desc.IndependentBlendEnable = false;
 		desc.RenderTarget[0].BlendEnable = true;
 		desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
@@ -173,7 +187,8 @@ void LambertShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 	{
 		sceneConstantBuffer.Get(),
 		meshConstantBuffer.Get(),
-		subsetConstantBuffer.Get()
+		subsetConstantBuffer.Get(),
+		maskConstantBuffer.Get(),
 	};
 	dc->VSSetConstantBuffers(0, ARRAYSIZE(constantBuffers), constantBuffers);
 	dc->PSSetConstantBuffers(0, ARRAYSIZE(constantBuffers), constantBuffers);
@@ -193,14 +208,23 @@ void LambertShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 
 	cbScene.lightDirection = rc.lightDirection;
 	cbScene.color = rc.lightColor;
-	cbScene.ambientLightColor = rc.ambientLightColor;
+	cbScene.stageColor = rc.stageColor;
+	cbScene.modelColor = rc.modelColor;
 
 	dc->UpdateSubresource(sceneConstantBuffer.Get(), 0, 0, &cbScene, 0, 0);
+	mask = rc.maskTexture;
 }
 
 // 描画
 void LambertShader::Draw(ID3D11DeviceContext* dc, const Model* model)
 {
+	//マスク用定数バッファの更新
+	CbMask cbMask;
+	cbMask.dissolveThreshold = model->mask.dissolveThreshold;
+	cbMask.edgColor = model->mask.edgColor;
+	cbMask.edgThreshold = model->mask.edgThreshold;
+	dc->UpdateSubresource(maskConstantBuffer.Get(), 0, 0, &cbMask, 0, 0);
+
 	const ModelResource* resource = model->GetResource();
 	const std::vector<Model::Node>& nodes = model->GetNodes();
 
@@ -242,6 +266,7 @@ void LambertShader::Draw(ID3D11DeviceContext* dc, const Model* model)
 				subset.material->shaderResourceView.Get(),
 				subset.material->normal_map.Get(),
 				subset.material->height_map.Get(),
+				mask.Get(),
 			};
 			dc->PSSetShaderResources(0, ARRAYSIZE(srvs), srvs);
 			dc->PSSetSamplers(0, 1, samplerState.GetAddressOf());

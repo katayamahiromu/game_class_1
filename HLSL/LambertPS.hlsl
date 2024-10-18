@@ -1,4 +1,3 @@
-
 #include "Lambert.hlsli"
 
 Texture2D diffuseMap : register(t0);
@@ -41,7 +40,7 @@ float4 main(VS_OUT pin) : SV_TARGET
 
 	//ŠÂ‹«Œõ‚ÌŒvZ
 	//float3 ambient = ka * ambientLightColor;
-	float3 ambient = ambientLightColor;
+	float3 ambient = stageColor;
 
 	//‹·Œø‰Ê‚Ì“K‰
 	float2 correctedUV = ParallaxMapping(pin.texcoord, viewDir, 0.05, -0.02);

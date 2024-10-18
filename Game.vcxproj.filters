@@ -138,7 +138,7 @@
     <ClInclude Include="Source\EnemyManeger.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="Source\EnemySlime.h">
+    <ClInclude Include="Source\EnemyShall.h">
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Source\Collision.h">
@@ -314,7 +314,7 @@
     <ClCompile Include="Source\EnemyManerger.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\EnemySlime.cpp">
+    <ClCompile Include="Source\EnemyShell.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\Enemy.cpp">
@@ -492,14 +492,15 @@
     <FxCompile Include="HLSL\LuminanceExtractoinVS.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
-<<<<<<< HEAD
     <FxCompile Include="HLSL\Font_PS.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="HLSL\Font_VS.hlsl">
-=======
+    </FxCompile>
     <FxCompile Include="HLSL\Sprite_ps_blackout.hlsl">
->>>>>>> f9d544c873eb3f01c5b91254a1d18a2bc92ed89b
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="HLSL\LambertPS_mdl.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
   </ItemGroup>

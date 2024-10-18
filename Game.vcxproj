@@ -126,7 +126,7 @@
     <ClInclude Include="Source\EffectManager.h" />
     <ClInclude Include="Source\Enemy.h" />
     <ClInclude Include="Source\EnemyManeger.h" />
-    <ClInclude Include="Source\EnemySlime.h" />
+    <ClInclude Include="Source\EnemyShall.h" />
     <ClInclude Include="Source\Framework.h" />
     <ClInclude Include="Source\Graphics\ColorGrandingShader.h" />
     <ClInclude Include="Source\Graphics\DebugRenderer.h" />
@@ -190,7 +190,7 @@
     <ClCompile Include="Source\EffectManager.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\EnemyManerger.cpp" />
-    <ClCompile Include="Source\EnemySlime.cpp" />
+    <ClCompile Include="Source\EnemyShell.cpp" />
     <ClCompile Include="Source\Framework.cpp" />
     <ClCompile Include="Source\Graphics\ColorGrandingShader.cpp" />
     <ClCompile Include="Source\Graphics\DebugRenderer.cpp" />
@@ -328,6 +328,10 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="HLSL\LambertPS_mdl.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="HLSL\LambertVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>

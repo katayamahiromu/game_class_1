@@ -13,7 +13,8 @@ cbuffer CbScene : register(b0)
 {
 	float4 viewPosition;
 	row_major float4x4	viewProjection;
-	float4				ambientLightColor;
+	float4				stageColor;
+	float4				modelColor;
 
 	float4				lightDirection;
 	float4				lightColor;
@@ -29,6 +30,14 @@ cbuffer CbSubset : register(b2)
 {
 	float4				materialColor;
 };
+
+cbuffer CbMask : register(b3)
+{
+	float dissolveThreshold; //ƒfƒBƒ]ƒ‹ƒu—Ê
+	float edgeThreshold;
+	float2 dummy;
+	float4 edgeColor;
+}
 
 
 float3 CalcPhongSpecular(float3 normal, float3 lightVector, float3 lightColor,

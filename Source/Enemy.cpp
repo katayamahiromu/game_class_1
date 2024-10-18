@@ -9,7 +9,14 @@ void Enemy::DrawDebugPrimitive() {
 	////衝突判定用のデバッグ球を描画
 	//debugRenderer->DrawSphere(position, radius, DirectX::XMFLOAT4(0, 0, 0, 1));
 	//衝突用判定用のデバッグ円柱を描画
-	debugRenderer->DrawCylinder(position, radius, height, DirectX::XMFLOAT4(0, 0, 0, 1));
+	DirectX::XMFLOAT3 pos = position;
+	pos.y += 5.0f;
+	float rad = radius + 5.0f;
+	float hei = height + 5.0f;
+	debugRenderer->DrawCylinder(pos, rad, hei, DirectX::XMFLOAT4(0, 0, 0, 1));
+	pos.x += 5.0;
+	debugRenderer->DrawCylinder(pos, rad, hei, DirectX::XMFLOAT4(0, 0, 0, 1));
+	//debugRenderer->DrawCylinder(pos, rad, hei, DirectX::XMFLOAT4(0, 0, 0, 1));
 }
 
 //破棄

@@ -56,6 +56,9 @@ private:
 	std::unique_ptr<Sprite> gauge;
 	std::unique_ptr<Sprite> back;
 	std::unique_ptr<Sprite> sprRock;
+
+	std::unique_ptr<Sprite>expl;
+	std::unique_ptr<Sprite>mask;
 private:
 	//オフスクリーンレンダリング用描画ターゲット
 	std::unique_ptr<RenderTarget> renderTarget;
@@ -65,7 +68,8 @@ private:
 	std::shared_ptr<sky_map>skyMap;
 	//ライト関係
 	DirectX::XMFLOAT4 directional_light = { 0.0f, -1.0f, 0.0f, 0.0f };	// ライト方向（下方向）
-	DirectX::XMFLOAT4 ambientColor = { 0.2f,0.2f,0.2f,1.0f };
+	DirectX::XMFLOAT4 stageColor = { 0.2f,0.2f,0.2f,1.0f };
+	DirectX::XMFLOAT4 modelColor = { 0.2f,0.2f,0.2f,1.0f };
 	DirectX::XMFLOAT4 lightColor = { 1.0f,1.0f,1.0f,1.0f };
 	bool Rock_ON = false;
 };
