@@ -435,7 +435,7 @@ void Player::CollisionProjectilesVsEnemies(){
 
 void Player::CollisionPlayerVsSperm()
 {
-	DirectX::XMFLOAT3 intersectionPoint;
+	DirectX::XMFLOAT3 intersect;
 	Sperm_Manager& sperm_manager = Sperm_Manager::Instance();
 	int Sperm_count = sperm_manager.GetSpermCount();
 	for (int i = 0;i < Sperm_count;i++)
@@ -447,7 +447,8 @@ void Player::CollisionPlayerVsSperm()
 			radius,
 			sperm->GetPosition(),
 			sperm->GetRadius(),
-			intersectionPoint
+			//DirectX::XMFLOAT3(0, 0, 0)
+			intersect
 		))
 		{
 			sperm_manager.GetSperm(i)->Set_player_catch(true);
@@ -713,7 +714,7 @@ void Player::UpdateReviveState(float elapsedTime)
 
 Enemy* Player::Target()
 {
-	DirectX::XMFLOAT3 intersectionPoint;
+	DirectX::XMFLOAT3 intersect;
 	float dis = FLT_MAX;
 	Enemy* near_enemy = nullptr;
 	int Enemy_Count = EnemeyManager::Instance().GetEnemyCount();
@@ -732,7 +733,8 @@ Enemy* Player::Target()
 			target_range,
 			e->GetPosition(),
 			e->GetRadius(),
-			intersectionPoint
+			//DirectX::XMFLOAT3(0,0,0)
+			intersect
 		))
 		{
 			if (dis > distance)

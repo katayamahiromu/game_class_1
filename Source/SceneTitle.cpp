@@ -66,6 +66,7 @@ void SceneTitle::Update(const float& elapsedTime)
 	{
 		selectIndex = 1;
 	}
+	if (selectIndex == 0)renderSpr = false;
 	switch (selectIndex)
 	{
 	case 0:
@@ -78,12 +79,9 @@ void SceneTitle::Update(const float& elapsedTime)
 		selectPos = 630;
 		if (gamePad.GetButtonDown() & GamePad::BTN_SPACE)
 		{
-			renderSpr = true;
+			renderSpr =!renderSpr ;
 		}
-		else if (gamePad.GetButtonDown() & GamePad::BTN_ENTER)
-		{
-			renderSpr = false;
-		}
+		
 		break;
 	}
 	auto currentTime = std::chrono::steady_clock::now();
@@ -152,7 +150,7 @@ void SceneTitle::Render()
 
 		selectMark->Render(dc,
 			425,selectPos, 50,30,
-			0, 0, 400, 400,
+			0, 0, 269, 187,
 			0,
 			1, 1, 1, 1);
 		if (renderSpr)
