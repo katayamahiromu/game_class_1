@@ -1,36 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="External">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Source">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="HLSL">
-      <UniqueIdentifier>{9f64f4ff-d9e0-43d7-88e1-13e6d3656a89}</UniqueIdentifier>
-      <Extensions>hlsl;hlsli</Extensions>
-    </Filter>
-    <Filter Include="External\imgui">
-      <UniqueIdentifier>{c85446c9-90d2-4441-add5-5aac511d95ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="External\DirectXTex">
-      <UniqueIdentifier>{8dd0c8ba-1f1c-4648-8a04-c28bb5a1c75a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Input">
-      <UniqueIdentifier>{1922815d-5a70-4f38-9fbd-fb6e72c44df0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Graphics">
-      <UniqueIdentifier>{2ac7cb79-cb10-43d1-856f-e51f0f698e73}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Audio">
-      <UniqueIdentifier>{dfdec87c-66e2-424a-8126-477d89e5eb73}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="External\SoundTouch">
-      <UniqueIdentifier>{0f35402c-b772-40bb-9c4b-2ad4aaf11e8a}</UniqueIdentifier>
-    </Filter>
+    <FxCompile Include="HLSL\ColorGrandingPS.hlsl" />
+    <FxCompile Include="HLSL\ColorGrandingVS.hlsl" />
+    <FxCompile Include="HLSL\DebugPS.hlsl" />
+    <FxCompile Include="HLSL\DebugVS.hlsl" />
+    <FxCompile Include="HLSL\FinalpassPS.hlsl" />
+    <FxCompile Include="HLSL\FinalpassVS.hlsl" />
+    <FxCompile Include="HLSL\Font_PS.hlsl" />
+    <FxCompile Include="HLSL\Font_VS.hlsl" />
+    <FxCompile Include="HLSL\ImGuiPS.hlsl" />
+    <FxCompile Include="HLSL\ImGuiVS.hlsl" />
+    <FxCompile Include="HLSL\LambertPS.hlsl" />
+    <FxCompile Include="HLSL\LambertPS_mdl.hlsl" />
+    <FxCompile Include="HLSL\LambertVS.hlsl" />
+    <FxCompile Include="HLSL\LinePS.hlsl" />
+    <FxCompile Include="HLSL\LineVS.hlsl" />
+    <FxCompile Include="HLSL\LuminanceExtractionPS.hlsl" />
+    <FxCompile Include="HLSL\LuminanceExtractoinVS.hlsl" />
+    <FxCompile Include="HLSL\sky_box_ps.hlsl" />
+    <FxCompile Include="HLSL\sky_map_ps.hlsl" />
+    <FxCompile Include="HLSL\sky_map_vs.hlsl" />
+    <FxCompile Include="HLSL\SpritePS.hlsl" />
+    <FxCompile Include="HLSL\SpriteVS.hlsl" />
+    <FxCompile Include="HLSL\Sprite_ps_blackout.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\imgui\imconfig.h">

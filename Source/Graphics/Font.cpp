@@ -417,13 +417,13 @@ void Font::Begin(ID3D11DeviceContext* context)
 	subsets.clear();
 }
 
-void Font::Draw(float x, float y, const wchar_t* string)
+void Font::Draw(float x, float y, const wchar_t* string,float scale)
 {
 	size_t length = ::wcslen(string);
 
 	float start_x = x;
 	float start_y = y;
-	float space = fontWidth;
+	float space = fontWidth*scale;
 
 	for (size_t i = 0; i < length; ++i)
 	{
@@ -439,7 +439,7 @@ void Font::Draw(float x, float y, const wchar_t* string)
 		else if (code == CharacterInfo::ReturnCode)
 		{
 			x = start_x;
-			y += fontHeight;
+			y += fontHeight*scale;
 			continue;
 		}
 		else if (code == CharacterInfo::TabCode)
@@ -456,8 +456,8 @@ void Font::Draw(float x, float y, const wchar_t* string)
 		// 文字情報を取得し、頂点データを編集
 		const CharacterInfo& info = characterInfos.at(code);
 
-		float positionX = x + info.xoffset;// + 0.5f;
-		float positionY = y + info.yoffset;// + 0.5f;
+		float positionX = x + info.xoffset*scale;// + 0.5f;
+		float positionY = y + info.yoffset*scale;// + 0.5f;
 
 		// 0---1
 		// |   |
@@ -472,7 +472,7 @@ void Font::Draw(float x, float y, const wchar_t* string)
 		currentVertex[0].color.z = 1.0f;
 		currentVertex[0].color.w = 1.0f;
 
-		currentVertex[1].position.x = positionX + info.width;
+		currentVertex[1].position.x = positionX + info.width*scale;
 		currentVertex[1].position.y = positionY;
 		currentVertex[1].position.z = 0.0f;
 		currentVertex[1].texcoord.x = info.right;
@@ -483,7 +483,7 @@ void Font::Draw(float x, float y, const wchar_t* string)
 		currentVertex[1].color.w = 1.0f;
 
 		currentVertex[2].position.x = positionX;
-		currentVertex[2].position.y = positionY + info.height;
+		currentVertex[2].position.y = positionY + info.height*scale;
 		currentVertex[2].position.z = 0.0f;
 		currentVertex[2].texcoord.x = info.left;
 		currentVertex[2].texcoord.y = info.bottom;
@@ -492,8 +492,8 @@ void Font::Draw(float x, float y, const wchar_t* string)
 		currentVertex[2].color.z = 1.0f;
 		currentVertex[2].color.w = 1.0f;
 
-		currentVertex[3].position.x = positionX + info.width;
-		currentVertex[3].position.y = positionY + info.height;
+		currentVertex[3].position.x = positionX + info.width*scale;
+		currentVertex[3].position.y = positionY + info.height*scale;
 		currentVertex[3].position.z = 0.0f;
 		currentVertex[3].texcoord.x = info.right;
 		currentVertex[3].texcoord.y = info.bottom;
@@ -510,7 +510,7 @@ void Font::Draw(float x, float y, const wchar_t* string)
 		}
 		currentVertex += 4;
 
-		x += info.xadvance;
+		x += info.xadvance * scale;
 
 		// テクスチャが切り替わる度に描画する情報を設定
 		if (currentPage != info.page)

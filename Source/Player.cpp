@@ -32,7 +32,7 @@ Player::Player() {
 	scale.z *= -1.0f;
 
 	//ヒットエフェクト読み込み
-	hitEffect = new Effect("Data/Effect/Hit.efk");
+	hitEffect = new Effect("Data/Effect/HIT/Hit.efk");
 
 	radius = 2.0f;
 
@@ -437,6 +437,7 @@ void Player::CollisionProjectilesVsEnemies(){
 
 void Player::CollisionPlayerVsSperm()
 {
+	DirectX::XMFLOAT3 intersect;
 	Sperm_Manager& sperm_manager = Sperm_Manager::Instance();
 	int Sperm_count = sperm_manager.GetSpermCount();
 	for (int i = 0;i < Sperm_count;i++)
@@ -448,7 +449,8 @@ void Player::CollisionPlayerVsSperm()
 			radius,
 			sperm->GetPosition(),
 			sperm->GetRadius(),
-			DirectX::XMFLOAT3(0,0,0)
+			//DirectX::XMFLOAT3(0, 0, 0)
+			intersect
 		))
 		{
 			sperm_manager.GetSperm(i)->Set_player_catch(true);
@@ -712,6 +714,7 @@ void Player::UpdateReviveState(float elapsedTime)
 
 Enemy* Player::Target()
 {
+	DirectX::XMFLOAT3 intersect;
 	float dis = FLT_MAX;
 	Enemy* near_enemy = nullptr;
 	int Enemy_Count = EnemeyManager::Instance().GetEnemyCount();
@@ -730,7 +733,8 @@ Enemy* Player::Target()
 			target_range,
 			e->GetPosition(),
 			e->GetRadius(),
-			DirectX::XMFLOAT3(0,0,0)
+			//DirectX::XMFLOAT3(0,0,0)
+			intersect
 		))
 		{
 			if (dis > distance)

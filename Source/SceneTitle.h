@@ -10,9 +10,14 @@
 class SceneTitle :public Scene
 {
 public:
-	
-	
+	DirectX::XMFLOAT2 pos = { 0,0 };
+	float width = 0.0f;
+	float height = 0.0f;
+	float scale=0.0f;
 
+	bool renderSpr = false;
+	int selectIndex;
+	int selectPos = 470;
 public:
 	SceneTitle(){}
 	~SceneTitle(){}
@@ -33,7 +38,11 @@ public:
 private:
 	//Sprite* sprite = nullptr;
 	std::unique_ptr<Sprite>title;
-	std::unique_ptr<Font>font;
+	std::unique_ptr<Sprite>playSpr;
+	std::unique_ptr<Sprite>controlSpr;
+	std::unique_ptr<Sprite>renderControl;
+	std::unique_ptr<Sprite>selectMark;
+
 	std::unique_ptr<AudioSource> Cdur;
 	std::unique_ptr<SubMixVoice> test;
 	std::unique_ptr<Sprite> Push_Enter;

@@ -90,8 +90,8 @@ private:
 	void UpdateHorizontalMove(const float& elapsedTime);
 protected:
 	bool isGround = false;
-	int health = 5;
-	int maxHealth = 5;
+	int health = 100;
+	int maxHealth = 100;
 	float invicibleTime = 1.0f;
 	float friction = 0.5f;
 	float acceleration = 1.0f;

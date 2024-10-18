@@ -15,7 +15,10 @@ void SceneTitle::Initialize()
 	//スプライト初期化
 	//sprite = new Sprite("Data/Sprite/Title.png");
 	title = std::make_unique<Sprite>("Data/Sprite/umi.png");
-	font = std::make_unique<Font>("Data/Font/MS Gothic.fnt",1024);
+	playSpr = std::make_unique<Sprite>("Data/Sprite/PlayGame.png");
+	controlSpr = std::make_unique<Sprite>("Data/Sprite/Control.png");
+	renderControl = std::make_unique<Sprite>("Data/Sprite/back.png");
+	selectMark = std::make_unique<Sprite>("Data/Sprite/selectMark.png");
 
 	test = Audio::Instance().MakeSubMix();
 	Cdur = Audio::Instance().LoadAudioSource("Data/Audio/SE.wav");
@@ -45,11 +48,43 @@ void SceneTitle::Update(const float& elapsedTime)
 
 	//なにかボタンを押したらゲームシーンへの切り替え
 
-	if (gamePad.GetButtonDown() & GamePad::BTN_SPACE) {
-		SceneManager::instance().ChengeScene(new SceneLoading(new SceneGame));
-		//SceneManager::instance().ChengeScene(new SceneGame);
+	
+	// 上下キー選択
+	if (gamePad.GetButtonDown() & GamePad::BTN_UP)
+	{
+		selectIndex--;
 	}
-
+	if (gamePad.GetButtonDown() & GamePad::BTN_DOWN)
+	{
+		selectIndex++;
+	}
+	// 制限
+	if (selectIndex < 0)
+	{
+		selectIndex = 0;
+	}
+	if (selectIndex > 1)
+	{
+		selectIndex = 1;
+	}
+	if (selectIndex == 0)renderSpr = false;
+	switch (selectIndex)
+	{
+	case 0:
+		selectPos = 470;
+		if (gamePad.GetButtonDown() & GamePad::BTN_SPACE) {
+			SceneManager::instance().ChengeScene(new SceneLoading(new SceneGame));
+		}
+		break;
+	case 1:
+		selectPos = 630;
+		if (gamePad.GetButtonDown() & GamePad::BTN_SPACE)
+		{
+			renderSpr =!renderSpr ;
+		}
+		
+		break;
+	}
 	auto currentTime = std::chrono::steady_clock::now();
 	if (currentTime - lastToggleTime >= blinkInterval)
 	{
@@ -74,16 +109,26 @@ void SceneTitle::Render()
 	dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	dc->OMSetRenderTargets(1, &rtv, dsv);
 
-
-	
 	dc->OMSetBlendState(bs, nullptr, 0xFFFFFFFF);
 
+	ImGui::Begin("posusus");
+	ImGui::DragFloat2("pos", &pos.x);
+	ImGui::DragFloat("width", &width);
+	ImGui::DragFloat("height", &height);
+
+	ImGui::End();
 	//2Dスプライト描画
 	{
 		float screenWidth = static_cast<float>(graphics.GetScreenWidth());
 		float screenHeight = static_cast<float>(graphics.GetScreenHeight());
 		float textureWidth = static_cast<float>(title->GetTextureWidth());
 		float textureHeight = static_cast<float>(title->GetTextureHeight());
+
+		float playtexWidth = static_cast<float>(playSpr->GetTextureWidth());
+		float playtexHeight = static_cast<float>(playSpr->GetTextureHeight());
+
+		float controltexWidth = static_cast<float>(controlSpr->GetTextureWidth());
+		float controltexHeight = static_cast<float>(controlSpr->GetTextureHeight());
 
 		//タイトルスプライト
 		title->Render(dc,
@@ -92,41 +137,44 @@ void SceneTitle::Render()
 			0,
 			1, 1, 1, 1
 		);
-		UpdateBlink();
-		if (isVisible)
-		{
-			font->Begin(dc);
-			font->Draw(540, 500, L"Press EnterKey");
-			font->End(dc);
-		}
+		playSpr->Render(dc,
+			455, 450, 370, 80,
+			0, 0, playtexWidth, playtexHeight,
+			0,
+			1, 1, 1, 1);
 
-		/*const char buf[] = "Press EnterKay";
+		controlSpr->Render(dc,
+			470, 600, 370, 80,
+			0, 0, controltexWidth, controltexHeight,
+			0,
+			1, 1, 1, 1);
 
-		for (const char c : buf)
+		selectMark->Render(dc,
+			425,selectPos, 50,30,
+			0, 0, 269, 187,
+			0,
+			1, 1, 1, 1);
+		if (renderSpr)
 		{
-			sprite->Render(dc,
-				0, 0, 100, 100,
-				16 *  (c & 0x0F), 16*(c >> 4), 16, 16,
+			renderControl->Render(dc,
+				145,70, 1000, 600,
+				0, 0, 900, 450,
 				0,
-				1, 1, 1, 1
-			);
-		}*/
+				1, 1, 1, 1);
+		}
+		
+		/*font->Begin(dc);
+		font->Draw(600, 500, L"Play Game",1.0f);
+		font->End(dc);
 
-	//	sprite->Render(dc,
-	//		0, 0, screenWidth, screenHeight,
-	//		0, 0, textureWidth, textureHeight,
-	//		0,
-	//		1, 1, 1, 1
-	//	);
-	//	sprite->textout(dc,
-	//		"Press EnterKey",
-	//		100, 100,
-	//		100, 100,
-	//		0.5f, 0.5f, 0.5f, 1.0f);
+		font->Begin(dc);
+		font->Draw(610, 550, L"Tutorial", 1.0f);
+		font->End(dc);*/
+		
 
-		Push_Enter->textout(dc, 
-			"P", 200, 500, 100, 100,
-			1.0f, 1.0f, 0.0f, 1.0f);
+	
+
+	
 	}
 
 }
