@@ -44,12 +44,12 @@ void SceneGame::Initialize()
 	camera.SetEye(DirectX::XMFLOAT3(0.0f, 110.0f, -10.0f));
 	//エネミー初期化
 #if 1
-	for (int i = 0;i < 2;++i) {
+	/*for (int i = 0;i < 2;++i) {
 		EnemySlime* slime = new EnemySlime;
 		slime->SetPositon(DirectX::XMFLOAT3(i * 2.0f, 100, 5));
 		slime->SetTerritory(slime->GetPosition(), 10.0f);
 		EnemeyManager::Instance().Register(slime);
-	}
+	}*/
 
 	for (int i = 0;i < 10;i++)
 	{
@@ -310,27 +310,20 @@ void SceneGame::Render3DScene()
 	rc.viewPosition.w = 1.0f;
 
 	//環境光の情報
-	rc.ambientStageLightColor = ambientStageColor;
-	rc.ambientModelLightColor = ambientModelColor;
+	rc.ambientLightColor = ambientColor;
 	//光源の角度
 	rc.lightDirection = directional_light;
 	rc.lightColor = lightColor;
-	rc.rimColor = rimColor;
-	rc.rimPower = rimPower;
 
 	DirectX::XMFLOAT4X4 viewProjection;
 	DirectX::XMStoreFloat4x4(&viewProjection, DirectX::XMMatrixMultiply(DirectX::XMLoadFloat4x4(&camera.GetView()), DirectX::XMLoadFloat4x4(&camera.GetProjection())));
 	//skyMap->blit(dc, viewProjection);
 	// 3Dモデル描画
 	{
-		Shader* shader = graphics.GetShader(mdlShaderID::STAGE);
+		Shader* shader = graphics.GetShader();
 		shader->Begin(dc, rc);
 		//ステージ描画
 		StageManager::Instance().Render(dc, shader);
-		shader->End(dc);
-
-		shader = graphics.GetShader(mdlShaderID::MODEL);
-		shader->Begin(dc, rc);
 		player->Render(dc, shader);
 		EnemeyManager::Instance().Render(dc, shader);
 		Sperm_Manager::Instance().Render(dc, shader);
@@ -389,10 +382,7 @@ void SceneGame::DebugGui()
 	if (ImGui::TreeNode("light"))
 	{
 		ImGui::SliderFloat4("direction_light", &directional_light.x, -1.0f, 1.0f);
-		ImGui::ColorEdit3("AmbientStageColor", &ambientStageColor.x);
-		ImGui::ColorEdit3("AmbientModelColor", &ambientModelColor.x);
-		ImGui::ColorEdit3("RimColor", &rimColor.x);
-		ImGui::SliderFloat("RimPower", &rimPower, 0.0f, 10.0f);
+		ImGui::ColorEdit3("AmbientColor", &ambientColor.x);
 		ImGui::TreePop();
 	}
 }

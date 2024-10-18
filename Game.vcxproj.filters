@@ -502,8 +502,5 @@
 >>>>>>> f9d544c873eb3f01c5b91254a1d18a2bc92ed89b
       <Filter>HLSL</Filter>
     </FxCompile>
-    <FxCompile Include="HLSL\LambertPS_mdl.hlsl">
-      <Filter>HLSL</Filter>
-    </FxCompile>
   </ItemGroup>
 </Project>

@@ -1,3 +1,4 @@
+
 #include "Lambert.hlsli"
 
 Texture2D diffuseMap : register(t0);
@@ -30,7 +31,7 @@ float4 main(VS_OUT pin) : SV_TARGET
 
 	//マテリアル定数
 	//float3 ka = float3(1, 1, 1);
-	float3 kd = float3(0.8, 0.8, 0.8);
+	//float3 kd = float3(1, 1, 1);
 	//float3 ks = float3(1, 1, 1);
 	float shiness = 512;
 
@@ -40,14 +41,14 @@ float4 main(VS_OUT pin) : SV_TARGET
 
 	//環境光の計算
 	//float3 ambient = ka * ambientLightColor;
-	float3 ambient = ambientStageLightColor;
+	float3 ambient = ambientLightColor;
 
 	//視差効果の適応
 	float2 correctedUV = ParallaxMapping(pin.texcoord, viewDir, 0.05, -0.02);
 	float4 diffuseColor = diffuseMap.Sample(diffuseMapSamplerState, correctedUV) * pin.color;
 
 	//平行光源のライティング計算
-	float3 directionalSpecular = CalcPhongSpecular(N, L, lightColor.rgb, E, shiness, kd.rgb);
+	float3 directionalSpecular = CalcPhongSpecular(N, L, lightColor.rgb, E, shiness, diffuseColor.rgb);
 
 
 	float4 color = float4(ambient, diffuseColor.a);

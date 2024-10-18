@@ -36,4 +36,5 @@ private:
 	std::unique_ptr<Font>font;
 	std::unique_ptr<AudioSource> Cdur;
 	std::unique_ptr<SubMixVoice> test;
+	std::unique_ptr<Sprite> Push_Enter;
 };
