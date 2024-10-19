@@ -142,7 +142,7 @@ void Character::UpdateVerticalVelocity(const float& elapsedFrame)
 void Character::UpdateVerticalMove(const float& elapsedTime)
 {
 	//垂直方向の移動量
-	float my = velocity.y * speedY * elapsedTime;
+	mPositon.y = velocity.y * speedY * elapsedTime;
 	DirectX::XMFLOAT3 normal = { 0,1,0 };
 
 	slopeRate = 0.0f;
@@ -193,7 +193,7 @@ void Character::UpdateVerticalMove(const float& elapsedTime)
 	//{
 	//	isGround = false;
 	//}
-	position.y += my;
+	position.y += mPositon.y;
 
 	////地面の向きに沿うようにXZ軸回転
 	//{
@@ -302,12 +302,12 @@ void Character::UpdateHorizontalMove(const float& elapsedTime)
 	if (velocityLengthXZ > 0.0f)
 	{
 		//水平移動
-		float mx = velocity.x * elapsedTime;
-		float mz = velocity.z * elapsedTime;
+		mPositon.x = velocity.x * elapsedTime;
+		mPositon.z = velocity.z * elapsedTime;
 
 		//レイの開始位置と終点位置
 		DirectX::XMFLOAT3 start = { position.x,position.y + stepOffset,position.z };
-		DirectX::XMFLOAT3 end = { position.x + mx,position.y + stepOffset,position.z + mz };
+		DirectX::XMFLOAT3 end = { position.x + mPositon.x,position.y + stepOffset,position.z + mPositon.z };
 
 		//レイキャストによる壁判定
 		HitResult hit;
@@ -337,8 +337,8 @@ void Character::UpdateHorizontalMove(const float& elapsedTime)
 		else 
 		{
 			//移動
-			position.x += mx;
-			position.z += mz;
+			position.x += mPositon.x;
+			position.z += mPositon.z;
 		}
 
 	}

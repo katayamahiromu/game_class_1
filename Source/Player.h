@@ -1,7 +1,6 @@
 #pragma once
 
 #include"Graphics/Shader.h"
-#include"Graphics/Model.h"
 #include"Graphics/Sprite.h"
 #include"Character.h"
 #include"EnemyManeger.h"
@@ -112,7 +111,6 @@ private:
 	void InputVerticalMove(float elapsedTime);
 
 private:
-	std::unique_ptr<Model>model;
 	float moveSpeed = 10.0f;
 	float turnSpeed = DirectX::XMConvertToRadians(720);
 	float JumpSpeed = 20.0f;

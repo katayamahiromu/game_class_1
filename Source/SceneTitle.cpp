@@ -26,6 +26,7 @@ void SceneTitle::Initialize()
 	test->SetVolum(1.0f);
 	test->equalizer();
 	Cdur->Play(false);
+	Push_Enter = std::make_unique<Sprite>("Data/Font/font0.png");
 }
 
 //I—¹‰»

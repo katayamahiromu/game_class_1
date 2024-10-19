@@ -120,6 +120,11 @@ void Model::UpdateAnimation(float elapsedTime)
 					DirectX::XMVECTOR Rotation = DirectX::XMQuaternionSlerp(Key0_Rot, Key1_Rot, blendRate);
 					DirectX::XMStoreFloat4(&node.rotate, Rotation);
 
+					DirectX::XMVECTOR key0_Scale = DirectX::XMLoadFloat3(&key0.scale);
+					DirectX::XMVECTOR key1_Scale = DirectX::XMLoadFloat3(&key1.scale);
+					DirectX::XMVECTOR Scale = DirectX::XMVectorLerp(key0_Scale, key1_Scale, blendRate);
+					DirectX::XMStoreFloat3(&node.scale, Scale);
+
 				}
 				else//í èÌÇÃåvéZ
 				{
@@ -138,6 +143,11 @@ void Model::UpdateAnimation(float elapsedTime)
 					DirectX::XMVECTOR Key1_Rot = DirectX::XMLoadFloat4(&key1.rotate);
 					DirectX::XMVECTOR Rotation = DirectX::XMQuaternionSlerp(Key0_Rot, Key1_Rot, rate);
 					DirectX::XMStoreFloat4(&node.rotate, Rotation);
+
+					DirectX::XMVECTOR key0_Scale = DirectX::XMLoadFloat3(&key0.scale);
+					DirectX::XMVECTOR key1_Scale = DirectX::XMLoadFloat3(&key1.scale);
+					DirectX::XMVECTOR Scale = DirectX::XMVectorLerp(key0_Scale, key1_Scale, rate);
+					DirectX::XMStoreFloat3(&node.scale, Scale);
 				}
 			}
 			break;

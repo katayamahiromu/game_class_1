@@ -23,7 +23,7 @@ Player::Player() {
 	//インスタンスポインタ取得
 	instace = this;
 
-	model = std::make_unique<Model>("Data/Model/Player/player.mdl");
+	mdl = std::make_unique<Model>("Data/Model/Player/player.mdl");
 	
 	//モデルが大きいのでスケーリング
 	scale.x = scale.y = scale.z = 0.1f;
@@ -33,6 +33,8 @@ Player::Player() {
 
 	//ヒットエフェクト読み込み
 	hitEffect = new Effect("Data/Effect/HIT/Hit.efk");
+
+	radius = 2.0f;
 
 	//待機ステートへの遷移
 	TransitiomIdleState();
@@ -94,9 +96,9 @@ void Player::Update(float elapsedTime) {
 	//弾丸発射処理
 	projectileManager.Update(elapsedTime);
 	//モデルアニメーションを更新
-	model->UpdateAnimation(elapsedTime);
+	mdl->UpdateAnimation(elapsedTime);
 	//モデル行列を更新
-	model->UpdateTransform(transform);
+	mdl->UpdateTransform(transform);
 }
 
 //移動入力処理
@@ -114,8 +116,11 @@ bool Player::InputMove(float elapsedTime) {
 //描画処理
 void Player::Render(ID3D11DeviceContext* dc, Shader* shader) {
 
-	shader->Draw(dc, model.get());
-	//shader->Draw(dc, model);
+	mdl->mask.dissolveThreshold = mask.dissolveThreshold;
+	mdl->mask.edgColor = mask.edgColor;
+	mdl->mask.edgThreshold = mask.edgThreshold;
+
+	shader->Draw(dc, mdl.get());
 	//弾丸描画処理
 	projectileManager.Render(dc, shader);
 }
@@ -145,6 +150,8 @@ void Player::DrawDebugGui() {
 
 			int i = can_attack_sperm.size();
 			ImGui::InputInt("Can Attack list Count", &i);
+
+			ImGui::SliderFloat("dissolve", &mask.dissolveThreshold, 0.0f, 1.0f);
 		}
 	}
 	ImGui::End();
@@ -215,7 +222,7 @@ void Player::DrawDebugPrimitive() {
 
 	//攻撃衝突用の左手ノードのデバッグ球を描画
 	if (attackCollisionFlag) {
-		Model::Node* leftHandBone = model->FindNode("mixamorig:LeftHand");
+		Model::Node* leftHandBone = mdl->FindNode("mixamorig:LeftHand");
 		debugRenderer->DrawSphere(DirectX::XMFLOAT3(
 			leftHandBone->worldTransform._41,
 			leftHandBone->worldTransform._42,
@@ -230,28 +237,23 @@ void Player::CollisionPlayerVsEnemies() {
 	EnemeyManager& enemyManager = EnemeyManager::Instance();
 	//全ての敵と総当たりで衝突処理
 	int enemyCount = enemyManager.GetEnemyCount();
-	for (int i = 0;i < enemyCount;++i) {
+	for (int i = 0;i < enemyCount;++i)
+	{
 		Enemy* enemy = enemyManager.GetEnemy(i);
 		DirectX::XMFLOAT3 outPosition;
-
-		//衝突判定
-		if (Collision::IntersectCylinderVsCylinder(
+		DirectX::XMFLOAT3 pos = enemy->GetPosition();
+		pos.y += 1.0f;
+		if (Collision::IntersectSphereVsSphere(
 			position,
 			radius,
-			height,
-			enemy->GetPosition(),
+			pos,
 			enemy->GetRadius(),
-			enemy->GetHeight(),
 			outPosition
-		)) {
-			float closs = (position.y * enemy->GetPosition().z) - (position.z * enemy->GetPosition().y);
-			if (closs > 0.0f) {
-				enemy->ApplyDamage(1,0.5f);
-				Junp(JumpSpeed * 0.5);
-			}
-			else {
-				enemy->SetPositon(outPosition);
-			}
+		))
+		{
+			position.x -= mPositon.x;
+			position.y -= mPositon.y;
+			position.z -= mPositon.z;
 		}
 	};
 }
@@ -466,9 +468,7 @@ bool Player::InputAttack()
 	if (gamePad.GetButtonDown() & GamePad::BTN_B)
 	{
 		Sperm_Manager& sperm_manager = Sperm_Manager::Instance();
-		//listの先頭データを入手
 		sperm_manager.GetSperm(can_attack_sperm.front())->Change_Attack_Modo();
-		//攻撃命令を出した後は削除
 		can_attack_sperm.pop_front();
 		return true;
 	}
@@ -481,7 +481,7 @@ void Player::TransitiomIdleState()
 	state = State::Idle;
 
 	//待機アニメーション再生
-	model->PlayAnimation(Anime_Idle, true,0.2f);
+	mdl->PlayAnimation(Anime_Idle, true,0.2f);
 }
 
 //待機ステート更新処理
@@ -514,7 +514,7 @@ void Player::TransitionMoveState()
 	state = State::Move;
 
 	//走りアニメーションの再生
-	model->PlayAnimation(Anime_Running, true,0.2f);
+	mdl->PlayAnimation(Anime_Running, true,0.2f);
 }
 
 //移動ステート更新処理
@@ -546,7 +546,7 @@ void Player::TransitionJumpState()
 	state = State::Jump;
 
 	//ジャンプアニメーション再生
-	model->PlayAnimation(Anime_Jump, false, 0.2f);
+	mdl->PlayAnimation(Anime_Jump, false, 0.2f);
 }
 
 //ジャンプステート更新処理
@@ -572,7 +572,7 @@ void Player::TransitionLandState()
 	state = State::Land;
 
 	//着地アニメーション再生
-	model->PlayAnimation(Anime_Landing, false, 0.2f);
+	mdl->PlayAnimation(Anime_Landing, false, 0.2f);
 }
 
 //着地ステート更新処理
@@ -598,17 +598,17 @@ void Player::UpdateLandState(float elapsedTime)
 void Player::TransitionAttackState()
 {
 	state = State::Attack;
-	model->PlayAnimation(Anime_Attack, false, 0.2f);
+	mdl->PlayAnimation(Anime_Attack, false, 0.2f);
 }
 
 //攻撃ステート更新処理
 void Player::UpdateAttackState(float elapsedTime)
 {
-	if (!model->IsPlayAnimation()) {
+	if (!mdl->IsPlayAnimation()) {
 		TransitiomIdleState();
 	}
 	//任意のアニメーション再生区間でのみ衝突判定処理をする
-	float animationTime = model->GetCurrentAnimationSeconds();
+	float animationTime = mdl->GetCurrentAnimationSeconds();
 	attackCollisionFlag = (animationTime > 0.3 && animationTime < 0.4) ? true : false;
 	if (attackCollisionFlag) {
 		//左手ノードとエネミーの衝突判定
@@ -620,7 +620,7 @@ void Player::UpdateAttackState(float elapsedTime)
 void Player::CollisionNodeVsEnemies(const char* nodeName, float nodeRadius)
 {
 	//ノード取得
-	Model::Node* node = model->FindNode(nodeName);
+	Model::Node* node = mdl->FindNode(nodeName);
 
 	//ノード位置取得
 	DirectX::XMFLOAT3 nodePosition;
@@ -656,14 +656,14 @@ void Player::TransitionDamageState()
 	state = State::Damage;
 	
 	//ダメージアニメーション再生
-	model->PlayAnimation(Anime_GetHit1, false,0.2f);
+	mdl->PlayAnimation(Anime_GetHit1, false,0.2f);
 }
 
 //ダメージステート更新処理
 void Player::UpdateDamageState(float elapsedTime)
 {
 	//ダメージアニメーションが終わったら待機ステートへ
-	if (!model->IsPlayAnimation())
+	if (!mdl->IsPlayAnimation())
 	{
 		TransitiomIdleState();
 	}
@@ -674,13 +674,13 @@ void Player::TransitionDeathState()
 {
 	state = State::Death;
 	//死亡アニメーション再生
-	model->PlayAnimation(Anime_Death, false, 0.2f);
+	mdl->PlayAnimation(Anime_Death, false, 0.2f);
 }
 
 //死亡ステート更新処理
 void Player::UpdateDeathState(float elapsedTime)
 {
-	if (!model->IsPlayAnimation())
+	if (!mdl->IsPlayAnimation())
 	{
 		//ボタンを押したら復活ステートへ遷移
 		GamePad& gamePad = Input::Instance().GetGamePad();
@@ -699,14 +699,14 @@ void Player::TransitionReviveState()
 	health = maxHealth;
 
 	//復活アニメーション再生
-	model->PlayAnimation(Anime_Revive, false, 0.2f);
+	mdl->PlayAnimation(Anime_Revive, false, 0.2f);
 }
 
 //復活ステート更新処理
 void Player::UpdateReviveState(float elapsedTime)
 {
 	//復活アニメーション終了後に待機ステートへ
-	if (!model->IsPlayAnimation())
+	if (!mdl->IsPlayAnimation())
 	{
 		TransitiomIdleState();
 	}
