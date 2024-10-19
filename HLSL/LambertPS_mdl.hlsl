@@ -2,6 +2,7 @@
 
 Texture2D diffuseMap : register(t0);
 Texture2D normalMap : register(t1);
+Texture2D maskTexture : register(t3);
 
 float4 main(VS_OUT pin) : SV_TARGET
 {
@@ -30,7 +31,7 @@ float4 main(VS_OUT pin) : SV_TARGET
 
 	//マテリアル定数
 	//float3 ka = float3(1, 1, 1);
-	float3 kd = float3(0.8, 0.8, 0.8);
+	//float3 kd = float3(1, 1, 1);
 	//float3 ks = float3(1, 1, 1);
 	float shiness = 512;
 
@@ -40,19 +41,29 @@ float4 main(VS_OUT pin) : SV_TARGET
 
 	//環境光の計算
 	//float3 ambient = ka * ambientLightColor;
-	float3 ambient = ambientModelLightColor;
+	float3 ambient = modelColor;
 
 	//視差効果の適応
 	float2 correctedUV = ParallaxMapping(pin.texcoord, viewDir, 0.05, -0.02);
 	float4 diffuseColor = diffuseMap.Sample(diffuseMapSamplerState, correctedUV) * pin.color;
 
 	//平行光源のライティング計算
-	float3 directionalSpecular = CalcPhongSpecular(N, L, lightColor.rgb, E, shiness, kd.rgb);
-
+	float3 directionalSpecular = CalcPhongSpecular(N, L, lightColor.rgb, E, shiness, diffuseColor.rgb);
 
 	float4 color = float4(ambient, diffuseColor.a);
+	//マスクから赤色を取得
+	float mask = maskTexture.Sample(diffuseMapSamplerState, pin.texcoord).r;
+	float alpha = step(mask, dissolveThreshold);
+
+	//緑の処理
+	float edgeValue = step(dissolveThreshold, mask)
+		* step(mask, dissolveThreshold + edgeThreshold * dissolveThreshold);
+
+	color.rgb += edgeColor.rgb * edgeValue;
+	alpha = saturate(alpha + edgeValue);
+	color.a *= alpha;
+
 	color.rgb += diffuseColor.rgb;
 	color.rgb += directionalSpecular;
-	color.rgb += CalcRimLight(N, E, L, rimColor.rgb,rimPower);
 	return color;
 }

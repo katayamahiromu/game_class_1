@@ -2,7 +2,7 @@
 #include "SceneGame.h"
 #include"Camera.h"
 #include"EnemyManeger.h"
-#include"EnemySlime.h"
+#include"EnemyShall.h"
 #include"EffectManager.h"
 #include"Input/Input.h"
 #include"StageManager.h"
@@ -44,8 +44,8 @@ void SceneGame::Initialize()
 	camera.SetEye(DirectX::XMFLOAT3(0.0f, 110.0f, -10.0f));
 	//エネミー初期化
 #if 1
-	for (int i = 0;i < 2;++i) {
-		EnemySlime* slime = new EnemySlime;
+	for (int i = 0;i < 1;++i) {
+		EnemyShell* slime = new EnemyShell;
 		slime->SetPositon(DirectX::XMFLOAT3(i * 2.0f, 100, 5));
 		slime->SetTerritory(slime->GetPosition(), 10.0f);
 		EnemeyManager::Instance().Register(slime);
@@ -74,6 +74,8 @@ void SceneGame::Initialize()
 	//back = new Sprite("Data/Sprite/back.png");
 	skyMap = std::make_shared<sky_map>(graphics.GetDevice(), L"Data/SkyMaps/skymap7.png");
 	sprRock = std::make_unique<Sprite>("Data/Sprite/Target.png");
+
+	expl = std::make_unique<Sprite>("Data/Sprite/explain.png");
 #endif
 
 	//新しい描画ターゲットの生成
@@ -92,6 +94,8 @@ void SceneGame::Initialize()
 	srvData.width = renderTarget->Getwidth();
 	srvData.height = renderTarget->GetHeight();
 	postprocessingRneder->SetSceneData(srvData);
+
+	mask = std::make_unique<Sprite>("Data/Sprite/dissolve_animation.png");
 }
 
 // 終了化
@@ -134,6 +138,8 @@ void SceneGame::Update(const float& elapsedTime)
 		cameraController->SetTarget(target);
 		cameraController->Update(elapsedTime);
 	}
+
+	
 	//エフェクト更新処理
 	EffectManager::Instace().Update(elapsedTime);
 	Sperm_Manager::Instance().Update(elapsedTime);
@@ -165,6 +171,9 @@ void SceneGame::Render()
 		//RenderEnemyGauge(dc, rc.view, rc.projection);
 		RenderEnemyRockOn(dc, Camera::Instance().GetView(), Camera::Instance().GetProjection());
 		UI_Manager::Instance().Render();
+		/*expl->Render(dc, 0, 200, 100, 100,
+			0, 0, 920, 210,
+			0,1, 1, 1, 1);*/
 	}
 
 	// 2DデバッグGUI描画
@@ -271,7 +280,7 @@ void SceneGame::RenderEnemyGauge(
 
 		if (StageManager::Instance().RayCast(worldPosition, WorldEnd, hit))
 		{
-			EnemySlime* slime = new EnemySlime;
+			EnemyShell* slime = new EnemyShell;
 			slime->SetPositon(hit.position);
 			EnemeyManager::Instance().Register(slime);
 		}
@@ -291,7 +300,7 @@ void SceneGame::Render3DScene()
 	ID3D11RasterizerState* rs = graphics.GetRasterizerState();
 
 	// 画面クリア＆レンダーターゲット設定
-	FLOAT color[] = { 0.0f, 0.0f, 0.5f, 1.0f };	// RGBA(0.0～1.0)
+	FLOAT color[] = { 0.0f, 0.0f, 0.0f, 1.0f };	// RGBA(0.0～1.0)
 	dc->ClearRenderTargetView(rtv, color);
 	dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	dc->OMSetRenderTargets(1, &rtv, dsv);
@@ -310,30 +319,30 @@ void SceneGame::Render3DScene()
 	rc.viewPosition.w = 1.0f;
 
 	//環境光の情報
-	rc.ambientStageLightColor = ambientStageColor;
-	rc.ambientModelLightColor = ambientModelColor;
+	rc.stageColor = stageColor;
+	rc.modelColor = modelColor;
 	//光源の角度
 	rc.lightDirection = directional_light;
 	rc.lightColor = lightColor;
-	rc.rimColor = rimColor;
-	rc.rimPower = rimPower;
+
+	//マスクテクスチャの受け渡し
+	rc.maskTexture = mask.get()->GetShaderResourceView().Get();
 
 	DirectX::XMFLOAT4X4 viewProjection;
 	DirectX::XMStoreFloat4x4(&viewProjection, DirectX::XMMatrixMultiply(DirectX::XMLoadFloat4x4(&camera.GetView()), DirectX::XMLoadFloat4x4(&camera.GetProjection())));
 	//skyMap->blit(dc, viewProjection);
 	// 3Dモデル描画
 	{
-		Shader* shader = graphics.GetShader(mdlShaderID::STAGE);
-		shader->Begin(dc, rc);
-		//ステージ描画
-		StageManager::Instance().Render(dc, shader);
-		shader->End(dc);
-
-		shader = graphics.GetShader(mdlShaderID::MODEL);
+		Shader* shader = graphics.GetShader(ShadrId::MODEL);
 		shader->Begin(dc, rc);
 		player->Render(dc, shader);
 		EnemeyManager::Instance().Render(dc, shader);
 		Sperm_Manager::Instance().Render(dc, shader);
+		shader->End(dc);
+
+		shader = graphics.GetShader(ShadrId::STAGE);
+		shader->Begin(dc, rc);
+		StageManager::Instance().Render(dc, shader);
 		shader->End(dc);
 	}
 
@@ -345,7 +354,7 @@ void SceneGame::Render3DScene()
 	// 3Dデバッグ描画
 	{
 		//プレイヤーデバッグプリミティブ描画
-		//player->DrawDebugPrimitive();
+		player->DrawDebugPrimitive();
 		//エネミーデバッグプリミティブ
 		EnemeyManager::Instance().DrawDebugPrimitive();
 		// ラインレンダラ描画実行
@@ -389,10 +398,8 @@ void SceneGame::DebugGui()
 	if (ImGui::TreeNode("light"))
 	{
 		ImGui::SliderFloat4("direction_light", &directional_light.x, -1.0f, 1.0f);
-		ImGui::ColorEdit3("AmbientStageColor", &ambientStageColor.x);
-		ImGui::ColorEdit3("AmbientModelColor", &ambientModelColor.x);
-		ImGui::ColorEdit3("RimColor", &rimColor.x);
-		ImGui::SliderFloat("RimPower", &rimPower, 0.0f, 10.0f);
+		ImGui::ColorEdit3("stageColor", &stageColor.x);
+		ImGui::ColorEdit3("modelColor", &modelColor.x);
 		ImGui::TreePop();
 	}
 }

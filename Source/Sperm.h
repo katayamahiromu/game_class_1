@@ -1,6 +1,5 @@
 #pragma once
 #include"Character.h"
-#include"Graphics/Model.h"
 #include"Graphics/Shader.h"
 
 //自機と同じ名前のためチャイルド
@@ -21,8 +20,6 @@ public:
 private:
 	void MoveToTarget(const float& elapsedTime, float speedRate);
 private:
-	std::unique_ptr<Model>mdl;
-
 	DirectX::XMFLOAT3 targetPosition = { 0,0,0 };
 	DirectX::XMFLOAT3 territoryOrigin = { 0,0,0 };
 	float territoryRange = 10.0f;
@@ -66,4 +63,5 @@ private:
 	bool player_catch = false;
 	bool attack = false;
 	float stopRange = 1.5f;
+	bool isActive = true;
 };

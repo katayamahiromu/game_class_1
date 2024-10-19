@@ -13,10 +13,8 @@ cbuffer CbScene : register(b0)
 {
 	float4 viewPosition;
 	row_major float4x4	viewProjection;
-	float4				ambientStageLightColor;
-	float4				ambientModelLightColor;
-	float3				rimColor;
-	float				rimPower;
+	float4				stageColor;
+	float4				modelColor;
 
 	float4				lightDirection;
 	float4				lightColor;
@@ -32,6 +30,14 @@ cbuffer CbSubset : register(b2)
 {
 	float4				materialColor;
 };
+
+cbuffer CbMask : register(b3)
+{
+	float dissolveThreshold; //ƒfƒBƒ]ƒ‹ƒu—Ê
+	float edgeThreshold;
+	float2 dummy;
+	float4 edgeColor;
+}
 
 
 float3 CalcPhongSpecular(float3 normal, float3 lightVector, float3 lightColor,
@@ -52,10 +58,4 @@ float2 ParallaxMapping(float2 uv, float3 viewDir, float scale, float bias) {
 	float height = Height_map.Sample(diffuseMapSamplerState,uv).r;
 	float parallax = height * scale + bias;
 	return uv + viewDir.xy * parallax;
-}
-
-float3 CalcRimLight(float3 normal, float3 eyeVector, float3 lightVector, float3 lightColor, float rimPower = 3.0f)
-{
-	float rim = 1.0f - saturate(dot(normal, -eyeVector));
-	return lightColor * pow(rim, rimPower) * saturate(dot(lightVector, -eyeVector));
 }

@@ -1,5 +1,7 @@
 #pragma once
 #include<DirectXMath.h>
+#include<memory>
+#include"Graphics/Model.h"
 
 //キャラクター
 class Character
@@ -46,6 +48,14 @@ public:
 
 	//オブジェクト行列を取得
 	DirectX::XMFLOAT4X4 Get_Transform() { return transform; }
+
+	struct MaskData
+	{
+		float dissolveThreshold = 1.0f;
+		float edgThreshold = 0.2f;
+		DirectX::XMFLOAT4 edgColor = {1,1,0,1};
+	};
+	MaskData mask;
 protected:
 	DirectX::XMFLOAT3   position = { 0,0,0 };
 	DirectX::XMFLOAT3   angle = { 0,0,0 };
@@ -80,8 +90,8 @@ private:
 	void UpdateHorizontalMove(const float& elapsedTime);
 protected:
 	bool isGround = false;
-	int health = 5;
-	int maxHealth = 5;
+	int health = 100;
+	int maxHealth = 100;
 	float invicibleTime = 1.0f;
 	float friction = 0.5f;
 	float acceleration = 1.0f;
@@ -101,4 +111,8 @@ protected:
 		DirectX::XMFLOAT3 min;
 	};
 
+	//毎フレームごとの移動量
+	DirectX::XMFLOAT3 mPositon{};
+
+	std::unique_ptr<Model>mdl;
 };

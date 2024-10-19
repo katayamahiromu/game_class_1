@@ -51,6 +51,15 @@ public:
 
 	void Stop_Anime() { anime_stop = true; }
 	void Restart_Anime() { anime_stop = false; }
+
+	//マスクデータ
+	struct MaskData
+	{
+		float dissolveThreshold;
+		float edgThreshold; //緑の閾値
+		DirectX::XMFLOAT4 edgColor; //緑の色
+	};
+	MaskData mask;
 private:
 	std::shared_ptr<ModelResource>	resource;
 	std::vector<Node>				nodes;

@@ -6,7 +6,8 @@
 
 Sperm_child::Sperm_child()
 {
-	scale.x = scale.y = scale.z = 0.03f;
+	scale.x = scale.y = scale.z = 0.05f;
+	scale.x = scale.z *= -1;
 	mdl = std::make_unique<Model>("Data/Model/Player/player.mdl");
 	radius = 0.5;
 	height = 1.0;
@@ -20,6 +21,9 @@ Sperm_child::~Sperm_child()
 
 void Sperm_child::Update(float& elapsedTime)
 {
+	// isActive か何かのフラグを用意して isActive が false なら return
+	if (!isActive)return;
+
 	switch (state)
 	{
 	case State::Wander:
@@ -48,6 +52,11 @@ void Sperm_child::Update(float& elapsedTime)
 
 void Sperm_child::Render(ID3D11DeviceContext* dc, Shader* shader)
 {
+	// isActive か何かのフラグを用意して isActive が false なら return
+	if (!isActive)return;
+	mdl->mask.dissolveThreshold = mask.dissolveThreshold;
+	mdl->mask.edgColor = mask.edgColor;
+	mdl->mask.edgThreshold = mask.edgThreshold;
 	shader->Draw(dc, mdl.get());
 }
 
@@ -74,7 +83,7 @@ void Sperm_child::MoveToTarget(const float& elapsedTime, float speedRate)
 	float vz = targetPosition.z - position.z;
 	float dist = sqrtf(vx * vx + vy * vy + vz * vz);
 	vx /= dist;
-	vy / dist;
+	vy /= dist;
 	vz /= dist;
 	//移動処理
 	Move(vx, vz, moveSpeed * speedRate,vy);
@@ -184,7 +193,9 @@ void Sperm_child::UpdateAttack(float elapsedTime)
 
 	if (dist < stopRange)
 	{
-		Sperm_Manager::Instance().Remove(this);
+		//Sperm_Manager::Instance().Remove(this);
+		// Remove じゃなくて isActive を false にする
+		isActive = false;
 	}
 #else
 	Sperm_Manager::Instance().Remove(this);
