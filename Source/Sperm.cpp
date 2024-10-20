@@ -271,7 +271,7 @@ void Sperm_child::Update_ResPornTime(float elapsedTime)
 	{
 		if (FLT == false)
 		{
-			ResPornTransition();
+			//ResPornTransition();
 			FLT = true;
 			position.x = position.y = position.z = FLT_MAX;
 		}

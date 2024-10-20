@@ -46,9 +46,9 @@ void SceneGame::Initialize()
 	camera.SetEye(DirectX::XMFLOAT3(0.0f, 110.0f, -10.0f));
 	//エネミー初期化
 #if 1
-	for (int i = 0;i < 1;++i) {
+	for (int i = 0;i < 3;++i) {
 		EnemyShell* slime = new EnemyShell;
-		slime->SetPositon(DirectX::XMFLOAT3(i * 2.0f, 100, 5*i*i));
+		slime->SetPositon(DirectX::XMFLOAT3(i * 10.0f, 105, -10.0*i));
 		slime->SetTerritory(slime->GetPosition(), 10.0f);
 		EnemeyManager::Instance().Register(slime);
 	}

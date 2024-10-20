@@ -41,7 +41,7 @@ Player::Player() {
 
 	move_se = Audio::Instance().LoadAudioSource("Data/Audio/ローションくちゅ音3.wav");
 	catch_se = Audio::Instance().LoadAudioSource("Data/Audio/Book02-6(Put_Down).wav");
-	timer = 10.0f;
+	timer = 120.0f;
 }
 
 //デストラクタ
