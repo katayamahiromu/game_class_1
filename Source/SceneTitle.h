@@ -16,7 +16,7 @@ public:
 	float scale=0.0f;
 
 	bool renderSpr = false;
-	int selectIndex;
+	int selectIndex=0;
 	int selectPos = 470;
 public:
 	SceneTitle(){}

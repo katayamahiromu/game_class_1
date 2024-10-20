@@ -46,12 +46,12 @@ void SceneGame::Initialize()
 #if 1
 	for (int i = 0;i < 1;++i) {
 		EnemyShell* slime = new EnemyShell;
-		slime->SetPositon(DirectX::XMFLOAT3(i * 2.0f, 100, 5));
+		slime->SetPositon(DirectX::XMFLOAT3(i * 2.0f, 100, 5*i*i));
 		slime->SetTerritory(slime->GetPosition(), 10.0f);
 		EnemeyManager::Instance().Register(slime);
 	}
 
-	for (int i = 0;i < 10;i++)
+	for (int i = 0;i < 50;i++)
 	{
 		Sperm_child* sperm = new Sperm_child;
 		sperm->SetPositon(DirectX::XMFLOAT3(i * 2.0f, 100 ,5));
@@ -97,6 +97,7 @@ void SceneGame::Initialize()
 
 	mask = std::make_unique<Sprite>("Data/Sprite/dissolve_animation.png");
 	bgm = Audio::Instance().LoadAudioSource("Data/Audio/2408A_生きとし生けるものへ.wav");
+	finish = std::make_unique<Sprite>("Data/Sprite/syuuryou.png");
 	//bgm->Play(true);
 }
 
@@ -176,6 +177,15 @@ void SceneGame::Render()
 		/*expl->Render(dc, 0, 200, 100, 100,
 			0, 0, 920, 210,
 			0,1, 1, 1, 1);*/
+		if (Player::Instance().timer < 0.0)
+		{
+			ID3D11DeviceContext* dc = Graphics::Instance().GetDeviceContext();
+			a = Mathf::Leap(a, 1.0f, 0.1);
+			finish->Render(dc, 0.0f, 0.0f, 1280, 720,
+				0, 0, 400, 300,
+				0,
+				1.0f, 1.0f, 1.0, a);
+		}
 	}
 
 	// 2DデバッグGUI描画
@@ -286,7 +296,6 @@ void SceneGame::RenderEnemyGauge(
 			slime->SetPositon(hit.position);
 			EnemeyManager::Instance().Register(slime);
 		}
-		
 	}
 }
 
@@ -330,8 +339,8 @@ void SceneGame::Render3DScene()
 	//マスクテクスチャの受け渡し
 	rc.maskTexture = mask.get()->GetShaderResourceView().Get();
 
-	DirectX::XMFLOAT4X4 viewProjection;
-	DirectX::XMStoreFloat4x4(&viewProjection, DirectX::XMMatrixMultiply(DirectX::XMLoadFloat4x4(&camera.GetView()), DirectX::XMLoadFloat4x4(&camera.GetProjection())));
+	/*DirectX::XMFLOAT4X4 viewProjection;
+	DirectX::XMStoreFloat4x4(&viewProjection, DirectX::XMMatrixMultiply(DirectX::XMLoadFloat4x4(&camera.GetView()), DirectX::XMLoadFloat4x4(&camera.GetProjection())));*/
 	//skyMap->blit(dc, viewProjection);
 	// 3Dモデル描画
 	{
@@ -365,7 +374,7 @@ void SceneGame::Render3DScene()
 		// デバッグレンダラ描画実行
 		graphics.GetDebugRenderer()->Render(dc, rc.view, rc.projection);
 	}
-	DebugGui();
+	//DebugGui();
 }
 
 void SceneGame::Offscreen_Rendering()
@@ -391,7 +400,7 @@ void SceneGame::Offscreen_Rendering()
 		vp.MaxDepth = 1.0f;
 		dc->RSSetViewports(1, &vp);
 		postprocessingRneder->Render(dc);
-		postprocessingRneder->DrawDebugGUI();
+		//postprocessingRneder->DrawDebugGUI();
 	}
 }
 

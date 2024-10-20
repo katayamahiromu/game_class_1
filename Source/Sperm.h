@@ -17,6 +17,9 @@ public:
 	bool Get_player_catch() { return player_catch; }
 	//呼ばれることで
 	void Change_Attack_Modo() { TransitionAttackState(); }
+	float ResPornTime = 3.0f;
+	bool isActive;
+	bool FLT;
 private:
 	void MoveToTarget(const float& elapsedTime, float speedRate);
 private:
@@ -57,6 +60,9 @@ private:
 	//コスプレ緊縛更新
 	void UpdateAttack(float elapsedTime);
 
+	void ResPornTransition();
+	void Update_ResPornTime(float elapsedTime);
+
 	void TransitionDead();
 	void Dead(float elapsedTime);
 	State state = State::Wander;
@@ -66,5 +72,4 @@ private:
 	bool player_catch = false;
 	bool attack = false;
 	float stopRange = 1.5f;
-	bool isActive = true;
 };

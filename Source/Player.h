@@ -8,6 +8,7 @@
 #include"ProjectileManager.h"
 #include"Effect.h"
 #include<list>
+#include"Audio/Audio.h"
 
 //プレイヤー
 class Player :public Character
@@ -39,7 +40,7 @@ public:
 	//着地した時に呼ばれる
 	void OnLanding()override;
 	//弾丸入力処理
-	void InputProjectile();
+	//void InputProjectile();
 	//弾丸と敵の衝突判定
 	void CollisionProjectilesVsEnemies();
 	//攻撃入力処理
@@ -53,7 +54,10 @@ public:
 	Enemy*Target();
 	void Input_Target();
 	Enemy* Get_Target_Enemy() { return target_enemy; }
+	void Set_target_enemy() { target_enemy = nullptr; }
 	int Get_Rock_num() { return Rock_num; }
+	int kill_awabi = 0;
+	float timer = 180.0f;
 protected:
 	//ダメージを受けた時に呼ばれる
 	void OnDamaged() override;
@@ -160,4 +164,6 @@ private:
 	//攻撃可能な精子のインデックス番号を保存する
 	//FIFO形式でデータを取り出すならVectorよりListのほうが多分はやい？
 	std::list<int>can_attack_sperm;
+	std::unique_ptr<AudioSource>move_se;
+	std::unique_ptr<AudioSource>catch_se;
 };

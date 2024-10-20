@@ -1,6 +1,7 @@
 #include"Graphics/Graphics.h"
 #include"SceneTitle.h"
 #include"SceneGame.h"
+#include"SceneClear.h"
 #include"SceneManager.h"
 #include"Input/Input.h"
 #include"SceneLoading.h"
@@ -17,7 +18,7 @@ void SceneTitle::Initialize()
 	title = std::make_unique<Sprite>("Data/Sprite/umi.png");
 	playSpr = std::make_unique<Sprite>("Data/Sprite/PlayGame.png");
 	controlSpr = std::make_unique<Sprite>("Data/Sprite/Control.png");
-	renderControl = std::make_unique<Sprite>("Data/Sprite/back.png");
+	renderControl = std::make_unique<Sprite>("Data/Sprite/setsumei.png");
 	selectMark = std::make_unique<Sprite>("Data/Sprite/selectMark.png");
 
 	test = Audio::Instance().MakeSubMix();
@@ -158,7 +159,7 @@ void SceneTitle::Render()
 		{
 			renderControl->Render(dc,
 				145,70, 1000, 600,
-				0, 0, 900, 450,
+				0, 0, 500,500,
 				0,
 				1, 1, 1, 1);
 		}
