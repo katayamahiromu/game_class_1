@@ -11,6 +11,8 @@
 #include"Mathf.h"
 #include"Sperm_Manager.h"
 #include"UI_Manager.h"
+#include"SceneClear.h"
+#include"SceneManager.h"
 
 
 // 初期化
@@ -98,6 +100,7 @@ void SceneGame::Initialize()
 	mask = std::make_unique<Sprite>("Data/Sprite/dissolve_animation.png");
 	bgm = Audio::Instance().LoadAudioSource("Data/Audio/2408A_生きとし生けるものへ.wav");
 	finish = std::make_unique<Sprite>("Data/Sprite/syuuryou.png");
+	Scene_Change_Timer = 2.0f;
 	//bgm->Play(true);
 }
 
@@ -142,6 +145,10 @@ void SceneGame::Update(const float& elapsedTime)
 		cameraController->Update(elapsedTime);
 	}
 
+	if (a <= 1.0)
+	{
+		Scene_Change_Timer -= elapsedTime;
+	}
 	
 	//エフェクト更新処理
 	EffectManager::Instace().Update(elapsedTime);
@@ -186,6 +193,8 @@ void SceneGame::Render()
 				0,
 				1.0f, 1.0f, 1.0, a);
 		}
+		if (Player::Instance().timer < -5.0f)SceneManager::instance().ChengeScene(new SceneClear);
+
 	}
 
 	// 2DデバッグGUI描画
