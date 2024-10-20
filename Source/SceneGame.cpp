@@ -56,8 +56,9 @@ void SceneGame::Initialize()
 	for (int i = 0;i < 50;i++)
 	{
 		Sperm_child* sperm = new Sperm_child;
-		sperm->SetPositon(DirectX::XMFLOAT3(i * 2.0f, 100 ,5));
-		sperm->SetTerritory(sperm->GetPosition(), 10.0f);
+		sperm->SetPositon(DirectX::XMFLOAT3(i * 2.0f, 100.0f ,5));
+		sperm->SetTerritory(player->GetPosition(), 10.0f);
+		sperm->SetRandomTargetPosition();
 		Sperm_Manager::Instance().Register(sperm);
 	}
 #else
@@ -101,7 +102,7 @@ void SceneGame::Initialize()
 	bgm = Audio::Instance().LoadAudioSource("Data/Audio/2408A_生きとし生けるものへ.wav");
 	finish = std::make_unique<Sprite>("Data/Sprite/syuuryou.png");
 	Scene_Change_Timer = 2.0f;
-	//bgm->Play(true);
+	bgm->Play(true);
 }
 
 // 終了化
@@ -199,7 +200,7 @@ void SceneGame::Render()
 
 	// 2DデバッグGUI描画
 	{
-		//player->DrawDebugGui();
+		player->DrawDebugGui();
 	}
 }
 

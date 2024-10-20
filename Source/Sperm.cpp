@@ -25,12 +25,12 @@ Sperm_child::~Sperm_child()
 
 void Sperm_child::Update(float& elapsedTime)
 {
-	// isActive か何かのフラグを用意して isActive が false なら return
-	/*const float min = 40;
+/*	// isActive か何かのフラグを用意して isActive が false なら return
+	const float min = 40;
 	const float max = 300;
-	std::clamp(position.y, min, max);
-	if (position.y < 40.0f)position.y = 40.0f;*/
-	//Update_ResPornTime(elapsedTime);
+	std::clamp(position.y, min, max);*/
+	if (position.y < 40.0f)position.y = 40.0f;
+	Update_ResPornTime(elapsedTime);
 	if (isActive == false )return;
 
 	switch (state)
@@ -82,7 +82,7 @@ void Sperm_child::SetRandomTargetPosition()
 	float Angle = DirectX::XMConvertToRadians(Mathf::RandomRange(0, 360));
 	float Length = Mathf::RandomRange(0, territoryRange);
 	targetPosition.x = Mathf::RandomRange(territoryOrigin.x, territoryRange) + sinf(Angle) * Length;
-	targetPosition.y = territoryOrigin.y;
+	targetPosition.y = Mathf::RandomRange(80,120);
 	targetPosition.z = Mathf::RandomRange(territoryOrigin.z, territoryRange) + cosf(Angle) * Length;
 }
 
@@ -113,8 +113,9 @@ void Sperm_child::UpdateWanderState(float elapsedTime)
 {
 	//目標地点までXZ平面での距離判定
 	float vx = targetPosition.x - position.x;
+	float vy = targetPosition.y - position.y;
 	float vz = targetPosition.z - position.z;
-	float distSq = vx * vx + vz * vz;
+	float distSq = vx * vx + vz * vz * vy * vy;
 	if (distSq < radius * radius)
 	{
 		//待機ステートへ遷移
@@ -244,36 +245,28 @@ void Sperm_child::Dead(float elapsedTime)
 
 void Sperm_child::ResPornTransition()
 {
-	/*isActive = true;
+	isActive = true;
 	ResPornTime = 3.0f;
 	state = State::Wander;
-	targetPosition = Player::Instance().GetPosition();
-
-	targetPosition.x += (rand() % 31) - 15;
-	targetPosition.z += (rand() % 31) - 15;
-
-	position = targetPosition;
-	mask.dissolveThreshold = 1.0;*/
-	Sperm_child* sc = new Sperm_child;
+	SetRandomTargetPosition();
+	position = Player::Instance().GetPosition();
+	position.x += 5.0f;
+	position.y += 5.0f;
+	position.z += 5.0f;
+	mask.dissolveThreshold = 1.0;
+	player_catch = false;
+	/*Sperm_child* sc = new Sperm_child;
 	DirectX::XMFLOAT3 pos = Player::Instance().GetPosition();
 	pos.x += (rand() % 31) - 15;
 	pos.y += (rand() % 31) - 15;
 	pos.z += (rand() % 31) - 15;
 	sc->SetPositon(pos);
-	Sperm_Manager::Instance().RegisterAdd(sc);
+	Sperm_Manager::Instance().RegisterAdd(sc);*/
 }
 
 void Sperm_child::Update_ResPornTime(float elapsedTime)
 {
 	if (isActive == true)return;
 	ResPornTime -= elapsedTime;
-	if (ResPornTime < 0.0f)
-	{
-		if (FLT == false)
-		{
-			//ResPornTransition();
-			FLT = true;
-			position.x = position.y = position.z = FLT_MAX;
-		}
-	}
+	if (ResPornTime < 0.0f)ResPornTransition();
 }

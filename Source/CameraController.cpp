@@ -3,6 +3,7 @@
 #include"Input/Input.h"
 #include<cmath>
 #include"Mathf.h"
+#include"Player.h"
 
 //çXêVèàóù
 void CameraController::Update(float elapsedTime) 
@@ -50,7 +51,7 @@ void CameraController::Update(float elapsedTime)
 	eye.x = target.x - front.x * range;
 	eye.y = target.y - front.y * range;
 	eye.z = target.z - front.z * range;
-
+	if (Player::Instance().GetVelocity().y != 0)eye.y = target.y;
 	/*DirectX::XMStoreFloat3(&eye, 
 		DirectX::XMVectorScale(DirectX::XMVectorSubtract(DirectX::XMLoadFloat3(&target), DirectX::XMLoadFloat3(&front)), range));*/
 	

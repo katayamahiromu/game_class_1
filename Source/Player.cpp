@@ -41,7 +41,7 @@ Player::Player() {
 
 	move_se = Audio::Instance().LoadAudioSource("Data/Audio/ローションくちゅ音3.wav");
 	catch_se = Audio::Instance().LoadAudioSource("Data/Audio/Book02-6(Put_Down).wav");
-	timer = 120.0f;
+	timer = 180.0f;
 }
 
 //デストラクタ
@@ -114,6 +114,12 @@ void Player::Update(float elapsedTime) {
 	else
 	{
 		move_se->Play(true);
+	}
+
+	if (velocity.y != 0.0)
+	{
+		position.x -= mPositon.x;
+		position.z -= mPositon.z;
 	}
 }
 
@@ -463,19 +469,20 @@ void Player::CollisionProjectilesVsEnemies(){
 
 void Player::CollisionPlayerVsSperm()
 {
-	if (can_attack_sperm.size() >= 5)return;
+	if (can_attack_sperm.size() >= 10)return;
 	DirectX::XMFLOAT3 intersect;
 	Sperm_Manager& sperm_manager = Sperm_Manager::Instance();
 	int Sperm_count = sperm_manager.GetSpermCount();
 	for (int i = 0;i < Sperm_count;i++)
 	{
+		float catch_radius = 5.0f;
 		if (sperm_manager.GetSperm(i)->Get_player_catch())continue;
 		Sperm_child* sperm = sperm_manager.GetSperm(i);
 		if (Collision::IntersectSphereVsSphere(
 			position,
 			radius,
 			sperm->GetPosition(),
-			sperm->GetRadius(),
+			catch_radius,
 			//DirectX::XMFLOAT3(0, 0, 0)
 			intersect
 		))
@@ -510,7 +517,6 @@ void Player::TransitiomIdleState()
 	state = State::Idle;
 
 	//待機アニメーション再生
-	mdl->PlayAnimation(Anime_Idle, true,0.2f);
 }
 
 //待機ステート更新処理
@@ -575,7 +581,6 @@ void Player::TransitionJumpState()
 	state = State::Jump;
 
 	//ジャンプアニメーション再生
-	mdl->PlayAnimation(Anime_Jump, false, 0.2f);
 }
 
 //ジャンプステート更新処理
@@ -627,7 +632,6 @@ void Player::UpdateLandState(float elapsedTime)
 void Player::TransitionAttackState()
 {
 	state = State::Attack;
-	mdl->PlayAnimation(Anime_Attack, false, 0.2f);
 }
 
 //攻撃ステート更新処理

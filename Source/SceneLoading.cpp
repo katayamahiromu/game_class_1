@@ -67,7 +67,7 @@ void SceneLoading::Update(const float& elapsedTime)
 	if (scenechangecount > 1)scenechangeflg = true;
 	GamePad& gamePad = Input::Instance().GetGamePad();
 
-	if (nextScene->IsReady() && scenechangeflg)
+	if (nextScene->IsReady())
 	{
 		SceneManager::instance().ChengeScene(nextScene);
 	}
