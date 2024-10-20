@@ -36,8 +36,12 @@ public:
 
 	//¸q“¯m‚Ì“–‚½‚è”»’è
 	void SpermVsSperm();
+
+	//’Ç‰Á”z—ñ
+	void RegisterAdd(Sperm_child* sperm);
 private:
 	std::vector<Sperm_child*>spermArray;
 	std::vector<Sperm_child*>canAttackSperm;
 	std::set<Sperm_child*>remove;
+	std::vector<Sperm_child*>currentArray;
 };

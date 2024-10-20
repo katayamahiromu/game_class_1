@@ -49,6 +49,7 @@ void Framework::Render(float elapsedTime/*Elapsed seconds from last frame*/)
 	std::lock_guard<std::mutex> lock(graphics.GetMutex());
 
 	ID3D11DeviceContext* dc = graphics.GetDeviceContext();
+	IDXGISwapChain* sc = graphics.GetSwapChain();
 
 	// IMGUIフレーム開始処理
 	graphics.GetImGuiRenderer()->NewFrame();
@@ -62,8 +63,7 @@ void Framework::Render(float elapsedTime/*Elapsed seconds from last frame*/)
 	// IMGUI描画
 	graphics.GetImGuiRenderer()->Render(dc);
 
-	// バックバッファに描画した画を画面に表示する。
-	graphics.GetSwapChain()->Present(syncInterval, 0);
+	sc->Present(syncInterval, 0);
 }
 
 // フレームレート計算

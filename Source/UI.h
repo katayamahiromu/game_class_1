@@ -1,6 +1,6 @@
 #pragma once
 #include"Graphics/Sprite.h"
-#include<memory>
+#include"Graphics/Font.h"
 
 class UI
 {
@@ -20,6 +20,5 @@ public:
 	void Render()override;
 private:
 	std::unique_ptr<Sprite>sSperm;
-	
 	int sperm_count = 0;
 };
