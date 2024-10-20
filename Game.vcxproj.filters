@@ -337,6 +337,9 @@
     <ClCompile Include="Source\UI_Manager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneClear.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -529,6 +532,9 @@
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Source\UI_Manager.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneClear.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
