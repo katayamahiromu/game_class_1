@@ -43,7 +43,7 @@ private:
 	std::unique_ptr<Sprite>renderControl;
 	std::unique_ptr<Sprite>selectMark;
 
-	std::unique_ptr<AudioSource> Cdur;
-	std::unique_ptr<SubMixVoice> test;
 	std::unique_ptr<Sprite> Push_Enter;
+
+	std::unique_ptr<AudioSource>bgm;
 };
