@@ -40,7 +40,7 @@ public:
 	//’…’n‚µ‚½‚ÉŒÄ‚Î‚ê‚é
 	void OnLanding()override;
 	//’eŠÛ“ü—Íˆ—
-	void InputProjectile();
+	//void InputProjectile();
 	//’eŠÛ‚Æ“G‚ÌÕ“Ë”»’è
 	void CollisionProjectilesVsEnemies();
 	//UŒ‚“ü—Íˆ—
@@ -57,6 +57,7 @@ public:
 	void Set_target_enemy() { target_enemy = nullptr; }
 	int Get_Rock_num() { return Rock_num; }
 	int kill_awabi = 0;
+	float timer = 180.0f;
 protected:
 	//ƒ_ƒ[ƒW‚ğó‚¯‚½‚ÉŒÄ‚Î‚ê‚é
 	void OnDamaged() override;
