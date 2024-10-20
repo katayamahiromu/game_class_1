@@ -77,5 +77,6 @@ private:
 	bool Rock_ON = false;
 	float time = 60.0f;
 	std::unique_ptr<Sprite>finish;
+	float Scene_Change_Timer = 2.0f;
 	float a = 0.0f;
 };

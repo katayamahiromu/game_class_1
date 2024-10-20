@@ -52,8 +52,8 @@ Player::~Player() {
 
 //更新処理
 void Player::Update(float elapsedTime) {
-	if (timer < 0.0f)return;
 	timer -= elapsedTime;
+	if (timer < 0.0f)return;
 	if (timer < 30)mask.dissolveThreshold = Mathf::Leap(mask.dissolveThreshold, 0.3f, elapsedTime*0.01);
 	//ステート毎の処理
 	switch (state)
