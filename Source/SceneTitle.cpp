@@ -21,13 +21,10 @@ void SceneTitle::Initialize()
 	renderControl = std::make_unique<Sprite>("Data/Sprite/sousa.png");
 	selectMark = std::make_unique<Sprite>("Data/Sprite/selectMark.png");
 
-	test = Audio::Instance().MakeSubMix();
-	Cdur = Audio::Instance().LoadAudioSource("Data/Audio/SE.wav");
-	Cdur->Set_Submix_voice(test->Get_Submix_Voice());
-	test->SetVolum(1.0f);
-	test->equalizer();
-	Cdur->Play(false);
+	
 	Push_Enter = std::make_unique<Sprite>("Data/Font/font0.png");
+	bgm = Audio::Instance().LoadAudioSource("Data/Audio/1 The Clock Falls on a City of Ashes.wav");
+	bgm->Play(true);
 }
 
 //終了化
@@ -112,12 +109,6 @@ void SceneTitle::Render()
 
 	dc->OMSetBlendState(bs, nullptr, 0xFFFFFFFF);
 
-	ImGui::Begin("posusus");
-	ImGui::DragFloat2("pos", &pos.x);
-	ImGui::DragFloat("width", &width);
-	ImGui::DragFloat("height", &height);
-
-	ImGui::End();
 	//2Dスプライト描画
 	{
 		float screenWidth = static_cast<float>(graphics.GetScreenWidth());
