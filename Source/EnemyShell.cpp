@@ -14,6 +14,12 @@ EnemyShell::EnemyShell() {
 	mdl->PlayAnimation(0, true, 0.2f);
 
 	health = 5.0f;
+
+	damage_effect[0] = std::make_unique<Effect>("Data/Effect/HIT/edit_maternity.efk");
+	damage_effect[1] = std::make_unique<Effect>("Data/Effect/HIT/edit_crezy.efk");
+	damage_effect[2] = std::make_unique<Effect>("Data/Effect/HIT/edit_excite.efk");
+	damage_effect[3] = std::make_unique<Effect>("Data/Effect/HIT/edit_great.efk");
+	damage_effect[4] = std::make_unique<Effect>("Data/Effect/HIT/edit_hit.efk");
 }
 
 //デストラクタ
@@ -51,6 +57,9 @@ void EnemyShell::Render(ID3D11DeviceContext* dc, Shader* shader)
 //ダメージを受けた時に呼ばれる
 void EnemyShell::OnDamaged()
 {
+	DirectX::XMFLOAT3 pos = position;
+	pos.y += 2.0f;
+	damage_effect[static_cast<int>(health)]->Play(pos);
 	//ダメージステートへ遷移
 	//TransitionDamageState();
 }
@@ -58,8 +67,9 @@ void EnemyShell::OnDamaged()
 //死亡した時に呼ばれる
 void EnemyShell::OnDead()
 {
-	//死亡ステートへ遷移
-	//TransitionDeathState();
+	DirectX::XMFLOAT3 pos = position;
+	pos.y += 2.0f;
+	damage_effect[static_cast<int>(health)]->Play(pos);
 }
 
 //デバックプリミティブ描画

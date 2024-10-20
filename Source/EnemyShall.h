@@ -1,6 +1,7 @@
 #pragma once
 #include"Graphics/Model.h"
 #include"Enemy.h"
+#include"Effect.h"
 
 //ƒXƒ‰ƒCƒ€
 class EnemyShell :public Enemy
@@ -20,6 +21,7 @@ public:
 
 	//“ê’£‚èİ’è
 	void SetTerritory(const DirectX::XMFLOAT3& origin, float range);
+	std::unique_ptr<Effect>hit[5];
 protected:
 	//€–S‚µ‚½‚ÉŒÄ‚Î‚ê‚é
 	void OnDead()override;
@@ -42,4 +44,6 @@ private:
 	float stateTimer = 0.0f;
 	float searchRange = 5.0f;
 	float attackRange = 1.5f;
+
+	std::unique_ptr<Effect>damage_effect[5];
 };

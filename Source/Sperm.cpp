@@ -3,6 +3,7 @@
 #include"Collision.h"
 #include"Player.h"
 #include"Sperm_Manager.h"
+#include"EnemyManeger.h"
 
 Sperm_child::Sperm_child()
 {
@@ -37,6 +38,8 @@ void Sperm_child::Update(float& elapsedTime)
 		break;
 	case State::Attack:
 		UpdateAttack(elapsedTime);
+	case State::Daed:
+		Dead(elapsedTime);
 		break;
 	}
 
@@ -118,7 +121,7 @@ void Sperm_child::TransitionIdleState()
 	state = State::Idle;
 
 	//タイマーをランダム設定
-	stateTimer = Mathf::RandomRange(3.0f, 5.0f);
+	stateTimer = Mathf::RandomRange(0.0f, 1.0f);
 
 	//待機アニメーション再生
 	//model->PlayAnimation(Anime_IdleNormal, true, 0.2f);
@@ -186,7 +189,6 @@ void Sperm_child::TransitionAttackState()
 
 void Sperm_child::UpdateAttack(float elapsedTime)
 {
-#if  1
 	MoveToTarget(elapsedTime, 5.0f);
 	DirectX::XMVECTOR vPos = DirectX::XMVectorSubtract(DirectX::XMLoadFloat3(&targetPosition), DirectX::XMLoadFloat3(&position));
 	float dist = DirectX::XMVectorGetX(DirectX::XMVector3LengthSq(vPos));
@@ -195,9 +197,38 @@ void Sperm_child::UpdateAttack(float elapsedTime)
 	{
 		//Sperm_Manager::Instance().Remove(this);
 		// Remove じゃなくて isActive を false にする
-		isActive = false;
+		TransitionDead();
+
+		EnemeyManager& enemyManager = EnemeyManager::Instance();
+		//全ての敵と総当たりで衝突処理
+		int enemyCount = enemyManager.GetEnemyCount();
+		for (int i = 0;i < enemyCount;++i)
+		{
+			Enemy* enemy = enemyManager.GetEnemy(i);
+			DirectX::XMFLOAT3 outPosition;
+			DirectX::XMFLOAT3 pos = enemy->GetPosition();
+			pos.y += 1.0f;
+			if (Collision::IntersectSphereVsSphere(
+				position,
+				radius,
+				pos,
+				enemy->GetRadius(),
+				outPosition
+			))
+			{
+				enemy->ApplyDamage(1.0f, 1.0f);
+			}
+		};
 	}
-#else
-	Sperm_Manager::Instance().Remove(this);
-#endif 
+}
+
+void Sperm_child::TransitionDead()
+{
+	state = State::Daed;
+}
+
+void Sperm_child::Dead(float elapsedTime)
+{
+	mdl->mask.dissolveThreshold = Mathf::Leap(mdl->mask.dissolveThreshold, 0.0f, elapsedTime);
+	if(mdl->mask.dissolveThreshold < 0.0f)isActive = false;
 }

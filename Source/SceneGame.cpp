@@ -96,6 +96,8 @@ void SceneGame::Initialize()
 	postprocessingRneder->SetSceneData(srvData);
 
 	mask = std::make_unique<Sprite>("Data/Sprite/dissolve_animation.png");
+	bgm = Audio::Instance().LoadAudioSource("Data/Audio/2408A_¶‚«‚Æ‚µ¶‚¯‚é‚à‚Ì‚Ö.wav");
+	//bgm->Play(true);
 }
 
 // I—¹‰»

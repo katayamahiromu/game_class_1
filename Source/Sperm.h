@@ -32,6 +32,7 @@ private:
 		Idle,
 		Follow,
 		Attack,
+		Daed,
 	};
 
 	//徘徊ステートへ遷移
@@ -56,6 +57,8 @@ private:
 	//コスプレ緊縛更新
 	void UpdateAttack(float elapsedTime);
 
+	void TransitionDead();
+	void Dead(float elapsedTime);
 	State state = State::Wander;
 	float stateTimer = 0.0f;
 private:

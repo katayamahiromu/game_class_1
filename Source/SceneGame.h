@@ -8,6 +8,7 @@
 #include "Graphics/RenderTarget.h"
 #include"PostprocessingRenderer.h"
 #include<thread>
+#include"Audio/Audio.h"
 
 
 // ゲームシーン
@@ -59,6 +60,8 @@ private:
 
 	std::unique_ptr<Sprite>expl;
 	std::unique_ptr<Sprite>mask;
+	std::unique_ptr<AudioSource>bgm;
+	
 private:
 	//オフスクリーンレンダリング用描画ターゲット
 	std::unique_ptr<RenderTarget> renderTarget;

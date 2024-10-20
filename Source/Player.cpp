@@ -32,7 +32,7 @@ Player::Player() {
 	scale.z *= -1.0f;
 
 	//ヒットエフェクト読み込み
-	hitEffect = new Effect("Data/Effect/HIT/Hit.efk");
+	hitEffect = new Effect("Data/Effect/HIT/edit_hit.efk");
 
 	radius = 2.0f;
 
@@ -99,6 +99,11 @@ void Player::Update(float elapsedTime) {
 	mdl->UpdateAnimation(elapsedTime);
 	//モデル行列を更新
 	mdl->UpdateTransform(transform);
+
+	if (GetAsyncKeyState('G') & 0x8000)
+	{
+		hitEffect->Play(position);
+	}
 }
 
 //移動入力処理
