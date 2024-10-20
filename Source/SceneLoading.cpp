@@ -9,8 +9,16 @@ void SceneLoading::Initialize()
 {
 	//スプライトの初期化
 	sprite = new Sprite("Data/Sprite/LoadingIcon.png");
+	pet = std::make_unique<Sprite>("Data/Sprite/pet.png");
+
+	pet2 = std::make_unique<Sprite>("Data/Sprite/emptybottle.png");
+
+	meter = std::make_unique<Sprite>("Data/Sprite/meter.png");
+
+	meter2 = std::make_unique<Sprite>("Data/Sprite/meter2.png");
 	//スレッド開始
 	thread = new std::thread(SceneLoading::LoadingThread, this);
+	alp = 0;
 }
 
 //終了化
@@ -34,11 +42,24 @@ void SceneLoading::Finalize()
 //更新処理
 void SceneLoading::Update(const float& elapsedTime)
 {
-	constexpr float speed = 180;
-	angle += speed * elapsedTime;
-
+	GamePad& gamePad = Input::Instance().GetGamePad();
+	constexpr float speed = 0.5;
+	constexpr float texspeed = 100;
+	constexpr float tex2speed = 500;
+	m_texsize.y -= texspeed * elapsedTime;
+	if (m_texsize.y <= -320)m_texsize.y = -320;
+	if (m_texsize.y <= -319)
+	{
+		m2_texsize.y -= tex2speed * elapsedTime;
+		alp -= speed * elapsedTime;
+	}
+	if (m2_texsize.y <= -345)m2_texsize.y = -345;
 	//次のシーンが完了したらシーンを切り替える
-	if (nextScene->IsReady())
+	//if (nextScene->IsReady())
+	//{
+	//	m_texsize.y = -320;
+	//}
+	if (nextScene->IsReady() &&(gamePad.GetButtonDown() & GamePad::BTN_SPACE))
 	{
 		SceneManager::instance().ChengeScene(nextScene);
 	}
@@ -68,13 +89,54 @@ void SceneLoading::Render()
 		float positionX = screenWidth - textureWidth;
 		float positionY = screenHeight - textureHeight;
 
-		sprite->Render(dc,
+	/*	sprite->Render(dc,
 			positionX, positionY, textureWidth, textureHeight,
 			0, 0, textureWidth, textureHeight,
 			angle,
 			1, 1, 1, 1
-		);
+		);*/
+
+		if (m_texsize.y > -319)
+		{
+			meter->Render(dc,
+				-78, 720, 340, m_texsize.y,
+				0, 0, 340, m_texsize.y,
+				0,
+				1, 1, 1, 1
+			);
+			pet2->Render(dc,
+				-78, 380, 340, 340,
+				0,0, 340, 340,
+				0,
+				1, 1, 1, 1
+			);
+		}
+		else
+		{
+			pet->Render(dc,
+				-78, 380, 340, 340,
+				0, 0, 340, 340,
+				0,
+				1, 1, 1, 1
+			);
+			meter2->Render(dc,
+				34, 430, 71, m2_texsize.y,
+				0, 0, 189, m2_texsize.y,
+				0,
+				1, 1, 1, 1
+			);
+		}
+		//タイトルスプライト
+		/*pet->Render(dc,
+			0, 0, screenWidth, screenHeight,
+			0, 0, 1920, 1080,
+			0,
+			1, 1, 1, alp
+		);*/
 	}
+
+	
+	//Gui();
 }
 
 void SceneLoading::LoadingThread(SceneLoading* scene)
@@ -89,4 +151,17 @@ void SceneLoading::LoadingThread(SceneLoading* scene)
 
 	//次のシーンの準備完了設定
 	scene->nextScene->SetReady();
+}
+
+void SceneLoading::Gui()
+{
+	ImGui::Begin("Gui");
+
+	ImGui::DragFloat2("m_pos", &m_pos.x);
+
+	ImGui::DragFloat2("m2_pos", &m2_pos.x);
+	ImGui::DragFloat2("m2_size", &m2_size.x);
+	ImGui::DragFloat2("m2_texsize", &m2_texsize.x);
+
+	ImGui::End();
 }
