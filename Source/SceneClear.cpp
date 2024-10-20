@@ -7,6 +7,7 @@
 void SceneClear::Initialize()
 {
 	clear = std::make_unique<Sprite>("Data/Sprite/Gama_Clear.png");
+	font = std::make_unique<Font>("Data/Font/MS Gothic.fnt",1024);
 }
 
 void SceneClear::Finalize()
@@ -46,4 +47,8 @@ void SceneClear::Render()
 		0, 0, textureWidth, textureHeight,
 		0,
 		1, 1, 1, 1);
+	
+	font->Begin(dc);
+	font->Draw(550, 500, L"Push Space", 1.5f);
+	font->End(dc);
 }

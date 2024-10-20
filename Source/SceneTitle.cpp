@@ -75,6 +75,7 @@ void SceneTitle::Update(const float& elapsedTime)
 		selectPos = 470;
 		if (gamePad.GetButtonDown() & GamePad::BTN_SPACE) {
 			SceneManager::instance().ChengeScene(new SceneLoading(new SceneGame));
+			
 		}
 		break;
 	case 1:
