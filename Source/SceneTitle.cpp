@@ -77,6 +77,7 @@ void SceneTitle::Update(const float& elapsedTime)
 		if (gamePad.GetButtonDown() & GamePad::BTN_ENTER) {
 			select_decide->DC_Play();
 			SceneManager::instance().ChengeScene(new SceneLoading(new SceneGame));
+			
 		}
 		break;
 	case 1:
