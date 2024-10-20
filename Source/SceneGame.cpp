@@ -199,7 +199,7 @@ void SceneGame::Render()
 
 	// 2DデバッグGUI描画
 	{
-		player->DrawDebugGui();
+		//player->DrawDebugGui();
 	}
 }
 
@@ -374,14 +374,14 @@ void SceneGame::Render3DScene()
 	// 3Dデバッグ描画
 	{
 		//プレイヤーデバッグプリミティブ描画
-		player->DrawDebugPrimitive();
-		//エネミーデバッグプリミティブ
-		EnemeyManager::Instance().DrawDebugPrimitive();
-		// ラインレンダラ描画実行
-		graphics.GetLineRenderer()->Render(dc, rc.view, rc.projection);
+		//player->DrawDebugPrimitive();
+		////エネミーデバッグプリミティブ
+		//EnemeyManager::Instance().DrawDebugPrimitive();
+		//// ラインレンダラ描画実行
+		//graphics.GetLineRenderer()->Render(dc, rc.view, rc.projection);
 
-		// デバッグレンダラ描画実行
-		graphics.GetDebugRenderer()->Render(dc, rc.view, rc.projection);
+		//// デバッグレンダラ描画実行
+		//graphics.GetDebugRenderer()->Render(dc, rc.view, rc.projection);
 	}
 	//DebugGui();
 }
