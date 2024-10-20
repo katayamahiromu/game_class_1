@@ -30,21 +30,19 @@ private:
 	static void LoadingThread(SceneLoading* scene);
 private:
 	Sprite* sprite = nullptr;
-	std::unique_ptr<Sprite>pet;
-	std::unique_ptr<Sprite>pet2;
-	std::unique_ptr<Sprite>meter;
-	std::unique_ptr<Sprite>meter2;
+
+	std::unique_ptr<Sprite>loading;
+	std::unique_ptr<Sprite>loading2;
+	std::unique_ptr<Sprite>loading3;
+	std::unique_ptr<Sprite>loading4;
 	float angle = 0.0f;
 	Scene* nextScene = nullptr;
 	std::thread* thread = nullptr;
 
-
-	DirectX::XMFLOAT2 m_pos;
-	DirectX::XMFLOAT2 m_texsize;
-	DirectX::XMFLOAT2 m2_pos;
-	DirectX::XMFLOAT2 m2_size;
-	DirectX::XMFLOAT2 m2_texsize;
-
-
-	float alp;
+	int rnd;
+	int nowscene;
+	bool flg = false;
+	bool scenechangeflg;
+	int  scenechangecount;
+	float ctimer;
 };

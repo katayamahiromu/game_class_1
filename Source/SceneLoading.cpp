@@ -3,22 +3,28 @@
 #include"SceneLoading.h"
 #include"SceneManager.h"
 #include"SceneGame.h"
+#include<time.h>
 
 //初期化
 void SceneLoading::Initialize()
 {
 	//スプライトの初期化
 	sprite = new Sprite("Data/Sprite/LoadingIcon.png");
-	pet = std::make_unique<Sprite>("Data/Sprite/pet.png");
 
-	pet2 = std::make_unique<Sprite>("Data/Sprite/emptybottle.png");
+	loading = std::make_unique<Sprite>("Data/Sprite/load.png");
+	loading2 = std::make_unique<Sprite>("Data/Sprite/load2.png");
+	loading3 = std::make_unique<Sprite>("Data/Sprite/load3.png");
+	loading4 = std::make_unique<Sprite>("Data/Sprite/load4.png");
 
-	meter = std::make_unique<Sprite>("Data/Sprite/meter.png");
 
-	meter2 = std::make_unique<Sprite>("Data/Sprite/meter2.png");
 	//スレッド開始
 	thread = new std::thread(SceneLoading::LoadingThread, this);
-	alp = 0;
+
+	flg = false;
+	scenechangeflg = false;
+	ctimer = 0.0f;
+	nowscene = 0;
+	scenechangecount = 0;
 }
 
 //終了化
@@ -42,33 +48,36 @@ void SceneLoading::Finalize()
 //更新処理
 void SceneLoading::Update(const float& elapsedTime)
 {
-	GamePad& gamePad = Input::Instance().GetGamePad();
 	constexpr float speed = 0.5;
-	constexpr float texspeed = 100;
-	constexpr float tex2speed = 500;
-	m_texsize.y -= texspeed * elapsedTime;
-	if (m_texsize.y <= -320)m_texsize.y = -320;
-	if (m_texsize.y <= -319)
+	ctimer += speed * elapsedTime;
+	srand((unsigned int)time(NULL));
+	rnd = rand() % 4;
+	if (!flg)
 	{
-		m2_texsize.y -= tex2speed * elapsedTime;
-		alp -= speed * elapsedTime;
+		nowscene = rnd;
+		flg = true;
 	}
-	if (m2_texsize.y <= -345)m2_texsize.y = -345;
-	//次のシーンが完了したらシーンを切り替える
-	if (nextScene->IsReady())
+	if (ctimer > 1.5f)
 	{
-		m_texsize.y = -320;
+		ctimer = 0.0f;
+		nowscene += 1;
+		scenechangecount += 1;
+		if (nowscene > 3)nowscene = 0;
+	}
+	if (scenechangecount > 5)scenechangeflg = true;
+	GamePad& gamePad = Input::Instance().GetGamePad();
+
+	if (nextScene->IsReady() && scenechangeflg)
+	{
 		SceneManager::instance().ChengeScene(nextScene);
 	}
-	/*if (nextScene->IsReady() &&(gamePad.GetButtonDown() & GamePad::BTN_SPACE))
-	{
-		SceneManager::instance().ChengeScene(nextScene);
-	}*/
+
 }
 
 //描画処理
 void SceneLoading::Render()
 {
+
 	Graphics& graphics = Graphics::Instance();
 	ID3D11DeviceContext* dc = graphics.GetDeviceContext();
 	ID3D11RenderTargetView* rtv = graphics.GetRenderTargetView();
@@ -89,51 +98,42 @@ void SceneLoading::Render()
 		float textureHeight = static_cast<float>(sprite->GetTextureHeight());
 		float positionX = screenWidth - textureWidth;
 		float positionY = screenHeight - textureHeight;
-
-	/*	sprite->Render(dc,
-			positionX, positionY, textureWidth, textureHeight,
-			0, 0, textureWidth, textureHeight,
-			angle,
-			1, 1, 1, 1
-		);*/
-
-		if (m_texsize.y > -319)
+		if (nowscene == 0)
 		{
-			meter->Render(dc,
-				-78, 720, 340, m_texsize.y,
-				0, 0, 340, m_texsize.y,
-				0,
-				1, 1, 1, 1
-			);
-			pet2->Render(dc,
-				-78, 380, 340, 340,
-				0,0, 340, 340,
+			loading->Render(dc,
+				0, 0, 1280, 720,
+				0, 0, 5568, 4872,
 				0,
 				1, 1, 1, 1
 			);
 		}
-		else
+		if (nowscene == 1)
 		{
-			pet->Render(dc,
-				-78, 380, 340, 340,
-				0, 0, 340, 340,
-				0,
-				1, 1, 1, 1
-			);
-			meter2->Render(dc,
-				34, 430, 71, m2_texsize.y,
-				0, 0, 189, m2_texsize.y,
+			loading2->Render(dc,
+				0, 0, 1280, 720,
+				0, 0, 5568, 4872,
 				0,
 				1, 1, 1, 1
 			);
 		}
-		//タイトルスプライト
-		/*pet->Render(dc,
-			0, 0, screenWidth, screenHeight,
-			0, 0, 1920, 1080,
-			0,
-			1, 1, 1, alp
-		);*/
+		if (nowscene == 2)
+		{
+			loading3->Render(dc,
+				0, 0, 1280, 720,
+				0, 0, 5568, 4872,
+				0,
+				1, 1, 1, 1
+			);
+		}
+		if (nowscene == 3)
+		{
+			loading4->Render(dc,
+				0, 0, 1280, 720,
+				0, 0, 5568, 4872,
+				0,
+				1, 1, 1, 1
+			);
+		}
 	}
 
 	
@@ -157,12 +157,7 @@ void SceneLoading::LoadingThread(SceneLoading* scene)
 void SceneLoading::Gui()
 {
 	ImGui::Begin("Gui");
-
-	ImGui::DragFloat2("m_pos", &m_pos.x);
-
-	ImGui::DragFloat2("m2_pos", &m2_pos.x);
-	ImGui::DragFloat2("m2_size", &m2_size.x);
-	ImGui::DragFloat2("m2_texsize", &m2_texsize.x);
+	ImGui::InputFloat("ctimer", &ctimer);
 
 	ImGui::End();
 }

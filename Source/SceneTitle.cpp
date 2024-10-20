@@ -159,7 +159,7 @@ void SceneTitle::Render()
 		{
 			renderControl->Render(dc,
 				145,70, 1000, 600,
-				0, 0, pos.x, pos.y,
+				0, 0, 500,500,
 				0,
 				1, 1, 1, 1);
 		}
