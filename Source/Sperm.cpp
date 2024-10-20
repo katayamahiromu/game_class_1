@@ -16,7 +16,6 @@ Sperm_child::Sperm_child()
 	radius = 0.5;
 	height = 1.0;
 	mdl->PlayAnimation(0, true, 0.2f);
-	extinction = std::make_unique<Effect>("Data/Effect/edit_extincion.efk");
 }
 
 Sperm_child::~Sperm_child()
@@ -235,7 +234,6 @@ void Sperm_child::UpdateAttack(float elapsedTime)
 void Sperm_child::TransitionDead()
 {
 	state = State::Daed;
-	extinction->Play(position,10.0f);
 }
 
 void Sperm_child::Dead(float elapsedTime)

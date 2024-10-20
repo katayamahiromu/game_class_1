@@ -76,4 +76,6 @@ private:
 	DirectX::XMFLOAT4 lightColor = { 1.0f,1.0f,1.0f,1.0f };
 	bool Rock_ON = false;
 	float time = 60.0f;
+	std::unique_ptr<Sprite>finish;
+	float a = 0.0f;
 };

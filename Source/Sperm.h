@@ -1,7 +1,6 @@
 #pragma once
 #include"Character.h"
 #include"Graphics/Shader.h"
-#include"Effect.h"
 
 //自機と同じ名前のためチャイルド
 class Sperm_child :public Character
@@ -73,5 +72,4 @@ private:
 	bool player_catch = false;
 	bool attack = false;
 	float stopRange = 1.5f;
-	std::unique_ptr<Effect>extinction;
 };

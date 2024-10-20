@@ -24,7 +24,7 @@ Player::Player() {
 	instace = this;
 
 	mdl = std::make_unique<Model>("Data/Model/Player/player.mdl");
-	
+
 	//モデルが大きいのでスケーリング
 	scale.x = scale.y = scale.z = 0.1f;
 
@@ -41,6 +41,7 @@ Player::Player() {
 
 	move_se = Audio::Instance().LoadAudioSource("Data/Audio/ローションくちゅ音3.wav");
 	catch_se = Audio::Instance().LoadAudioSource("Data/Audio/Book02-6(Put_Down).wav");
+	timer = 10.0f;
 }
 
 //デストラクタ
@@ -51,6 +52,9 @@ Player::~Player() {
 
 //更新処理
 void Player::Update(float elapsedTime) {
+	if (timer < 0.0f)return;
+	timer -= elapsedTime;
+	if (timer < 30)mask.dissolveThreshold = Mathf::Leap(mask.dissolveThreshold, 0.3f, elapsedTime*0.01);
 	//ステート毎の処理
 	switch (state)
 	{
@@ -134,7 +138,6 @@ void Player::Render(ID3D11DeviceContext* dc, Shader* shader) {
 
 	shader->Draw(dc, mdl.get());
 	//弾丸描画処理
-	projectileManager.Render(dc, shader);
 }
 
 void Player::DrawDebugGui() {
@@ -322,75 +325,75 @@ void Player::OnDead()
 }
 
 //弾丸入力処理
-void Player::InputProjectile() 
-{
-	GamePad& gamePad = Input::Instance().GetGamePad();
-
-	//直進弾丸発射
-	if (gamePad.GetButtonDown() & GamePad::BTN_X)
-	{
-		//前方向
-		DirectX::XMFLOAT3 dir;
-		dir.x = sinf(angle.y);
-		dir.y = 0;
-		dir.z = cosf(angle.y);
-		//発射位置（プレイヤーの腰あたり）
-		DirectX::XMFLOAT3 pos;
-		pos.x = GetPosition().x;
-		pos.y = GetPosition().y + 1;
-		pos.z = GetPosition().z;
-
-		//発射
-		ProjectileStraight* projectile = new ProjectileStraight(&projectileManager);
-		projectile->Launch(dir, pos);
-	}
-
-	//ぐるぐるは仕様　自分で改造しよう！
-	if (gamePad.GetButtonDown() & GamePad::BTN_Y)
-	{
-		//前方向
-		DirectX::XMFLOAT3 dir;
-		dir.x = sinf(angle.y);
-		dir.y = 0;
-		dir.z = cosf(angle.y);
-		//発射位置（プレイヤーの腰あたり）
-		DirectX::XMFLOAT3 pos;
-		pos.x = GetPosition().x;
-		pos.y = GetPosition().y + 1;
-		pos.z = GetPosition().z;
-
-		//ターゲット（デフォルトではプレイヤーの前方）
-		DirectX::XMFLOAT3 target;
-		target.x = dir.x;
-		target.y = dir.y;
-		target.z = dir.z;
-
-		//一番近くの敵をターゲットにする
-		float dist = FLT_MAX;
-		EnemeyManager& enemyManager = EnemeyManager::Instance();
-		int enemyCount = enemyManager.GetEnemyCount();
-		for (int i = 0;i < enemyCount;i++)
-		{
-			//敵との距離判定
-			Enemy* enemy = EnemeyManager::Instance().GetEnemy(i);
-			DirectX::XMVECTOR P = DirectX::XMLoadFloat3(&position);
-			DirectX::XMVECTOR E = DirectX::XMLoadFloat3(&enemy->GetPosition());
-			DirectX::XMVECTOR V = DirectX::XMVectorSubtract(P, E);
-			DirectX::XMVECTOR D = DirectX::XMVector3LengthSq(V);
-			float d;
-			DirectX::XMStoreFloat(&d, D);
-			if (d < dist) {
-				dist = d;
-				target = enemy->GetPosition();
-				target.y += enemy->GetHeight() * 0.5f;
-			}
-		}
-
-		//発射
-		ProjectileHoming* projectile = new ProjectileHoming(&projectileManager);
-		projectile->Launch(dir, pos,target);
-	}
-}
+//void Player::InputProjectile() 
+//{
+//	GamePad& gamePad = Input::Instance().GetGamePad();
+//
+//	//直進弾丸発射
+//	if (gamePad.GetButtonDown() & GamePad::BTN_X)
+//	{
+//		//前方向
+//		DirectX::XMFLOAT3 dir;
+//		dir.x = sinf(angle.y);
+//		dir.y = 0;
+//		dir.z = cosf(angle.y);
+//		//発射位置（プレイヤーの腰あたり）
+//		DirectX::XMFLOAT3 pos;
+//		pos.x = GetPosition().x;
+//		pos.y = GetPosition().y + 1;
+//		pos.z = GetPosition().z;
+//
+//		//発射
+//		ProjectileStraight* projectile = new ProjectileStraight(&projectileManager);
+//		projectile->Launch(dir, pos);
+//	}
+//
+//	//ぐるぐるは仕様　自分で改造しよう！
+//	if (gamePad.GetButtonDown() & GamePad::BTN_Y)
+//	{
+//		//前方向
+//		DirectX::XMFLOAT3 dir;
+//		dir.x = sinf(angle.y);
+//		dir.y = 0;
+//		dir.z = cosf(angle.y);
+//		//発射位置（プレイヤーの腰あたり）
+//		DirectX::XMFLOAT3 pos;
+//		pos.x = GetPosition().x;
+//		pos.y = GetPosition().y + 1;
+//		pos.z = GetPosition().z;
+//
+//		//ターゲット（デフォルトではプレイヤーの前方）
+//		DirectX::XMFLOAT3 target;
+//		target.x = dir.x;
+//		target.y = dir.y;
+//		target.z = dir.z;
+//
+//		//一番近くの敵をターゲットにする
+//		float dist = FLT_MAX;
+//		EnemeyManager& enemyManager = EnemeyManager::Instance();
+//		int enemyCount = enemyManager.GetEnemyCount();
+//		for (int i = 0;i < enemyCount;i++)
+//		{
+//			//敵との距離判定
+//			Enemy* enemy = EnemeyManager::Instance().GetEnemy(i);
+//			DirectX::XMVECTOR P = DirectX::XMLoadFloat3(&position);
+//			DirectX::XMVECTOR E = DirectX::XMLoadFloat3(&enemy->GetPosition());
+//			DirectX::XMVECTOR V = DirectX::XMVectorSubtract(P, E);
+//			DirectX::XMVECTOR D = DirectX::XMVector3LengthSq(V);
+//			float d;
+//			DirectX::XMStoreFloat(&d, D);
+//			if (d < dist) {
+//				dist = d;
+//				target = enemy->GetPosition();
+//				target.y += enemy->GetHeight() * 0.5f;
+//			}
+//		}
+//
+//		//発射
+//		ProjectileHoming* projectile = new ProjectileHoming(&projectileManager);
+//		projectile->Launch(dir, pos,target);
+//	}
+//}
 
 //弾丸と敵の衝突判定
 void Player::CollisionProjectilesVsEnemies(){
@@ -531,7 +534,7 @@ void Player::UpdateIdelState(float elapsedTime)
 	}
 
 	//弾丸入力処理
-	InputProjectile();
+	//InputProjectile();
 }
 
 //移動ステートへの遷移
@@ -563,7 +566,7 @@ void Player::UpdateMoveState(float elapsedTime)
 	}
 
 	//弾丸入力処理
-	InputProjectile();
+	//InputProjectile();
 }
 
 //ジャンプステートへ遷移
@@ -589,7 +592,7 @@ void Player::UpdateJumpState(float elapsedTime)
 		TransitionJumpState();
 	}
 
-	InputProjectile();
+	//InputProjectile();
 }
 
 //着地ステートへ遷移

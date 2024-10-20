@@ -97,6 +97,7 @@ void SceneGame::Initialize()
 
 	mask = std::make_unique<Sprite>("Data/Sprite/dissolve_animation.png");
 	bgm = Audio::Instance().LoadAudioSource("Data/Audio/2408A_生きとし生けるものへ.wav");
+	finish = std::make_unique<Sprite>("Data/Sprite/syuuryou.png");
 	//bgm->Play(true);
 }
 
@@ -176,6 +177,15 @@ void SceneGame::Render()
 		/*expl->Render(dc, 0, 200, 100, 100,
 			0, 0, 920, 210,
 			0,1, 1, 1, 1);*/
+		if (Player::Instance().timer < 0.0)
+		{
+			ID3D11DeviceContext* dc = Graphics::Instance().GetDeviceContext();
+			a = Mathf::Leap(a, 1.0f, 0.1);
+			finish->Render(dc, 0.0f, 0.0f, 1280, 720,
+				0, 0, 400, 300,
+				0,
+				1.0f, 1.0f, 1.0, a);
+		}
 	}
 
 	// 2DデバッグGUI描画
