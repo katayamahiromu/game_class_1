@@ -19,6 +19,7 @@ void SceneLoading::Initialize()
 
 	//スレッド開始
 	thread = new std::thread(SceneLoading::LoadingThread, this);
+
 	flg = false;
 	scenechangeflg = false;
 	ctimer = 0.0f;
