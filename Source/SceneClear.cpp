@@ -3,6 +3,7 @@
 #include "SceneManager.h"
 #include "SceneTitle.h"
 #include <Graphics/Graphics.h>
+#include "Input/Input.h"
 void SceneClear::Initialize()
 {
 	clear = std::make_unique<Sprite>("Data/Sprite/Gama_Clear.png");
@@ -15,7 +16,10 @@ void SceneClear::Finalize()
 
 void SceneClear::Update(const float& elapsedTime)
 {
-
+	GamePad& gamePad = Input::Instance().GetGamePad();
+	if (gamePad.GetButtonDown() & GamePad::BTN_SPACE) {
+		SceneManager::instance().ChengeScene(new SceneTitle);
+	}
 }
 
 void SceneClear::Render()
