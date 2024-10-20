@@ -25,7 +25,7 @@ void SceneGame::Initialize()
 	stageManager.Register(stageMain);
 
 	player = std::make_unique<Player>();
-	player->SetPositon(DirectX::XMFLOAT3(0, 100, 0));
+	player->SetPositon(DirectX::XMFLOAT3(0, 100, 10));
 	//カメラコントローラー初期化
 	cameraController = std::make_unique<CameraController>();
 
@@ -48,7 +48,7 @@ void SceneGame::Initialize()
 #if 1
 	for (int i = 0;i < 3;++i) {
 		EnemyShell* slime = new EnemyShell;
-		slime->SetPositon(DirectX::XMFLOAT3(i * 10.0f, 105, -10.0*i));
+		slime->SetPositon(DirectX::XMFLOAT3(i * 2.0f+i*i, 100, 5*i+i*10));
 		slime->SetTerritory(slime->GetPosition(), 10.0f);
 		EnemeyManager::Instance().Register(slime);
 	}
