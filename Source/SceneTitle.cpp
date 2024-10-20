@@ -18,7 +18,7 @@ void SceneTitle::Initialize()
 	title = std::make_unique<Sprite>("Data/Sprite/umi.png");
 	playSpr = std::make_unique<Sprite>("Data/Sprite/PlayGame.png");
 	controlSpr = std::make_unique<Sprite>("Data/Sprite/Control.png");
-	renderControl = std::make_unique<Sprite>("Data/Sprite/setsumei.png");
+	renderControl = std::make_unique<Sprite>("Data/Sprite/sousa.png");
 	selectMark = std::make_unique<Sprite>("Data/Sprite/selectMark.png");
 
 	test = Audio::Instance().MakeSubMix();
