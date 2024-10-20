@@ -46,4 +46,6 @@ private:
 	std::unique_ptr<Sprite> Push_Enter;
 
 	std::unique_ptr<AudioSource>bgm;
+	std::unique_ptr<AudioSource>select_se;
+	std::unique_ptr<AudioSource>select_decide;
 };

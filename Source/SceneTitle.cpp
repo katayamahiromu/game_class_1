@@ -25,6 +25,8 @@ void SceneTitle::Initialize()
 	Push_Enter = std::make_unique<Sprite>("Data/Font/font0.png");
 	bgm = Audio::Instance().LoadAudioSource("Data/Audio/1 The Clock Falls on a City of Ashes.wav");
 	bgm->Play(true);
+	select_se = Audio::Instance().LoadAudioSource("Data/Audio/select.wav");
+	select_decide = Audio::Instance().LoadAudioSource("Data/Audio/select_decide.wav");
 }
 
 //終了化
@@ -50,10 +52,12 @@ void SceneTitle::Update(const float& elapsedTime)
 	// 上下キー選択
 	if (GetAsyncKeyState('W') & 0x8000)
 	{
+		select_se->DC_Play();
 		selectIndex--;
 	}
 	if (GetAsyncKeyState('S') & 0x8000)
 	{
+		select_se->DC_Play();
 		selectIndex++;
 	}
 	// 制限
@@ -70,14 +74,16 @@ void SceneTitle::Update(const float& elapsedTime)
 	{
 	case 0:
 		selectPos = 470;
-		if (gamePad.GetButtonDown() & GamePad::BTN_SPACE) {
+		if (gamePad.GetButtonDown() & GamePad::BTN_ENTER) {
+			select_decide->DC_Play();
 			SceneManager::instance().ChengeScene(new SceneLoading(new SceneGame));
 		}
 		break;
 	case 1:
 		selectPos = 630;
-		if (gamePad.GetButtonDown() & GamePad::BTN_SPACE)
+		if (gamePad.GetButtonDown() & GamePad::BTN_ENTER)
 		{
+			select_decide->DC_Play();
 			renderSpr =!renderSpr ;
 		}
 		

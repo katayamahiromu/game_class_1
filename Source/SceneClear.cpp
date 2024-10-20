@@ -7,6 +7,8 @@
 void SceneClear::Initialize()
 {
 	clear = std::make_unique<Sprite>("Data/Sprite/Gama_Clear.png");
+	bgm = Audio::Instance().LoadAudioSource("Data/Audio/10 Steam mechanism.wav");
+	bgm->Play(true);
 }
 
 void SceneClear::Finalize()
