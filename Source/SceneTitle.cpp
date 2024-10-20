@@ -51,11 +51,11 @@ void SceneTitle::Update(const float& elapsedTime)
 
 	
 	// è„â∫ÉLÅ[ëIë
-	if (gamePad.GetButtonDown() & GamePad::BTN_UP)
+	if (GetAsyncKeyState('W') & 0x8000)
 	{
 		selectIndex--;
 	}
-	if (gamePad.GetButtonDown() & GamePad::BTN_DOWN)
+	if (GetAsyncKeyState('S') & 0x8000)
 	{
 		selectIndex++;
 	}
