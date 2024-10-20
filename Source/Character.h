@@ -103,7 +103,7 @@ protected:
 	float stepOffset = 1.0f;
 	float slopeRate = 1.0f;
 
-	float speedY = 100.0f;
+	float speedY = 50.0f;
 
 	struct AABB
 	{

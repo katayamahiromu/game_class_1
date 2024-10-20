@@ -158,7 +158,7 @@ private:
 private:
 	State state = State::Idle;
 private:
-	float target_range = 10.0f;
+	float target_range = 20.0f;
 	Enemy* target_enemy;
 	int Rock_num;//敵のインデックス番号
 	//攻撃可能な精子のインデックス番号を保存する
