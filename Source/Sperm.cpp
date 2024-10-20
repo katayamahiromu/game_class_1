@@ -4,15 +4,19 @@
 #include"Player.h"
 #include"Sperm_Manager.h"
 #include"EnemyManeger.h"
+#include<algorithm>
 
 Sperm_child::Sperm_child()
 {
+	isActive = true;
+	FLT = false;
 	scale.x = scale.y = scale.z = 0.05f;
 	scale.x = scale.z *= -1;
 	mdl = std::make_unique<Model>("Data/Model/Player/player.mdl");
 	radius = 0.5;
 	height = 1.0;
 	mdl->PlayAnimation(0, true, 0.2f);
+	extinction = std::make_unique<Effect>("Data/Effect/edit_extincion.efk");
 }
 
 Sperm_child::~Sperm_child()
@@ -23,7 +27,12 @@ Sperm_child::~Sperm_child()
 void Sperm_child::Update(float& elapsedTime)
 {
 	// isActive ‚©‰½‚©‚Ìƒtƒ‰ƒO‚ð—pˆÓ‚µ‚Ä isActive ‚ª false ‚È‚ç return
-	if (!isActive)return;
+	/*const float min = 40;
+	const float max = 300;
+	std::clamp(position.y, min, max);
+	if (position.y < 40.0f)position.y = 40.0f;*/
+	//Update_ResPornTime(elapsedTime);
+	if (isActive == false )return;
 
 	switch (state)
 	{
@@ -174,6 +183,7 @@ void Sperm_child::TransitionAttackState()
 	if (Player::Instance().Get_Target_Enemy())
 	{
 		targetPosition = Player::Instance().Get_Target_Enemy()->GetPosition();
+		targetPosition.y += 1.0f;
 	}
 	else
 	{
@@ -216,7 +226,7 @@ void Sperm_child::UpdateAttack(float elapsedTime)
 				outPosition
 			))
 			{
-				enemy->ApplyDamage(1.0f, 1.0f);
+				if(enemy->GetHealth() > 0)enemy->ApplyDamage(1.0f, 1.0f);
 			}
 		};
 	}
@@ -225,10 +235,47 @@ void Sperm_child::UpdateAttack(float elapsedTime)
 void Sperm_child::TransitionDead()
 {
 	state = State::Daed;
+	extinction->Play(position,10.0f);
 }
 
 void Sperm_child::Dead(float elapsedTime)
 {
-	mdl->mask.dissolveThreshold = Mathf::Leap(mdl->mask.dissolveThreshold, 0.0f, elapsedTime);
-	if(mdl->mask.dissolveThreshold < 0.0f)isActive = false;
+	mask.dissolveThreshold = Mathf::Leap(mask.dissolveThreshold, 0.0f, elapsedTime);
+	if (mask.dissolveThreshold <= 0.1f)isActive = false;
+}
+
+void Sperm_child::ResPornTransition()
+{
+	/*isActive = true;
+	ResPornTime = 3.0f;
+	state = State::Wander;
+	targetPosition = Player::Instance().GetPosition();
+
+	targetPosition.x += (rand() % 31) - 15;
+	targetPosition.z += (rand() % 31) - 15;
+
+	position = targetPosition;
+	mask.dissolveThreshold = 1.0;*/
+	Sperm_child* sc = new Sperm_child;
+	DirectX::XMFLOAT3 pos = Player::Instance().GetPosition();
+	pos.x += (rand() % 31) - 15;
+	pos.y += (rand() % 31) - 15;
+	pos.z += (rand() % 31) - 15;
+	sc->SetPositon(pos);
+	Sperm_Manager::Instance().RegisterAdd(sc);
+}
+
+void Sperm_child::Update_ResPornTime(float elapsedTime)
+{
+	if (isActive == true)return;
+	ResPornTime -= elapsedTime;
+	if (ResPornTime < 0.0f)
+	{
+		if (FLT == false)
+		{
+			ResPornTransition();
+			FLT = true;
+			position.x = position.y = position.z = FLT_MAX;
+		}
+	}
 }

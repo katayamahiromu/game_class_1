@@ -38,6 +38,9 @@ Player::Player() {
 
 	//待機ステートへの遷移
 	TransitiomIdleState();
+
+	move_se = Audio::Instance().LoadAudioSource("Data/Audio/ローションくちゅ音3.wav");
+	catch_se = Audio::Instance().LoadAudioSource("Data/Audio/Book02-6(Put_Down).wav");
 }
 
 //デストラクタ
@@ -100,9 +103,13 @@ void Player::Update(float elapsedTime) {
 	//モデル行列を更新
 	mdl->UpdateTransform(transform);
 
-	if (GetAsyncKeyState('G') & 0x8000)
+	if (velocity.x == 0 && velocity.y == 0 && velocity.z == 0.0f)
 	{
-		hitEffect->Play(position);
+		move_se->Stop();
+	}
+	else
+	{
+		move_se->Play(true);
 	}
 }
 
@@ -157,6 +164,17 @@ void Player::DrawDebugGui() {
 			ImGui::InputInt("Can Attack list Count", &i);
 
 			ImGui::SliderFloat("dissolve", &mask.dissolveThreshold, 0.0f, 1.0f);
+			int s = Sperm_Manager::Instance().GetSpermCount();
+			int Sperm_num = 0;
+			
+			for (int a = 0;a < s;a++)
+			{
+				DirectX::XMFLOAT3 pos = Sperm_Manager::Instance().GetSperm(a)->GetPosition();
+				ImGui::InputFloat3("pos",&pos.x);
+				ImGui::InputFloat("time",&Sperm_Manager::Instance().GetSperm(a)->ResPornTime);
+				if (Sperm_Manager::Instance().GetSperm(a)->isActive == true)Sperm_num++;
+			}
+			ImGui::InputInt("count", &Sperm_num);
 		}
 	}
 	ImGui::End();
@@ -442,6 +460,7 @@ void Player::CollisionProjectilesVsEnemies(){
 
 void Player::CollisionPlayerVsSperm()
 {
+	if (can_attack_sperm.size() >= 5)return;
 	DirectX::XMFLOAT3 intersect;
 	Sperm_Manager& sperm_manager = Sperm_Manager::Instance();
 	int Sperm_count = sperm_manager.GetSpermCount();
@@ -460,6 +479,7 @@ void Player::CollisionPlayerVsSperm()
 		{
 			sperm_manager.GetSperm(i)->Set_player_catch(true);
 			can_attack_sperm.push_back(i);
+			catch_se->DC_Play();
 		}
 	}
 }

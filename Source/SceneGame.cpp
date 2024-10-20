@@ -46,12 +46,12 @@ void SceneGame::Initialize()
 #if 1
 	for (int i = 0;i < 1;++i) {
 		EnemyShell* slime = new EnemyShell;
-		slime->SetPositon(DirectX::XMFLOAT3(i * 2.0f, 100, 5));
+		slime->SetPositon(DirectX::XMFLOAT3(i * 2.0f, 100, 5*i*i));
 		slime->SetTerritory(slime->GetPosition(), 10.0f);
 		EnemeyManager::Instance().Register(slime);
 	}
 
-	for (int i = 0;i < 10;i++)
+	for (int i = 0;i < 50;i++)
 	{
 		Sperm_child* sperm = new Sperm_child;
 		sperm->SetPositon(DirectX::XMFLOAT3(i * 2.0f, 100 ,5));
@@ -286,7 +286,6 @@ void SceneGame::RenderEnemyGauge(
 			slime->SetPositon(hit.position);
 			EnemeyManager::Instance().Register(slime);
 		}
-		
 	}
 }
 
@@ -330,8 +329,8 @@ void SceneGame::Render3DScene()
 	//マスクテクスチャの受け渡し
 	rc.maskTexture = mask.get()->GetShaderResourceView().Get();
 
-	DirectX::XMFLOAT4X4 viewProjection;
-	DirectX::XMStoreFloat4x4(&viewProjection, DirectX::XMMatrixMultiply(DirectX::XMLoadFloat4x4(&camera.GetView()), DirectX::XMLoadFloat4x4(&camera.GetProjection())));
+	/*DirectX::XMFLOAT4X4 viewProjection;
+	DirectX::XMStoreFloat4x4(&viewProjection, DirectX::XMMatrixMultiply(DirectX::XMLoadFloat4x4(&camera.GetView()), DirectX::XMLoadFloat4x4(&camera.GetProjection())));*/
 	//skyMap->blit(dc, viewProjection);
 	// 3Dモデル描画
 	{
@@ -365,7 +364,7 @@ void SceneGame::Render3DScene()
 		// デバッグレンダラ描画実行
 		graphics.GetDebugRenderer()->Render(dc, rc.view, rc.projection);
 	}
-	DebugGui();
+	//DebugGui();
 }
 
 void SceneGame::Offscreen_Rendering()
@@ -391,7 +390,7 @@ void SceneGame::Offscreen_Rendering()
 		vp.MaxDepth = 1.0f;
 		dc->RSSetViewports(1, &vp);
 		postprocessingRneder->Render(dc);
-		postprocessingRneder->DrawDebugGUI();
+		//postprocessingRneder->DrawDebugGUI();
 	}
 }
 

@@ -2,6 +2,7 @@
 #include"Graphics/Model.h"
 #include"Enemy.h"
 #include"Effect.h"
+#include"Audio/Audio.h"
 
 //スライム
 class EnemyShell :public Enemy
@@ -28,11 +29,16 @@ protected:
 	//ダメージを受けた時に呼ばれる
 	void OnDamaged() override;
 private:
+	void UpdateDeadState(float elapsedTime);
+	void TransitionDeadState();
+	void ResPornTransition();
+private:
 	enum class State
 	{
 		Normal,
 		Dead,
-		Damage
+		Damage,
+		ResPorn,
 	};
 
 	State state = State::Normal;
@@ -45,5 +51,9 @@ private:
 	float searchRange = 5.0f;
 	float attackRange = 1.5f;
 
+	//HPが５のため５つ用意
 	std::unique_ptr<Effect>damage_effect[5];
+	std::unique_ptr<AudioSource>damage_se[5];
+	//残響加工を施すメソッド
+	std::unique_ptr<SubMixVoice> reverberation;
 };

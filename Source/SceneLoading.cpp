@@ -55,14 +55,15 @@ void SceneLoading::Update(const float& elapsedTime)
 	}
 	if (m2_texsize.y <= -345)m2_texsize.y = -345;
 	//次のシーンが完了したらシーンを切り替える
-	//if (nextScene->IsReady())
-	//{
-	//	m_texsize.y = -320;
-	//}
-	if (nextScene->IsReady() &&(gamePad.GetButtonDown() & GamePad::BTN_SPACE))
+	if (nextScene->IsReady())
 	{
+		m_texsize.y = -320;
 		SceneManager::instance().ChengeScene(nextScene);
 	}
+	/*if (nextScene->IsReady() &&(gamePad.GetButtonDown() & GamePad::BTN_SPACE))
+	{
+		SceneManager::instance().ChengeScene(nextScene);
+	}*/
 }
 
 //描画処理

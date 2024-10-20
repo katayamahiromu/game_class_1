@@ -14,6 +14,15 @@ void Sperm_Manager::Update(float elapsedTime)
         }
         delete sperm;
     }
+
+
+    //Update“à‚Å‘‚¦‚½‚â‚Â‚ğ“o˜^
+    for (Sperm_child* sperm : currentArray)
+    {
+        Register(sperm);
+    }
+
+    currentArray.clear();
     remove.clear();
     SpermVsSperm();
 }
@@ -72,4 +81,9 @@ void Sperm_Manager::SpermVsSperm()
             }
         }
     }
+}
+
+void Sperm_Manager::RegisterAdd(Sperm_child* sperm)
+{
+    currentArray.push_back(sperm);
 }
